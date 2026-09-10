@@ -1,0 +1,20 @@
+# secrets
+.env
+.env.*
+!.env.example
+.dev.vars
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.ruff_cache/
+.pytest_cache/
+
+# node
+node_modules/
+web/dist/
+.wrangler/
+
+# os
+.DS_Store
