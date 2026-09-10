@@ -20,7 +20,15 @@ CACHE_DIR = config.DATA_RAW / "osm"
 ENDPOINTS = [
     "https://overpass-api.de/api/interpreter",
     "https://overpass.kumi.systems/api/interpreter",
+    "https://overpass.private.coffee/api/interpreter",
 ]
+
+# The public Overpass instances are a shared free resource with a couple of
+# concurrent slots per IP, and they will drop a client that fans out. We keep a
+# hard floor between requests and back off generously on failure; the cache
+# means a reviewer pays this cost never, and we pay it once.
+MIN_REQUEST_INTERVAL_S = 8.0
+_last_request_at = 0.0
 
 # Element types we ask for. Deliberately NOT `nwr`: making Overpass compute
 # geometric centres for *relations* over a metro-sized bbox reliably times the
@@ -116,9 +124,14 @@ def overpass(query: str, *, label: str, refresh: bool = False) -> list[dict]:
         if cached is not None:
             return cached["elements"]
 
+    global _last_request_at
     last_error: Exception | None = None
     for endpoint in ENDPOINTS:
         for attempt in range(3):
+            wait = MIN_REQUEST_INTERVAL_S - (time.monotonic() - _last_request_at)
+            if wait > 0:
+                time.sleep(wait)
+            _last_request_at = time.monotonic()
             try:
                 resp = httpx.post(
                     endpoint,
@@ -132,7 +145,9 @@ def overpass(query: str, *, label: str, refresh: bool = False) -> list[dict]:
                 return payload["elements"]
             except Exception as exc:  # rate limit / gateway timeout -> back off
                 last_error = exc
-                time.sleep(4 * (attempt + 1))
+                print(f"    overpass attempt {attempt + 1} failed ({type(exc).__name__}), "
+                      f"backing off")
+                time.sleep(15 * (attempt + 1))
         print(f"  overpass endpoint failed ({endpoint}): {last_error}")
     raise RuntimeError(f"all Overpass endpoints failed for {label}: {last_error}")
 

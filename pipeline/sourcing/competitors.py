@@ -70,12 +70,20 @@ def _tier(name: str, tags: dict, category: str) -> str:
     return "mid"
 
 
-# Rating priors per tier: mean and spread, in stars. Premium venues rate a
-# little higher and more consistently; value barbershops spread wider.
+# Rating priors per tier: mean and spread, in stars.
+#
+# Calibrated to the UAE, not to a generic 1-5 scale. Google ratings for
+# personal-care venues in the Gulf are strongly inflated -- the observed
+# Bedashing branches themselves sit at 4.5-4.9, and their local rivals sit in
+# the same band. An earlier, lower prior made Bedashing win its local
+# comparison almost everywhere, which saturated `competitive_position` at the
+# clip for 20 of 23 branches and destroyed the signal's ability to
+# discriminate. Premium venues rate slightly higher and more consistently;
+# value barbershops spread wider.
 TIER_RATING_PRIOR = {
-    "premium": (4.55, 0.22),
-    "mid": (4.35, 0.32),
-    "value": (4.15, 0.42),
+    "premium": (4.70, 0.20),
+    "mid": (4.55, 0.28),
+    "value": (4.35, 0.38),
 }
 
 

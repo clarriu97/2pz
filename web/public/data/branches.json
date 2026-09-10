@@ -1,0 +1,4589 @@
+[
+  {
+    "branch_id": "BD01",
+    "name": "Bedashing Beauty Lounge Mirdif 35",
+    "area": "Mirdif",
+    "emirate": "Dubai",
+    "address": "Mirdif 35, Level 2, unit L2-10, Dubai",
+    "lat": 25.221843,
+    "lon": 55.423147,
+    "rating": 4.6,
+    "review_count": 568,
+    "urban_context": "suburban",
+    "catchment_radius_m": 4000,
+    "momentum": 0.5668,
+    "chair_utilisation": 0.5457,
+    "geocode_precision": "area",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.63 and market 0.21 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.6331,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.6,
+          "raw_display": "4.6★",
+          "normalised": 0.5333,
+          "weight": 0.3,
+          "contribution": 0.16,
+          "direction": "up",
+          "explanation": "4.6★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 568,
+          "raw_display": "568 reviews",
+          "normalised": 0.7518,
+          "weight": 0.25,
+          "contribution": 0.1879,
+          "direction": "up",
+          "explanation": "568 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.567,
+          "raw_display": "+13% vs own trend",
+          "normalised": 0.5668,
+          "weight": 0.2,
+          "contribution": 0.1134,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.187,
+          "raw_display": "+0.19★ vs local mean",
+          "normalised": 0.687,
+          "weight": 0.25,
+          "contribution": 0.1718,
+          "direction": "up",
+          "explanation": "We rate 0.19★ above the 18 rivals inside this catchment (their mean 4.41★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.2052,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.358,
+          "raw_display": "18 rivals · 0.36/km²",
+          "normalised": 0.8323,
+          "weight": 0.35,
+          "contribution": 0.2913,
+          "direction": "up",
+          "explanation": "18 competing venues in the catchment (0.36/km²), 17% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.43,
+          "raw_display": "43% of catchment shared",
+          "normalised": 0.4303,
+          "weight": -0.2,
+          "contribution": -0.0861,
+          "direction": "down",
+          "explanation": "43% of this catchment is also covered by 1 of our own lounges, chiefly Bedashing Beauty Lounge Al Warqa City Mall at 3.7 km."
+        }
+      ]
+    },
+    "top_drivers": [
+      "headroom_norm",
+      "review_volume_norm",
+      "competitive_position"
+    ],
+    "competition": {
+      "competitor_count": 18,
+      "competitors_per_km2": 0.3581,
+      "saturation_norm": 0.1677,
+      "competitor_mean_rating": 4.413,
+      "competitive_position_stars": 0.187,
+      "premium_share": 0.0,
+      "nearest_competitor_m": 330,
+      "top_competitors": [
+        {
+          "competitor_id": "n7203028716",
+          "name": "The Secret Beauty Center",
+          "tier": "mid",
+          "rating": 4.57,
+          "distance_m": 330
+        },
+        {
+          "competitor_id": "n4426279203",
+          "name": "Hair Fusion Gents Saloon",
+          "tier": "value",
+          "rating": 3.76,
+          "distance_m": 1086
+        },
+        {
+          "competitor_id": "n4446867895",
+          "name": "Sei Bella Beauty Center",
+          "tier": "mid",
+          "rating": 4.35,
+          "distance_m": 1135
+        },
+        {
+          "competitor_id": "n4906242893",
+          "name": "Alfa Gents Saloon",
+          "tier": "mid",
+          "rating": 4.91,
+          "distance_m": 2181
+        },
+        {
+          "competitor_id": "n4917351327",
+          "name": "Wanasa Gents Salon",
+          "tier": "value",
+          "rating": 3.89,
+          "distance_m": 2279
+        },
+        {
+          "competitor_id": "n4917296330",
+          "name": "Al Siji Hairdressing Saloon",
+          "tier": "value",
+          "rating": 4.42,
+          "distance_m": 2306
+        },
+        {
+          "competitor_id": "n4913533799",
+          "name": "New Look One",
+          "tier": "mid",
+          "rating": 4.8,
+          "distance_m": 2406
+        },
+        {
+          "competitor_id": "n4913404688",
+          "name": "Unnamed salon (OSM)",
+          "tier": "mid",
+          "rating": 4.78,
+          "distance_m": 2578
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.4303,
+      "sibling_count": 1,
+      "siblings": [
+        {
+          "branch_id": "BD04",
+          "name": "Bedashing Beauty Lounge Al Warqa City Mall",
+          "distance_m": 3730,
+          "share_of_my_catchment": 0.4303
+        }
+      ]
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 50.265,
+    "confidence": {
+      "level": "high",
+      "caveats": [
+        "Location resolved to the district rather than the exact unit, so the catchment is centred within a few hundred metres of the real door — immaterial at a 4.0 km radius."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD02",
+    "name": "Bedashing Beauty Studio Zawaya Walk",
+    "area": "Al Shahba",
+    "emirate": "Sharjah",
+    "address": "Shop 32 & 33, Zawaya Walk, University City Rd, Al Shahba, Sharjah",
+    "lat": 25.334386,
+    "lon": 55.430497,
+    "rating": 4.7,
+    "review_count": 286,
+    "urban_context": "suburban",
+    "catchment_radius_m": 4000,
+    "momentum": 0.3,
+    "chair_utilisation": 0.5186,
+    "geocode_precision": "area",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.62 and market -0.01 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.6181,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.7,
+          "raw_display": "4.7★",
+          "normalised": 0.6667,
+          "weight": 0.3,
+          "contribution": 0.2,
+          "direction": "up",
+          "explanation": "4.7★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 286,
+          "raw_display": "286 reviews",
+          "normalised": 0.5764,
+          "weight": 0.25,
+          "contribution": 0.1441,
+          "direction": "up",
+          "explanation": "286 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.3,
+          "raw_display": "-40% vs own trend",
+          "normalised": 0.3,
+          "weight": 0.2,
+          "contribution": 0.06,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.356,
+          "raw_display": "+0.36★ vs local mean",
+          "normalised": 0.856,
+          "weight": 0.25,
+          "contribution": 0.214,
+          "direction": "up",
+          "explanation": "We rate 0.36★ above the 171 rivals inside this catchment (their mean 4.34★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": -0.0096,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 3.402,
+          "raw_display": "171 rivals · 3.40/km²",
+          "normalised": 0.0,
+          "weight": 0.35,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "171 competing venues in the catchment (3.40/km²), 100% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.048,
+          "raw_display": "5% of catchment shared",
+          "normalised": 0.0479,
+          "weight": -0.2,
+          "contribution": -0.0096,
+          "direction": "down",
+          "explanation": "5% of this catchment is also covered by 1 of our own lounges, chiefly Bedashing Glam Haven Muwaileh at 7.1 km."
+        }
+      ]
+    },
+    "top_drivers": [
+      "competitive_position",
+      "rating_norm",
+      "review_volume_norm"
+    ],
+    "competition": {
+      "competitor_count": 171,
+      "competitors_per_km2": 3.402,
+      "saturation_norm": 1.0,
+      "competitor_mean_rating": 4.344,
+      "competitive_position_stars": 0.356,
+      "premium_share": 0.0,
+      "nearest_competitor_m": 482,
+      "top_competitors": [
+        {
+          "competitor_id": "n4955503483",
+          "name": "Al Rawa - Beauty Arts & Training Center",
+          "tier": "value",
+          "rating": 4.59,
+          "distance_m": 482
+        },
+        {
+          "competitor_id": "n4955454199",
+          "name": "Saly Ladies Salon",
+          "tier": "value",
+          "rating": 4.77,
+          "distance_m": 774
+        },
+        {
+          "competitor_id": "n4279973089",
+          "name": "Rospina Trading",
+          "tier": "mid",
+          "rating": 4.68,
+          "distance_m": 967
+        },
+        {
+          "competitor_id": "n4955454175",
+          "name": "Zahbat Al Jardoo Ladies Salon",
+          "tier": "value",
+          "rating": 4.04,
+          "distance_m": 1029
+        },
+        {
+          "competitor_id": "n4957290097",
+          "name": "Qatr Alnada Ladies Salon",
+          "tier": "value",
+          "rating": 3.81,
+          "distance_m": 1210
+        },
+        {
+          "competitor_id": "n4957169329",
+          "name": "Ladies Salon",
+          "tier": "value",
+          "rating": 4.94,
+          "distance_m": 1513
+        },
+        {
+          "competitor_id": "n4957230644",
+          "name": "Al Awtar",
+          "tier": "value",
+          "rating": 3.64,
+          "distance_m": 1631
+        },
+        {
+          "competitor_id": "n4957230645",
+          "name": "Beauty Saloon",
+          "tier": "value",
+          "rating": 4.63,
+          "distance_m": 1637
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.0479,
+      "sibling_count": 1,
+      "siblings": [
+        {
+          "branch_id": "BD08",
+          "name": "Bedashing Glam Haven Muwaileh",
+          "distance_m": 7054,
+          "share_of_my_catchment": 0.0479
+        }
+      ]
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 50.265,
+    "confidence": {
+      "level": "high",
+      "caveats": [
+        "Location resolved to the district rather than the exact unit, so the catchment is centred within a few hundred metres of the real door — immaterial at a 4.0 km radius."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD03",
+    "name": "Bedashing Beauty Lounge City Walk",
+    "area": "City Walk",
+    "emirate": "Dubai",
+    "address": "City Walk, Al Wasl, Dubai",
+    "lat": 25.208159,
+    "lon": 55.261874,
+    "rating": 4.6,
+    "review_count": 454,
+    "urban_context": "dense_urban",
+    "catchment_radius_m": 2500,
+    "momentum": 0.4253,
+    "chair_utilisation": 0.5395,
+    "geocode_precision": "address",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.57 and market 0.01 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.5682,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.6,
+          "raw_display": "4.6★",
+          "normalised": 0.5333,
+          "weight": 0.3,
+          "contribution": 0.16,
+          "direction": "up",
+          "explanation": "4.6★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 454,
+          "raw_display": "454 reviews",
+          "normalised": 0.6945,
+          "weight": 0.25,
+          "contribution": 0.1736,
+          "direction": "up",
+          "explanation": "454 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.425,
+          "raw_display": "-15% vs own trend",
+          "normalised": 0.4253,
+          "weight": 0.2,
+          "contribution": 0.0851,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.098,
+          "raw_display": "+0.10★ vs local mean",
+          "normalised": 0.598,
+          "weight": 0.25,
+          "contribution": 0.1495,
+          "direction": "up",
+          "explanation": "We rate 0.10★ above the 39 rivals inside this catchment (their mean 4.50★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.0088,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 1.986,
+          "raw_display": "39 rivals · 1.99/km²",
+          "normalised": 0.0252,
+          "weight": 0.35,
+          "contribution": 0.0088,
+          "direction": "up",
+          "explanation": "39 competing venues in the catchment (1.99/km²), 97% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.0,
+          "raw_display": "0% of catchment shared",
+          "normalised": 0.0,
+          "weight": -0.2,
+          "contribution": -0.0,
+          "direction": "neutral",
+          "explanation": "No other Bedashing catchment reaches this area — no self-overlap."
+        }
+      ]
+    },
+    "top_drivers": [
+      "review_volume_norm",
+      "rating_norm",
+      "competitive_position"
+    ],
+    "competition": {
+      "competitor_count": 39,
+      "competitors_per_km2": 1.9862,
+      "saturation_norm": 0.9748,
+      "competitor_mean_rating": 4.502,
+      "competitive_position_stars": 0.098,
+      "premium_share": 0.103,
+      "nearest_competitor_m": 673,
+      "top_competitors": [
+        {
+          "competitor_id": "n4906057392",
+          "name": "Phi Brows",
+          "tier": "mid",
+          "rating": 4.75,
+          "distance_m": 673
+        },
+        {
+          "competitor_id": "n4906073770",
+          "name": "Aveda",
+          "tier": "mid",
+          "rating": 4.78,
+          "distance_m": 709
+        },
+        {
+          "competitor_id": "n4906073773",
+          "name": "Mademoiselle",
+          "tier": "mid",
+          "rating": 4.16,
+          "distance_m": 753
+        },
+        {
+          "competitor_id": "n7309477768",
+          "name": "La Piccola Casa",
+          "tier": "mid",
+          "rating": 4.81,
+          "distance_m": 944
+        },
+        {
+          "competitor_id": "n7362504293",
+          "name": "La Piccola Casa",
+          "tier": "mid",
+          "rating": 4.73,
+          "distance_m": 944
+        },
+        {
+          "competitor_id": "n7309477766",
+          "name": "Radia Beauty",
+          "tier": "mid",
+          "rating": 4.8,
+          "distance_m": 950
+        },
+        {
+          "competitor_id": "n7362504291",
+          "name": "Radia Beauty",
+          "tier": "mid",
+          "rating": 4.24,
+          "distance_m": 950
+        },
+        {
+          "competitor_id": "n6576994184",
+          "name": "Caryusa Ladies Salon",
+          "tier": "mid",
+          "rating": 3.74,
+          "distance_m": 971
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.0,
+      "sibling_count": 0,
+      "siblings": []
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 19.635,
+    "confidence": {
+      "level": "high",
+      "caveats": []
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD04",
+    "name": "Bedashing Beauty Lounge Al Warqa City Mall",
+    "area": "Al Warqa",
+    "emirate": "Dubai",
+    "address": "Shop 14, Ground Floor, Al Warqa City Mall, Al Warqa, Dubai",
+    "lat": 25.18902,
+    "lon": 55.430832,
+    "rating": 4.7,
+    "review_count": 280,
+    "urban_context": "suburban",
+    "catchment_radius_m": 4000,
+    "momentum": 0.6936,
+    "chair_utilisation": 0.5782,
+    "geocode_precision": "area",
+    "flags": [],
+    "recommendation": "SHRINK",
+    "decision_rule": "market 0.19 < 0.4 AND self-overlap 56% ≥ 45%",
+    "strength": {
+      "axis": "strength",
+      "score": 0.6829,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.7,
+          "raw_display": "4.7★",
+          "normalised": 0.6667,
+          "weight": 0.3,
+          "contribution": 0.2,
+          "direction": "up",
+          "explanation": "4.7★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 280,
+          "raw_display": "280 reviews",
+          "normalised": 0.571,
+          "weight": 0.25,
+          "contribution": 0.1427,
+          "direction": "up",
+          "explanation": "280 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.694,
+          "raw_display": "+39% vs own trend",
+          "normalised": 0.6936,
+          "weight": 0.2,
+          "contribution": 0.1387,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.306,
+          "raw_display": "+0.31★ vs local mean",
+          "normalised": 0.806,
+          "weight": 0.25,
+          "contribution": 0.2015,
+          "direction": "up",
+          "explanation": "We rate 0.31★ above the 16 rivals inside this catchment (their mean 4.39★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.1862,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.318,
+          "raw_display": "16 rivals · 0.32/km²",
+          "normalised": 0.8521,
+          "weight": 0.35,
+          "contribution": 0.2982,
+          "direction": "up",
+          "explanation": "16 competing venues in the catchment (0.32/km²), 15% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.56,
+          "raw_display": "56% of catchment shared",
+          "normalised": 0.5599,
+          "weight": -0.2,
+          "contribution": -0.112,
+          "direction": "down",
+          "explanation": "56% of this catchment is also covered by 2 of our own lounges, chiefly Bedashing Beauty Lounge Mirdif 35 at 3.7 km."
+        }
+      ]
+    },
+    "top_drivers": [
+      "headroom_norm",
+      "competitive_position",
+      "rating_norm"
+    ],
+    "competition": {
+      "competitor_count": 16,
+      "competitors_per_km2": 0.3183,
+      "saturation_norm": 0.1479,
+      "competitor_mean_rating": 4.394,
+      "competitive_position_stars": 0.306,
+      "premium_share": 0.062,
+      "nearest_competitor_m": 756,
+      "top_competitors": [
+        {
+          "competitor_id": "n4915680332",
+          "name": "Samaa Alwarqaa",
+          "tier": "mid",
+          "rating": 4.82,
+          "distance_m": 756
+        },
+        {
+          "competitor_id": "n4915199425",
+          "name": "Control",
+          "tier": "mid",
+          "rating": 4.48,
+          "distance_m": 810
+        },
+        {
+          "competitor_id": "n4913404688",
+          "name": "Unnamed salon (OSM)",
+          "tier": "mid",
+          "rating": 4.78,
+          "distance_m": 1152
+        },
+        {
+          "competitor_id": "n4595619308",
+          "name": "Grand Flora",
+          "tier": "mid",
+          "rating": 4.09,
+          "distance_m": 1612
+        },
+        {
+          "competitor_id": "n4302969389",
+          "name": "السوق الصينيه",
+          "tier": "mid",
+          "rating": 4.45,
+          "distance_m": 2476
+        },
+        {
+          "competitor_id": "n13042905116",
+          "name": "Sandhya Beauty Salon",
+          "tier": "mid",
+          "rating": 4.27,
+          "distance_m": 2558
+        },
+        {
+          "competitor_id": "n13048372825",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 4.09,
+          "distance_m": 2702
+        },
+        {
+          "competitor_id": "n12358180749",
+          "name": "Shams Al Warqa",
+          "tier": "value",
+          "rating": 4.68,
+          "distance_m": 2952
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.5599,
+      "sibling_count": 2,
+      "siblings": [
+        {
+          "branch_id": "BD01",
+          "name": "Bedashing Beauty Lounge Mirdif 35",
+          "distance_m": 3730,
+          "share_of_my_catchment": 0.4303
+        },
+        {
+          "branch_id": "BD05",
+          "name": "Bedashing Nad Al Sheba",
+          "distance_m": 8254,
+          "share_of_my_catchment": 0.1296
+        }
+      ]
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 50.265,
+    "confidence": {
+      "level": "high",
+      "caveats": [
+        "Location resolved to the district rather than the exact unit, so the catchment is centred within a few hundred metres of the real door — immaterial at a 4.0 km radius."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD05",
+    "name": "Bedashing Nad Al Sheba",
+    "area": "Nad Al Sheba",
+    "emirate": "Dubai",
+    "address": "Pavillion, Shop No. GF-RT-0002, Nad Al Sheba, Dubai",
+    "lat": 25.14563,
+    "lon": 55.364275,
+    "rating": 4.6,
+    "review_count": 319,
+    "urban_context": "low_density",
+    "catchment_radius_m": 6000,
+    "momentum": 0.5752,
+    "chair_utilisation": 0.5712,
+    "geocode_precision": "area",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.58 and market 0.29 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.5806,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.6,
+          "raw_display": "4.6★",
+          "normalised": 0.5333,
+          "weight": 0.3,
+          "contribution": 0.16,
+          "direction": "up",
+          "explanation": "4.6★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 319,
+          "raw_display": "319 reviews",
+          "normalised": 0.6043,
+          "weight": 0.25,
+          "contribution": 0.1511,
+          "direction": "up",
+          "explanation": "319 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.575,
+          "raw_display": "+15% vs own trend",
+          "normalised": 0.5752,
+          "weight": 0.2,
+          "contribution": 0.115,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.118,
+          "raw_display": "+0.12★ vs local mean",
+          "normalised": 0.618,
+          "weight": 0.25,
+          "contribution": 0.1545,
+          "direction": "up",
+          "explanation": "We rate 0.12★ above the 34 rivals inside this catchment (their mean 4.48★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.2898,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.301,
+          "raw_display": "34 rivals · 0.30/km²",
+          "normalised": 0.8608,
+          "weight": 0.35,
+          "contribution": 0.3013,
+          "direction": "up",
+          "explanation": "34 competing venues in the catchment (0.30/km²), 14% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.058,
+          "raw_display": "6% of catchment shared",
+          "normalised": 0.0575,
+          "weight": -0.2,
+          "contribution": -0.0115,
+          "direction": "down",
+          "explanation": "6% of this catchment is also covered by 1 of our own lounges, chiefly Bedashing Beauty Lounge Al Warqa City Mall at 8.3 km."
+        }
+      ]
+    },
+    "top_drivers": [
+      "headroom_norm",
+      "rating_norm",
+      "competitive_position"
+    ],
+    "competition": {
+      "competitor_count": 34,
+      "competitors_per_km2": 0.3006,
+      "saturation_norm": 0.1392,
+      "competitor_mean_rating": 4.482,
+      "competitive_position_stars": 0.118,
+      "premium_share": 0.206,
+      "nearest_competitor_m": 1759,
+      "top_competitors": [
+        {
+          "competitor_id": "n11001343203",
+          "name": "Bedashing",
+          "tier": "mid",
+          "rating": 4.84,
+          "distance_m": 1759
+        },
+        {
+          "competitor_id": "n10572598728",
+          "name": "Scissor's Edge Men's Grooming & Hairdressing",
+          "tier": "value",
+          "rating": 4.48,
+          "distance_m": 2441
+        },
+        {
+          "competitor_id": "n10572500479",
+          "name": "Ameera Beauty Salon",
+          "tier": "value",
+          "rating": 3.55,
+          "distance_m": 2550
+        },
+        {
+          "competitor_id": "n10572598775",
+          "name": "Heya Beauty Salon",
+          "tier": "value",
+          "rating": 3.97,
+          "distance_m": 2591
+        },
+        {
+          "competitor_id": "n12101221001",
+          "name": "Beauty Pulse",
+          "tier": "mid",
+          "rating": 4.65,
+          "distance_m": 2838
+        },
+        {
+          "competitor_id": "n10574565413",
+          "name": "Afroza Genes Salon",
+          "tier": "value",
+          "rating": 4.71,
+          "distance_m": 2898
+        },
+        {
+          "competitor_id": "n10574565407",
+          "name": "Color Fusion Ladies Beauty Salon",
+          "tier": "value",
+          "rating": 4.37,
+          "distance_m": 2903
+        },
+        {
+          "competitor_id": "n10836773405",
+          "name": "Cosmo Secrets",
+          "tier": "mid",
+          "rating": 4.9,
+          "distance_m": 3253
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.0575,
+      "sibling_count": 1,
+      "siblings": [
+        {
+          "branch_id": "BD04",
+          "name": "Bedashing Beauty Lounge Al Warqa City Mall",
+          "distance_m": 8254,
+          "share_of_my_catchment": 0.0575
+        }
+      ]
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 113.097,
+    "confidence": {
+      "level": "high",
+      "caveats": [
+        "Location resolved to the district rather than the exact unit, so the catchment is centred within a few hundred metres of the real door — immaterial at a 6.0 km radius."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD06",
+    "name": "Bedashing Elegance Lounge Al Safa 2",
+    "area": "Al Safa 2",
+    "emirate": "Dubai",
+    "address": "Showroom G02, Indigo Central 5, Sheikh Zayed Rd, Al Safa 2, Dubai",
+    "lat": 25.159764,
+    "lon": 55.226388,
+    "rating": 4.6,
+    "review_count": 98,
+    "urban_context": "dense_urban",
+    "catchment_radius_m": 2500,
+    "momentum": 0.6331,
+    "chair_utilisation": 0.5745,
+    "geocode_precision": "area",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.51 and market 0.00 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.5097,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.6,
+          "raw_display": "4.6★",
+          "normalised": 0.5333,
+          "weight": 0.3,
+          "contribution": 0.16,
+          "direction": "up",
+          "explanation": "4.6★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 98,
+          "raw_display": "98 reviews",
+          "normalised": 0.3026,
+          "weight": 0.25,
+          "contribution": 0.0756,
+          "direction": "up",
+          "explanation": "98 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.633,
+          "raw_display": "+27% vs own trend",
+          "normalised": 0.6331,
+          "weight": 0.2,
+          "contribution": 0.1266,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.09,
+          "raw_display": "+0.09★ vs local mean",
+          "normalised": 0.59,
+          "weight": 0.25,
+          "contribution": 0.1475,
+          "direction": "up",
+          "explanation": "We rate 0.09★ above the 49 rivals inside this catchment (their mean 4.51★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.0,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 2.495,
+          "raw_display": "49 rivals · 2.50/km²",
+          "normalised": 0.0,
+          "weight": 0.35,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "49 competing venues in the catchment (2.50/km²), 100% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.0,
+          "raw_display": "0% of catchment shared",
+          "normalised": 0.0,
+          "weight": -0.2,
+          "contribution": -0.0,
+          "direction": "neutral",
+          "explanation": "No other Bedashing catchment reaches this area — no self-overlap."
+        }
+      ]
+    },
+    "top_drivers": [
+      "rating_norm",
+      "competitive_position",
+      "momentum"
+    ],
+    "competition": {
+      "competitor_count": 49,
+      "competitors_per_km2": 2.4955,
+      "saturation_norm": 1.0,
+      "competitor_mean_rating": 4.51,
+      "competitive_position_stars": 0.09,
+      "premium_share": 0.102,
+      "nearest_competitor_m": 678,
+      "top_competitors": [
+        {
+          "competitor_id": "w500798085",
+          "name": "Beverly Hills Beauty",
+          "tier": "mid",
+          "rating": 4.83,
+          "distance_m": 678
+        },
+        {
+          "competitor_id": "n10591386195",
+          "name": "Super Trim",
+          "tier": "value",
+          "rating": 4.17,
+          "distance_m": 988
+        },
+        {
+          "competitor_id": "n4917741911",
+          "name": "Sasha Beauty Salon",
+          "tier": "mid",
+          "rating": 4.64,
+          "distance_m": 1113
+        },
+        {
+          "competitor_id": "n4915748046",
+          "name": "Wafic Saab",
+          "tier": "value",
+          "rating": 4.04,
+          "distance_m": 1114
+        },
+        {
+          "competitor_id": "n4917321662",
+          "name": "Jarnas Saloon",
+          "tier": "value",
+          "rating": 4.85,
+          "distance_m": 1170
+        },
+        {
+          "competitor_id": "n4906173343",
+          "name": "Snob",
+          "tier": "mid",
+          "rating": 4.44,
+          "distance_m": 1284
+        },
+        {
+          "competitor_id": "n10166350119",
+          "name": "CKK Spa",
+          "tier": "premium",
+          "rating": 4.83,
+          "distance_m": 1331
+        },
+        {
+          "competitor_id": "n10129601118",
+          "name": "Tayi",
+          "tier": "mid",
+          "rating": 4.88,
+          "distance_m": 1364
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.0,
+      "sibling_count": 0,
+      "siblings": []
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 19.635,
+    "confidence": {
+      "level": "medium",
+      "caveats": [
+        "Only 98 reviews — the rating is statistically thin, so both the quality and the competitive-position signals are noisy here.",
+        "Location resolved to the district rather than the exact unit, so the catchment is centred within a few hundred metres of the real door — immaterial at a 2.5 km radius."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD07",
+    "name": "Bedashing Beauty Suite Umm Suqeim",
+    "area": "Al Barsha 2",
+    "emirate": "Dubai",
+    "address": "Shop 1-3, Umm Suqeim St, Al Barsha 2, Dubai",
+    "lat": 25.102375,
+    "lon": 55.216065,
+    "rating": 4.7,
+    "review_count": 396,
+    "urban_context": "dense_urban",
+    "catchment_radius_m": 2500,
+    "momentum": 0.4172,
+    "chair_utilisation": 0.449,
+    "geocode_precision": "area",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.67 and market -0.00 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.6663,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.7,
+          "raw_display": "4.7★",
+          "normalised": 0.6667,
+          "weight": 0.3,
+          "contribution": 0.2,
+          "direction": "up",
+          "explanation": "4.7★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 396,
+          "raw_display": "396 reviews",
+          "normalised": 0.6596,
+          "weight": 0.25,
+          "contribution": 0.1649,
+          "direction": "up",
+          "explanation": "396 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.417,
+          "raw_display": "-17% vs own trend",
+          "normalised": 0.4172,
+          "weight": 0.2,
+          "contribution": 0.0834,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.372,
+          "raw_display": "+0.37★ vs local mean",
+          "normalised": 0.872,
+          "weight": 0.25,
+          "contribution": 0.218,
+          "direction": "up",
+          "explanation": "We rate 0.37★ above the 40 rivals inside this catchment (their mean 4.33★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": -0.0017,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 2.037,
+          "raw_display": "40 rivals · 2.04/km²",
+          "normalised": 0.0,
+          "weight": 0.35,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "40 competing venues in the catchment (2.04/km²), 100% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.008,
+          "raw_display": "1% of catchment shared",
+          "normalised": 0.0084,
+          "weight": -0.2,
+          "contribution": -0.0017,
+          "direction": "down",
+          "explanation": "1% of this catchment is also covered by 1 of our own lounges, chiefly Bedashing Wellness Lounge Palm Jumeirah at 8.3 km."
+        }
+      ]
+    },
+    "top_drivers": [
+      "competitive_position",
+      "rating_norm",
+      "review_volume_norm"
+    ],
+    "competition": {
+      "competitor_count": 40,
+      "competitors_per_km2": 2.0372,
+      "saturation_norm": 1.0,
+      "competitor_mean_rating": 4.328,
+      "competitive_position_stars": 0.372,
+      "premium_share": 0.1,
+      "nearest_competitor_m": 874,
+      "top_competitors": [
+        {
+          "competitor_id": "n4892833751",
+          "name": "Merqab Gents Salon",
+          "tier": "value",
+          "rating": 4.56,
+          "distance_m": 874
+        },
+        {
+          "competitor_id": "n4892436540",
+          "name": "Qenta Salon",
+          "tier": "value",
+          "rating": 4.31,
+          "distance_m": 1297
+        },
+        {
+          "competitor_id": "n4897815905",
+          "name": "Salon Millennium",
+          "tier": "value",
+          "rating": 3.92,
+          "distance_m": 1391
+        },
+        {
+          "competitor_id": "n4897815902",
+          "name": "Elite Touch",
+          "tier": "premium",
+          "rating": 4.8,
+          "distance_m": 1396
+        },
+        {
+          "competitor_id": "n4897815920",
+          "name": "Face 2 Face",
+          "tier": "mid",
+          "rating": 4.48,
+          "distance_m": 1396
+        },
+        {
+          "competitor_id": "n4897839021",
+          "name": "Moataz Arim Saloon",
+          "tier": "value",
+          "rating": 3.76,
+          "distance_m": 1400
+        },
+        {
+          "competitor_id": "n5873230685",
+          "name": "Unnamed salon (OSM)",
+          "tier": "mid",
+          "rating": 4.84,
+          "distance_m": 1467
+        },
+        {
+          "competitor_id": "n5873230388",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 4.44,
+          "distance_m": 1506
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.0084,
+      "sibling_count": 1,
+      "siblings": [
+        {
+          "branch_id": "BD10",
+          "name": "Bedashing Wellness Lounge Palm Jumeirah",
+          "distance_m": 8320,
+          "share_of_my_catchment": 0.0084
+        }
+      ]
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 19.635,
+    "confidence": {
+      "level": "high",
+      "caveats": [
+        "Location resolved to the district rather than the exact unit, so the catchment is centred within a few hundred metres of the real door — immaterial at a 2.5 km radius."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD08",
+    "name": "Bedashing Glam Haven Muwaileh",
+    "area": "Muwaileh",
+    "emirate": "Sharjah",
+    "address": "Misk 2 Muwaileh Trading, Shop No. M-18, Muweilah Commercial, Sharjah",
+    "lat": 25.295924,
+    "lon": 55.486309,
+    "rating": 4.6,
+    "review_count": 78,
+    "urban_context": "suburban",
+    "catchment_radius_m": 4000,
+    "momentum": 0.4339,
+    "chair_utilisation": 0.4932,
+    "geocode_precision": "area",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.45 and market 0.34 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.4491,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.6,
+          "raw_display": "4.6★",
+          "normalised": 0.5333,
+          "weight": 0.3,
+          "contribution": 0.16,
+          "direction": "up",
+          "explanation": "4.6★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 78,
+          "raw_display": "78 reviews",
+          "normalised": 0.2442,
+          "weight": 0.25,
+          "contribution": 0.0611,
+          "direction": "up",
+          "explanation": "78 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.434,
+          "raw_display": "-13% vs own trend",
+          "normalised": 0.4339,
+          "weight": 0.2,
+          "contribution": 0.0868,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.065,
+          "raw_display": "+0.07★ vs local mean",
+          "normalised": 0.565,
+          "weight": 0.25,
+          "contribution": 0.1412,
+          "direction": "up",
+          "explanation": "We rate 0.07★ above the 2 rivals inside this catchment (their mean 4.54★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.3369,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.04,
+          "raw_display": "2 rivals · 0.04/km²",
+          "normalised": 0.9901,
+          "weight": 0.35,
+          "contribution": 0.3465,
+          "direction": "up",
+          "explanation": "2 competing venues in the catchment (0.04/km²), 1% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.048,
+          "raw_display": "5% of catchment shared",
+          "normalised": 0.0478,
+          "weight": -0.2,
+          "contribution": -0.0096,
+          "direction": "down",
+          "explanation": "5% of this catchment is also covered by 1 of our own lounges, chiefly Bedashing Beauty Studio Zawaya Walk at 7.1 km."
+        }
+      ]
+    },
+    "top_drivers": [
+      "headroom_norm",
+      "rating_norm",
+      "competitive_position"
+    ],
+    "competition": {
+      "competitor_count": 2,
+      "competitors_per_km2": 0.0398,
+      "saturation_norm": 0.0099,
+      "competitor_mean_rating": 4.535,
+      "competitive_position_stars": 0.065,
+      "premium_share": 0.0,
+      "nearest_competitor_m": 315,
+      "top_competitors": [
+        {
+          "competitor_id": "n4161572789",
+          "name": "matajer mall",
+          "tier": "mid",
+          "rating": 4.85,
+          "distance_m": 315
+        },
+        {
+          "competitor_id": "w1121707313",
+          "name": "City Cut Saloon",
+          "tier": "value",
+          "rating": 4.22,
+          "distance_m": 3798
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.0478,
+      "sibling_count": 1,
+      "siblings": [
+        {
+          "branch_id": "BD02",
+          "name": "Bedashing Beauty Studio Zawaya Walk",
+          "distance_m": 7054,
+          "share_of_my_catchment": 0.0478
+        }
+      ]
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 50.265,
+    "confidence": {
+      "level": "low",
+      "caveats": [
+        "Only 78 reviews — the rating is statistically thin, so both the quality and the competitive-position signals are noisy here.",
+        "Only 2 competitors mapped in this catchment. That is more likely an OpenStreetMap coverage gap than a genuine competitive vacuum, so treat the headroom score as optimistic.",
+        "Location resolved to the district rather than the exact unit, so the catchment is centred within a few hundred metres of the real door — immaterial at a 4.0 km radius."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD09",
+    "name": "Bedashing Beauty Emporium Jumeirah Park",
+    "area": "Jumeirah Park",
+    "emirate": "Dubai",
+    "address": "Shop 17 & 18, Jumeirah Park Club House, Jumeirah Park, Dubai",
+    "lat": 25.046941,
+    "lon": 55.154818,
+    "rating": 4.8,
+    "review_count": 158,
+    "urban_context": "low_density",
+    "catchment_radius_m": 6000,
+    "momentum": 0.4644,
+    "chair_utilisation": 0.4182,
+    "geocode_precision": "area",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.65 and market 0.17 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.6526,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.8,
+          "raw_display": "4.8★",
+          "normalised": 0.8,
+          "weight": 0.3,
+          "contribution": 0.24,
+          "direction": "up",
+          "explanation": "4.8★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 158,
+          "raw_display": "158 reviews",
+          "normalised": 0.4247,
+          "weight": 0.25,
+          "contribution": 0.1062,
+          "direction": "up",
+          "explanation": "158 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.464,
+          "raw_display": "-7% vs own trend",
+          "normalised": 0.4644,
+          "weight": 0.2,
+          "contribution": 0.0929,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.354,
+          "raw_display": "+0.35★ vs local mean",
+          "normalised": 0.854,
+          "weight": 0.25,
+          "contribution": 0.2135,
+          "direction": "up",
+          "explanation": "We rate 0.35★ above the 93 rivals inside this catchment (their mean 4.45★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.1677,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.822,
+          "raw_display": "93 rivals · 0.82/km²",
+          "normalised": 0.6022,
+          "weight": 0.35,
+          "contribution": 0.2108,
+          "direction": "up",
+          "explanation": "93 competing venues in the catchment (0.82/km²), 40% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.215,
+          "raw_display": "22% of catchment shared",
+          "normalised": 0.2153,
+          "weight": -0.2,
+          "contribution": -0.0431,
+          "direction": "down",
+          "explanation": "22% of this catchment is also covered by 1 of our own lounges, chiefly Bedashing Wellness Lounge Palm Jumeirah at 8.1 km."
+        }
+      ]
+    },
+    "top_drivers": [
+      "rating_norm",
+      "competitive_position",
+      "headroom_norm"
+    ],
+    "competition": {
+      "competitor_count": 93,
+      "competitors_per_km2": 0.8223,
+      "saturation_norm": 0.3978,
+      "competitor_mean_rating": 4.446,
+      "competitive_position_stars": 0.354,
+      "premium_share": 0.161,
+      "nearest_competitor_m": 633,
+      "top_competitors": [
+        {
+          "competitor_id": "n12789460859",
+          "name": "Sasha Salon",
+          "tier": "mid",
+          "rating": 5.0,
+          "distance_m": 633
+        },
+        {
+          "competitor_id": "n12789460857",
+          "name": "Cabello Lounge",
+          "tier": "premium",
+          "rating": 4.55,
+          "distance_m": 633
+        },
+        {
+          "competitor_id": "n12789460865",
+          "name": "The Great British Salon",
+          "tier": "mid",
+          "rating": 5.0,
+          "distance_m": 674
+        },
+        {
+          "competitor_id": "n12823680631",
+          "name": "N.Bar Nail Spa & Salon",
+          "tier": "premium",
+          "rating": 4.79,
+          "distance_m": 709
+        },
+        {
+          "competitor_id": "n9856508283",
+          "name": "Tito Brothers",
+          "tier": "value",
+          "rating": 3.86,
+          "distance_m": 1546
+        },
+        {
+          "competitor_id": "n9856508282",
+          "name": "Beauty Corner Ladies Salon",
+          "tier": "value",
+          "rating": 4.3,
+          "distance_m": 1547
+        },
+        {
+          "competitor_id": "n13232191685",
+          "name": "The Lab Gents' Salon & Spa: Town Center",
+          "tier": "premium",
+          "rating": 4.96,
+          "distance_m": 1785
+        },
+        {
+          "competitor_id": "n13428244979",
+          "name": "Juice Salon Meadows",
+          "tier": "mid",
+          "rating": 4.35,
+          "distance_m": 1817
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.2153,
+      "sibling_count": 1,
+      "siblings": [
+        {
+          "branch_id": "BD10",
+          "name": "Bedashing Wellness Lounge Palm Jumeirah",
+          "distance_m": 8074,
+          "share_of_my_catchment": 0.2153
+        }
+      ]
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 113.097,
+    "confidence": {
+      "level": "high",
+      "caveats": [
+        "Location resolved to the district rather than the exact unit, so the catchment is centred within a few hundred metres of the real door — immaterial at a 6.0 km radius."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD10",
+    "name": "Bedashing Wellness Lounge Palm Jumeirah",
+    "area": "Palm Jumeirah",
+    "emirate": "Dubai",
+    "address": "GM2-B7-B1-26, Golden Mile 7, Palm Jumeirah, Dubai",
+    "lat": 25.117327,
+    "lon": 55.135097,
+    "rating": 4.9,
+    "review_count": 38,
+    "urban_context": "low_density",
+    "catchment_radius_m": 6000,
+    "momentum": 0.6026,
+    "chair_utilisation": 0.6736,
+    "geocode_precision": "area",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.65 and market 0.15 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.6491,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.9,
+          "raw_display": "4.9★",
+          "normalised": 0.9333,
+          "weight": 0.3,
+          "contribution": 0.28,
+          "direction": "up",
+          "explanation": "4.9★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 38,
+          "raw_display": "38 reviews",
+          "normalised": 0.0604,
+          "weight": 0.25,
+          "contribution": 0.0151,
+          "direction": "up",
+          "explanation": "38 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.603,
+          "raw_display": "+21% vs own trend",
+          "normalised": 0.6026,
+          "weight": 0.2,
+          "contribution": 0.1205,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.434,
+          "raw_display": "+0.43★ vs local mean",
+          "normalised": 0.934,
+          "weight": 0.25,
+          "contribution": 0.2335,
+          "direction": "up",
+          "explanation": "We rate 0.43★ above the 107 rivals inside this catchment (their mean 4.47★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.146,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.946,
+          "raw_display": "107 rivals · 0.95/km²",
+          "normalised": 0.5409,
+          "weight": 0.35,
+          "contribution": 0.1893,
+          "direction": "up",
+          "explanation": "107 competing venues in the catchment (0.95/km²), 46% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.217,
+          "raw_display": "22% of catchment shared",
+          "normalised": 0.2167,
+          "weight": -0.2,
+          "contribution": -0.0433,
+          "direction": "down",
+          "explanation": "22% of this catchment is also covered by 2 of our own lounges, chiefly Bedashing Beauty Emporium Jumeirah Park at 8.1 km."
+        }
+      ]
+    },
+    "top_drivers": [
+      "rating_norm",
+      "competitive_position",
+      "headroom_norm"
+    ],
+    "competition": {
+      "competitor_count": 107,
+      "competitors_per_km2": 0.9461,
+      "saturation_norm": 0.4591,
+      "competitor_mean_rating": 4.466,
+      "competitive_position_stars": 0.434,
+      "premium_share": 0.178,
+      "nearest_competitor_m": 645,
+      "top_competitors": [
+        {
+          "competitor_id": "n12899170003",
+          "name": "Thai luxury massage",
+          "tier": "premium",
+          "rating": 5.0,
+          "distance_m": 645
+        },
+        {
+          "competitor_id": "n10267652084",
+          "name": "Le Michel Salons Palm Jumeirah",
+          "tier": "mid",
+          "rating": 4.4,
+          "distance_m": 1261
+        },
+        {
+          "competitor_id": "n10276022251",
+          "name": "eforea spa",
+          "tier": "premium",
+          "rating": 4.4,
+          "distance_m": 1752
+        },
+        {
+          "competitor_id": "n11731186469",
+          "name": "Massage Full Service",
+          "tier": "mid",
+          "rating": 4.99,
+          "distance_m": 2053
+        },
+        {
+          "competitor_id": "n4784982342",
+          "name": "So Spa",
+          "tier": "premium",
+          "rating": 4.81,
+          "distance_m": 2548
+        },
+        {
+          "competitor_id": "n7066479193",
+          "name": "Rami Jabali Hair Salon",
+          "tier": "value",
+          "rating": 5.0,
+          "distance_m": 2654
+        },
+        {
+          "competitor_id": "n11731181469",
+          "name": "Massage Marina",
+          "tier": "mid",
+          "rating": 4.02,
+          "distance_m": 2993
+        },
+        {
+          "competitor_id": "n5839567186",
+          "name": "Celui Beauty",
+          "tier": "mid",
+          "rating": 4.42,
+          "distance_m": 3226
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.2167,
+      "sibling_count": 2,
+      "siblings": [
+        {
+          "branch_id": "BD09",
+          "name": "Bedashing Beauty Emporium Jumeirah Park",
+          "distance_m": 8074,
+          "share_of_my_catchment": 0.2153
+        },
+        {
+          "branch_id": "BD07",
+          "name": "Bedashing Beauty Suite Umm Suqeim",
+          "distance_m": 8320,
+          "share_of_my_catchment": 0.0015
+        }
+      ]
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 113.097,
+    "confidence": {
+      "level": "medium",
+      "caveats": [
+        "Only 38 reviews — the rating is statistically thin, so both the quality and the competitive-position signals are noisy here.",
+        "Location resolved to the district rather than the exact unit, so the catchment is centred within a few hundred metres of the real door — immaterial at a 6.0 km radius."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD11",
+    "name": "Bedashing Beauty Oasis Al Taif Mall",
+    "area": "Al Taif",
+    "emirate": "Fujairah",
+    "address": "Taif Mall, Shop G/F 13, Fujairah",
+    "lat": 25.1218,
+    "lon": 56.3286,
+    "rating": 4.9,
+    "review_count": 125,
+    "urban_context": "suburban",
+    "catchment_radius_m": 4000,
+    "momentum": 0.5929,
+    "chair_utilisation": 0.5566,
+    "geocode_precision": "manual",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.74 and market 0.32 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.7398,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.9,
+          "raw_display": "4.9★",
+          "normalised": 0.9333,
+          "weight": 0.3,
+          "contribution": 0.28,
+          "direction": "up",
+          "explanation": "4.9★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 125,
+          "raw_display": "125 reviews",
+          "normalised": 0.3648,
+          "weight": 0.25,
+          "contribution": 0.0912,
+          "direction": "up",
+          "explanation": "125 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.593,
+          "raw_display": "+19% vs own trend",
+          "normalised": 0.5929,
+          "weight": 0.2,
+          "contribution": 0.1186,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.697,
+          "raw_display": "+0.70★ vs local mean",
+          "normalised": 1.0,
+          "weight": 0.25,
+          "contribution": 0.25,
+          "direction": "up",
+          "explanation": "We rate 0.70★ above the 9 rivals inside this catchment (their mean 4.20★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.3224,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.179,
+          "raw_display": "9 rivals · 0.18/km²",
+          "normalised": 0.9211,
+          "weight": 0.35,
+          "contribution": 0.3224,
+          "direction": "up",
+          "explanation": "9 competing venues in the catchment (0.18/km²), 8% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.0,
+          "raw_display": "0% of catchment shared",
+          "normalised": 0.0,
+          "weight": -0.2,
+          "contribution": -0.0,
+          "direction": "neutral",
+          "explanation": "No other Bedashing catchment reaches this area — no self-overlap."
+        }
+      ]
+    },
+    "top_drivers": [
+      "headroom_norm",
+      "rating_norm",
+      "competitive_position"
+    ],
+    "competition": {
+      "competitor_count": 9,
+      "competitors_per_km2": 0.1791,
+      "saturation_norm": 0.0789,
+      "competitor_mean_rating": 4.203,
+      "competitive_position_stars": 0.697,
+      "premium_share": 0.0,
+      "nearest_competitor_m": 238,
+      "top_competitors": [
+        {
+          "competitor_id": "n5407465396",
+          "name": "The One Gents Saloon",
+          "tier": "value",
+          "rating": 4.62,
+          "distance_m": 238
+        },
+        {
+          "competitor_id": "n6969261646",
+          "name": "On Fleek",
+          "tier": "mid",
+          "rating": 3.84,
+          "distance_m": 391
+        },
+        {
+          "competitor_id": "n7151540750",
+          "name": "Al Nobala saloon",
+          "tier": "value",
+          "rating": 4.19,
+          "distance_m": 763
+        },
+        {
+          "competitor_id": "n6952157738",
+          "name": "أبو عمر",
+          "tier": "value",
+          "rating": 4.78,
+          "distance_m": 941
+        },
+        {
+          "competitor_id": "n6952166104",
+          "name": "Al tayeb saloon",
+          "tier": "value",
+          "rating": 3.86,
+          "distance_m": 1011
+        },
+        {
+          "competitor_id": "n5255664736",
+          "name": "Horia",
+          "tier": "mid",
+          "rating": 4.43,
+          "distance_m": 1048
+        },
+        {
+          "competitor_id": "n6230544441",
+          "name": "La Vida Sarah",
+          "tier": "mid",
+          "rating": 4.2,
+          "distance_m": 1419
+        },
+        {
+          "competitor_id": "n5256330306",
+          "name": "First One Centre",
+          "tier": "value",
+          "rating": 4.16,
+          "distance_m": 1420
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.0,
+      "sibling_count": 0,
+      "siblings": []
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 50.265,
+    "confidence": {
+      "level": "medium",
+      "caveats": [
+        "Geocoding could not resolve this address; the coordinate was placed by hand from the venue's stated location, so the catchment centre may be off by a kilometre or more."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD12",
+    "name": "Bedashing Beauty Retreat Al Maqta",
+    "area": "Al Maqta",
+    "emirate": "Abu Dhabi",
+    "address": "Villa 31, 2 Al Khor St, opposite Fairmont Bab Al Bahr, Abu Dhabi",
+    "lat": 24.401975,
+    "lon": 54.495189,
+    "rating": 4.7,
+    "review_count": 486,
+    "urban_context": "suburban",
+    "catchment_radius_m": 4000,
+    "momentum": 0.266,
+    "chair_utilisation": 0.5879,
+    "geocode_precision": "area",
+    "flags": [],
+    "recommendation": "SHRINK",
+    "decision_rule": "market 0.18 < 0.4 AND self-overlap 61% ≥ 45%",
+    "strength": {
+      "axis": "strength",
+      "score": 0.6379,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.7,
+          "raw_display": "4.7★",
+          "normalised": 0.6667,
+          "weight": 0.3,
+          "contribution": 0.2,
+          "direction": "up",
+          "explanation": "4.7★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 486,
+          "raw_display": "486 reviews",
+          "normalised": 0.7119,
+          "weight": 0.25,
+          "contribution": 0.178,
+          "direction": "up",
+          "explanation": "486 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.266,
+          "raw_display": "-47% vs own trend",
+          "normalised": 0.266,
+          "weight": 0.2,
+          "contribution": 0.0532,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.327,
+          "raw_display": "+0.33★ vs local mean",
+          "normalised": 0.827,
+          "weight": 0.25,
+          "contribution": 0.2067,
+          "direction": "up",
+          "explanation": "We rate 0.33★ above the 15 rivals inside this catchment (their mean 4.37★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.1806,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.298,
+          "raw_display": "15 rivals · 0.30/km²",
+          "normalised": 0.8619,
+          "weight": 0.35,
+          "contribution": 0.3017,
+          "direction": "up",
+          "explanation": "15 competing venues in the catchment (0.30/km²), 14% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.606,
+          "raw_display": "61% of catchment shared",
+          "normalised": 0.6055,
+          "weight": -0.2,
+          "contribution": -0.1211,
+          "direction": "down",
+          "explanation": "61% of this catchment is also covered by 2 of our own lounges, chiefly Bedashing Beauty Hub Khaleej Al Arabi at 4.0 km."
+        }
+      ]
+    },
+    "top_drivers": [
+      "headroom_norm",
+      "competitive_position",
+      "rating_norm"
+    ],
+    "competition": {
+      "competitor_count": 15,
+      "competitors_per_km2": 0.2984,
+      "saturation_norm": 0.1381,
+      "competitor_mean_rating": 4.373,
+      "competitive_position_stars": 0.327,
+      "premium_share": 0.067,
+      "nearest_competitor_m": 770,
+      "top_competitors": [
+        {
+          "competitor_id": "n7156039800",
+          "name": "Hair Factory",
+          "tier": "mid",
+          "rating": 4.61,
+          "distance_m": 770
+        },
+        {
+          "competitor_id": "n4394667911",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 4.44,
+          "distance_m": 1209
+        },
+        {
+          "competitor_id": "n4268303953",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 4.55,
+          "distance_m": 2459
+        },
+        {
+          "competitor_id": "n4450277291",
+          "name": "Hankook",
+          "tier": "mid",
+          "rating": 4.66,
+          "distance_m": 2943
+        },
+        {
+          "competitor_id": "n4753167033",
+          "name": "Jamata Gents Saloon",
+          "tier": "value",
+          "rating": 4.86,
+          "distance_m": 3057
+        },
+        {
+          "competitor_id": "n4753167022",
+          "name": "Saloon",
+          "tier": "value",
+          "rating": 4.77,
+          "distance_m": 3125
+        },
+        {
+          "competitor_id": "n4960135828",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 3.82,
+          "distance_m": 3419
+        },
+        {
+          "competitor_id": "n3872366943",
+          "name": "Eye Candy Beauty Shop",
+          "tier": "mid",
+          "rating": 4.32,
+          "distance_m": 3488
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.6055,
+      "sibling_count": 2,
+      "siblings": [
+        {
+          "branch_id": "BD17",
+          "name": "Bedashing Beauty Hub Khaleej Al Arabi",
+          "distance_m": 3964,
+          "share_of_my_catchment": 0.395
+        },
+        {
+          "branch_id": "BD14",
+          "name": "Bedashing Beautification Spot Ministries Complex",
+          "distance_m": 3580,
+          "share_of_my_catchment": 0.2105
+        }
+      ]
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 50.265,
+    "confidence": {
+      "level": "high",
+      "caveats": [
+        "Location resolved to the district rather than the exact unit, so the catchment is centred within a few hundred metres of the real door — immaterial at a 4.0 km radius."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD13",
+    "name": "Bedashing Glamour Lounge Mohammed Bin Zayed City",
+    "area": "Mohammed Bin Zayed City",
+    "emirate": "Abu Dhabi",
+    "address": "Mohamed Bin Zayed City, Zone 1, Abu Dhabi",
+    "lat": 24.340368,
+    "lon": 54.55161,
+    "rating": 4.6,
+    "review_count": 384,
+    "urban_context": "suburban",
+    "catchment_radius_m": 4000,
+    "momentum": 0.6791,
+    "chair_utilisation": 0.5209,
+    "geocode_precision": "address",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.64 and market 0.22 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.6434,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.6,
+          "raw_display": "4.6★",
+          "normalised": 0.5333,
+          "weight": 0.3,
+          "contribution": 0.16,
+          "direction": "up",
+          "explanation": "4.6★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 384,
+          "raw_display": "384 reviews",
+          "normalised": 0.6517,
+          "weight": 0.25,
+          "contribution": 0.1629,
+          "direction": "up",
+          "explanation": "384 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.679,
+          "raw_display": "+36% vs own trend",
+          "normalised": 0.6791,
+          "weight": 0.2,
+          "contribution": 0.1358,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.239,
+          "raw_display": "+0.24★ vs local mean",
+          "normalised": 0.739,
+          "weight": 0.25,
+          "contribution": 0.1847,
+          "direction": "up",
+          "explanation": "We rate 0.24★ above the 36 rivals inside this catchment (their mean 4.36★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.2207,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.716,
+          "raw_display": "36 rivals · 0.72/km²",
+          "normalised": 0.6548,
+          "weight": 0.35,
+          "contribution": 0.2292,
+          "direction": "up",
+          "explanation": "36 competing venues in the catchment (0.72/km²), 35% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.042,
+          "raw_display": "4% of catchment shared",
+          "normalised": 0.0424,
+          "weight": -0.2,
+          "contribution": -0.0085,
+          "direction": "down",
+          "explanation": "4% of this catchment is also covered by 1 of our own lounges, chiefly Bedashing Beautification Spot Ministries Complex at 5.5 km."
+        }
+      ]
+    },
+    "top_drivers": [
+      "headroom_norm",
+      "competitive_position",
+      "review_volume_norm"
+    ],
+    "competition": {
+      "competitor_count": 36,
+      "competitors_per_km2": 0.7162,
+      "saturation_norm": 0.3452,
+      "competitor_mean_rating": 4.361,
+      "competitive_position_stars": 0.239,
+      "premium_share": 0.083,
+      "nearest_competitor_m": 1914,
+      "top_competitors": [
+        {
+          "competitor_id": "n9831799579",
+          "name": "Solly Man Salon and spa for man",
+          "tier": "premium",
+          "rating": 4.5,
+          "distance_m": 1914
+        },
+        {
+          "competitor_id": "n8745048025",
+          "name": "My look ladies saloon",
+          "tier": "mid",
+          "rating": 4.79,
+          "distance_m": 1947
+        },
+        {
+          "competitor_id": "n4751634868",
+          "name": "Al Baraa Gents Saloon",
+          "tier": "value",
+          "rating": 5.0,
+          "distance_m": 2144
+        },
+        {
+          "competitor_id": "n4758761941",
+          "name": "Titanic Gents Salon",
+          "tier": "value",
+          "rating": 3.98,
+          "distance_m": 2237
+        },
+        {
+          "competitor_id": "n4758761953",
+          "name": "Marhaba Salon",
+          "tier": "mid",
+          "rating": 4.25,
+          "distance_m": 2248
+        },
+        {
+          "competitor_id": "n4758761939",
+          "name": "Ayoon Al Dhabi Gents Saloon",
+          "tier": "value",
+          "rating": 4.88,
+          "distance_m": 2266
+        },
+        {
+          "competitor_id": "n4758720450",
+          "name": "Emirates Star Saloon",
+          "tier": "value",
+          "rating": 5.0,
+          "distance_m": 2297
+        },
+        {
+          "competitor_id": "n4758761963",
+          "name": "Alkanz Gents Salon",
+          "tier": "value",
+          "rating": 4.34,
+          "distance_m": 2302
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.0424,
+      "sibling_count": 1,
+      "siblings": [
+        {
+          "branch_id": "BD14",
+          "name": "Bedashing Beautification Spot Ministries Complex",
+          "distance_m": 5542,
+          "share_of_my_catchment": 0.0424
+        }
+      ]
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 50.265,
+    "confidence": {
+      "level": "high",
+      "caveats": []
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD14",
+    "name": "Bedashing Beautification Spot Ministries Complex",
+    "area": "Ministry Area",
+    "emirate": "Abu Dhabi",
+    "address": "Shop No. 3, ICT Building, Khalifa Park, Ministry Area, Abu Dhabi",
+    "lat": 24.372736,
+    "lon": 54.509999,
+    "rating": 4.8,
+    "review_count": 443,
+    "urban_context": "dense_urban",
+    "catchment_radius_m": 2500,
+    "momentum": 0.402,
+    "chair_utilisation": 0.4848,
+    "geocode_precision": "area",
+    "flags": [],
+    "recommendation": "SHRINK",
+    "decision_rule": "market 0.07 < 0.4 AND self-overlap 65% ≥ 45%",
+    "strength": {
+      "axis": "strength",
+      "score": 0.712,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.8,
+          "raw_display": "4.8★",
+          "normalised": 0.8,
+          "weight": 0.3,
+          "contribution": 0.24,
+          "direction": "up",
+          "explanation": "4.8★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 443,
+          "raw_display": "443 reviews",
+          "normalised": 0.6882,
+          "weight": 0.25,
+          "contribution": 0.1721,
+          "direction": "up",
+          "explanation": "443 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.402,
+          "raw_display": "-20% vs own trend",
+          "normalised": 0.402,
+          "weight": 0.2,
+          "contribution": 0.0804,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.378,
+          "raw_display": "+0.38★ vs local mean",
+          "normalised": 0.878,
+          "weight": 0.25,
+          "contribution": 0.2195,
+          "direction": "up",
+          "explanation": "We rate 0.38★ above the 17 rivals inside this catchment (their mean 4.42★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.0737,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.866,
+          "raw_display": "17 rivals · 0.87/km²",
+          "normalised": 0.5807,
+          "weight": 0.35,
+          "contribution": 0.2032,
+          "direction": "up",
+          "explanation": "17 competing venues in the catchment (0.87/km²), 42% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.648,
+          "raw_display": "65% of catchment shared",
+          "normalised": 0.6477,
+          "weight": -0.2,
+          "contribution": -0.1295,
+          "direction": "down",
+          "explanation": "65% of this catchment is also covered by 2 of our own lounges, chiefly Bedashing Beauty Retreat Al Maqta at 3.6 km."
+        }
+      ]
+    },
+    "top_drivers": [
+      "rating_norm",
+      "competitive_position",
+      "headroom_norm"
+    ],
+    "competition": {
+      "competitor_count": 17,
+      "competitors_per_km2": 0.8658,
+      "saturation_norm": 0.4193,
+      "competitor_mean_rating": 4.422,
+      "competitive_position_stars": 0.378,
+      "premium_share": 0.0,
+      "nearest_competitor_m": 205,
+      "top_competitors": [
+        {
+          "competitor_id": "n4960135828",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 3.82,
+          "distance_m": 205
+        },
+        {
+          "competitor_id": "n5196215933",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 4.33,
+          "distance_m": 384
+        },
+        {
+          "competitor_id": "n4598613890",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 4.23,
+          "distance_m": 498
+        },
+        {
+          "competitor_id": "n4753167022",
+          "name": "Saloon",
+          "tier": "value",
+          "rating": 4.77,
+          "distance_m": 526
+        },
+        {
+          "competitor_id": "n4753167033",
+          "name": "Jamata Gents Saloon",
+          "tier": "value",
+          "rating": 4.86,
+          "distance_m": 603
+        },
+        {
+          "competitor_id": "n4268303933",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 4.5,
+          "distance_m": 690
+        },
+        {
+          "competitor_id": "n4268266674",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 3.68,
+          "distance_m": 696
+        },
+        {
+          "competitor_id": "n4268308376",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 4.35,
+          "distance_m": 699
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.6477,
+      "sibling_count": 2,
+      "siblings": [
+        {
+          "branch_id": "BD12",
+          "name": "Bedashing Beauty Retreat Al Maqta",
+          "distance_m": 3580,
+          "share_of_my_catchment": 0.5389
+        },
+        {
+          "branch_id": "BD13",
+          "name": "Bedashing Glamour Lounge Mohammed Bin Zayed City",
+          "distance_m": 5542,
+          "share_of_my_catchment": 0.1088
+        }
+      ]
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 19.635,
+    "confidence": {
+      "level": "high",
+      "caveats": [
+        "Location resolved to the district rather than the exact unit, so the catchment is centred within a few hundred metres of the real door — immaterial at a 2.5 km radius."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD15",
+    "name": "Bedashing Cosmetics Lounge Shakhbout City",
+    "area": "Shakhbout City",
+    "emirate": "Abu Dhabi",
+    "address": "Shakhbout City 3, Abu Dhabi",
+    "lat": 24.366289,
+    "lon": 54.64545,
+    "rating": 4.6,
+    "review_count": 515,
+    "urban_context": "suburban",
+    "catchment_radius_m": 4000,
+    "momentum": 0.4617,
+    "chair_utilisation": 0.6574,
+    "geocode_precision": "address",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.57 and market 0.35 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.5678,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.6,
+          "raw_display": "4.6★",
+          "normalised": 0.5333,
+          "weight": 0.3,
+          "contribution": 0.16,
+          "direction": "up",
+          "explanation": "4.6★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 515,
+          "raw_display": "515 reviews",
+          "normalised": 0.7267,
+          "weight": 0.25,
+          "contribution": 0.1817,
+          "direction": "up",
+          "explanation": "515 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.462,
+          "raw_display": "-8% vs own trend",
+          "normalised": 0.4617,
+          "weight": 0.2,
+          "contribution": 0.0923,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.035,
+          "raw_display": "+0.04★ vs local mean",
+          "normalised": 0.535,
+          "weight": 0.25,
+          "contribution": 0.1338,
+          "direction": "up",
+          "explanation": "We rate 0.04★ above the 2 rivals inside this catchment (their mean 4.57★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.3465,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.04,
+          "raw_display": "2 rivals · 0.04/km²",
+          "normalised": 0.9901,
+          "weight": 0.35,
+          "contribution": 0.3465,
+          "direction": "up",
+          "explanation": "2 competing venues in the catchment (0.04/km²), 1% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.0,
+          "raw_display": "0% of catchment shared",
+          "normalised": 0.0,
+          "weight": -0.2,
+          "contribution": -0.0,
+          "direction": "neutral",
+          "explanation": "No other Bedashing catchment reaches this area — no self-overlap."
+        }
+      ]
+    },
+    "top_drivers": [
+      "headroom_norm",
+      "review_volume_norm",
+      "rating_norm"
+    ],
+    "competition": {
+      "competitor_count": 2,
+      "competitors_per_km2": 0.0398,
+      "saturation_norm": 0.0099,
+      "competitor_mean_rating": 4.565,
+      "competitive_position_stars": 0.035,
+      "premium_share": 0.5,
+      "nearest_competitor_m": 1888,
+      "top_competitors": [
+        {
+          "competitor_id": "n4352411189",
+          "name": "اشبال القدس",
+          "tier": "mid",
+          "rating": 4.43,
+          "distance_m": 1888
+        },
+        {
+          "competitor_id": "n4762924602",
+          "name": "Al Fouz Beauty & Spa",
+          "tier": "premium",
+          "rating": 4.7,
+          "distance_m": 3529
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.0,
+      "sibling_count": 0,
+      "siblings": []
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 50.265,
+    "confidence": {
+      "level": "medium",
+      "caveats": [
+        "Only 2 competitors mapped in this catchment. That is more likely an OpenStreetMap coverage gap than a genuine competitive vacuum, so treat the headroom score as optimistic."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD16",
+    "name": "Bedashing Beauty Lounge Khalifa City A",
+    "area": "Khalifa City",
+    "emirate": "Abu Dhabi",
+    "address": "Al Mireef St, Khalifa City, SE42, Abu Dhabi",
+    "lat": 24.439534,
+    "lon": 54.595832,
+    "rating": 4.5,
+    "review_count": 1382,
+    "urban_context": "suburban",
+    "catchment_radius_m": 4000,
+    "momentum": 0.4583,
+    "chair_utilisation": 0.4535,
+    "geocode_precision": "address",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.59 and market 0.22 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.586,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.5,
+          "raw_display": "4.5★",
+          "normalised": 0.4,
+          "weight": 0.3,
+          "contribution": 0.12,
+          "direction": "up",
+          "explanation": "4.5★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 1382,
+          "raw_display": "1,382 reviews",
+          "normalised": 0.9791,
+          "weight": 0.25,
+          "contribution": 0.2448,
+          "direction": "up",
+          "explanation": "1,382 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.458,
+          "raw_display": "-8% vs own trend",
+          "normalised": 0.4583,
+          "weight": 0.2,
+          "contribution": 0.0917,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.018,
+          "raw_display": "+0.02★ vs local mean",
+          "normalised": 0.518,
+          "weight": 0.25,
+          "contribution": 0.1295,
+          "direction": "up",
+          "explanation": "We rate 0.02★ above the 17 rivals inside this catchment (their mean 4.48★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.2151,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.338,
+          "raw_display": "17 rivals · 0.34/km²",
+          "normalised": 0.8422,
+          "weight": 0.35,
+          "contribution": 0.2948,
+          "direction": "up",
+          "explanation": "17 competing venues in the catchment (0.34/km²), 16% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.399,
+          "raw_display": "40% of catchment shared",
+          "normalised": 0.3986,
+          "weight": -0.2,
+          "contribution": -0.0797,
+          "direction": "down",
+          "explanation": "40% of this catchment is also covered by 1 of our own lounges, chiefly Bedashing Beauty Salon West Yas at 6.2 km."
+        }
+      ]
+    },
+    "top_drivers": [
+      "headroom_norm",
+      "review_volume_norm",
+      "competitive_position"
+    ],
+    "competition": {
+      "competitor_count": 17,
+      "competitors_per_km2": 0.3382,
+      "saturation_norm": 0.1578,
+      "competitor_mean_rating": 4.482,
+      "competitive_position_stars": 0.018,
+      "premium_share": 0.294,
+      "nearest_competitor_m": 280,
+      "top_competitors": [
+        {
+          "competitor_id": "n4753453080",
+          "name": "Kilkor",
+          "tier": "mid",
+          "rating": 4.53,
+          "distance_m": 280
+        },
+        {
+          "competitor_id": "n4753453081",
+          "name": "Bedashing",
+          "tier": "mid",
+          "rating": 4.59,
+          "distance_m": 314
+        },
+        {
+          "competitor_id": "n11280901835",
+          "name": "Unique Beauty Spa",
+          "tier": "premium",
+          "rating": 4.95,
+          "distance_m": 888
+        },
+        {
+          "competitor_id": "n3177642557",
+          "name": "Nails Couture",
+          "tier": "mid",
+          "rating": 4.5,
+          "distance_m": 1286
+        },
+        {
+          "competitor_id": "n3196692072",
+          "name": "Golden Desert Spa for Men",
+          "tier": "premium",
+          "rating": 4.84,
+          "distance_m": 1415
+        },
+        {
+          "competitor_id": "n3196692073",
+          "name": "Golden Desert Spa Ladies",
+          "tier": "premium",
+          "rating": 4.94,
+          "distance_m": 1430
+        },
+        {
+          "competitor_id": "n10734204314",
+          "name": "Ruby Gents Salon",
+          "tier": "value",
+          "rating": 3.86,
+          "distance_m": 1441
+        },
+        {
+          "competitor_id": "n3254622761",
+          "name": "Styles & Smiles Men's Salon",
+          "tier": "value",
+          "rating": 4.07,
+          "distance_m": 1458
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.3986,
+      "sibling_count": 1,
+      "siblings": [
+        {
+          "branch_id": "BD23",
+          "name": "Bedashing Beauty Salon West Yas",
+          "distance_m": 6221,
+          "share_of_my_catchment": 0.3986
+        }
+      ]
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 50.265,
+    "confidence": {
+      "level": "high",
+      "caveats": []
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD17",
+    "name": "Bedashing Beauty Hub Khaleej Al Arabi",
+    "area": "Khaleej Al Arabi",
+    "emirate": "Abu Dhabi",
+    "address": "Villa 487, next to Mubarak Bin Muhamad School, Khaleej Al Arabi St, Abu Dhabi",
+    "lat": 24.412509,
+    "lon": 54.457788,
+    "rating": 4.7,
+    "review_count": 1028,
+    "urban_context": "suburban",
+    "catchment_radius_m": 4000,
+    "momentum": 0.6269,
+    "chair_utilisation": 0.6126,
+    "geocode_precision": "area",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.72 and market 0.14 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.7166,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.7,
+          "raw_display": "4.7★",
+          "normalised": 0.6667,
+          "weight": 0.3,
+          "contribution": 0.2,
+          "direction": "up",
+          "explanation": "4.7★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 1028,
+          "raw_display": "1,028 reviews",
+          "normalised": 0.9034,
+          "weight": 0.25,
+          "contribution": 0.2259,
+          "direction": "up",
+          "explanation": "1,028 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.627,
+          "raw_display": "+25% vs own trend",
+          "normalised": 0.6269,
+          "weight": 0.2,
+          "contribution": 0.1254,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.161,
+          "raw_display": "+0.16★ vs local mean",
+          "normalised": 0.661,
+          "weight": 0.25,
+          "contribution": 0.1653,
+          "direction": "up",
+          "explanation": "We rate 0.16★ above the 40 rivals inside this catchment (their mean 4.54★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.1364,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.796,
+          "raw_display": "40 rivals · 0.80/km²",
+          "normalised": 0.6154,
+          "weight": 0.35,
+          "contribution": 0.2154,
+          "direction": "up",
+          "explanation": "40 competing venues in the catchment (0.80/km²), 38% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.395,
+          "raw_display": "40% of catchment shared",
+          "normalised": 0.3951,
+          "weight": -0.2,
+          "contribution": -0.079,
+          "direction": "down",
+          "explanation": "40% of this catchment is also covered by 1 of our own lounges, chiefly Bedashing Beauty Retreat Al Maqta at 4.0 km."
+        }
+      ]
+    },
+    "top_drivers": [
+      "review_volume_norm",
+      "headroom_norm",
+      "rating_norm"
+    ],
+    "competition": {
+      "competitor_count": 40,
+      "competitors_per_km2": 0.7958,
+      "saturation_norm": 0.3846,
+      "competitor_mean_rating": 4.539,
+      "competitive_position_stars": 0.161,
+      "premium_share": 0.15,
+      "nearest_competitor_m": 552,
+      "top_competitors": [
+        {
+          "competitor_id": "n3848385990",
+          "name": "Cleopatra Spa",
+          "tier": "premium",
+          "rating": 4.64,
+          "distance_m": 552
+        },
+        {
+          "competitor_id": "n3872366943",
+          "name": "Eye Candy Beauty Shop",
+          "tier": "mid",
+          "rating": 4.32,
+          "distance_m": 561
+        },
+        {
+          "competitor_id": "n4043672425",
+          "name": "Salon Top Twenty Centre",
+          "tier": "mid",
+          "rating": 4.48,
+          "distance_m": 1062
+        },
+        {
+          "competitor_id": "n4264886506",
+          "name": "Emirates Prestige Salon",
+          "tier": "value",
+          "rating": 3.93,
+          "distance_m": 1331
+        },
+        {
+          "competitor_id": "n3988525937",
+          "name": "La Dolce Vita",
+          "tier": "mid",
+          "rating": 4.13,
+          "distance_m": 2039
+        },
+        {
+          "competitor_id": "n8167206044",
+          "name": "Chelsea Man Spa",
+          "tier": "premium",
+          "rating": 4.59,
+          "distance_m": 2338
+        },
+        {
+          "competitor_id": "n3999022986",
+          "name": "Bellacure Nails",
+          "tier": "mid",
+          "rating": 4.77,
+          "distance_m": 2551
+        },
+        {
+          "competitor_id": "n3999022563",
+          "name": "Siryano",
+          "tier": "mid",
+          "rating": 4.47,
+          "distance_m": 2566
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.3951,
+      "sibling_count": 1,
+      "siblings": [
+        {
+          "branch_id": "BD12",
+          "name": "Bedashing Beauty Retreat Al Maqta",
+          "distance_m": 3964,
+          "share_of_my_catchment": 0.3951
+        }
+      ]
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 50.265,
+    "confidence": {
+      "level": "high",
+      "caveats": [
+        "Location resolved to the district rather than the exact unit, so the catchment is centred within a few hundred metres of the real door — immaterial at a 4.0 km radius."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD18",
+    "name": "Bedashing Grooming Lounge Al Falah Village 4",
+    "area": "Al Falah",
+    "emirate": "Abu Dhabi",
+    "address": "Al Falah Village 4, Abu Dhabi",
+    "lat": 24.437113,
+    "lon": 54.711818,
+    "rating": 4.6,
+    "review_count": 365,
+    "urban_context": "low_density",
+    "catchment_radius_m": 6000,
+    "momentum": 0.3553,
+    "chair_utilisation": 0.3708,
+    "geocode_precision": "area",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.57 and market 0.34 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.5688,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.6,
+          "raw_display": "4.6★",
+          "normalised": 0.5333,
+          "weight": 0.3,
+          "contribution": 0.16,
+          "direction": "up",
+          "explanation": "4.6★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 365,
+          "raw_display": "365 reviews",
+          "normalised": 0.6387,
+          "weight": 0.25,
+          "contribution": 0.1597,
+          "direction": "up",
+          "explanation": "365 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.355,
+          "raw_display": "-29% vs own trend",
+          "normalised": 0.3553,
+          "weight": 0.2,
+          "contribution": 0.0711,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.212,
+          "raw_display": "+0.21★ vs local mean",
+          "normalised": 0.712,
+          "weight": 0.25,
+          "contribution": 0.178,
+          "direction": "up",
+          "explanation": "We rate 0.21★ above the 6 rivals inside this catchment (their mean 4.39★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.3443,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.053,
+          "raw_display": "6 rivals · 0.05/km²",
+          "normalised": 0.9836,
+          "weight": 0.35,
+          "contribution": 0.3443,
+          "direction": "up",
+          "explanation": "6 competing venues in the catchment (0.05/km²), 2% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.0,
+          "raw_display": "0% of catchment shared",
+          "normalised": 0.0,
+          "weight": -0.2,
+          "contribution": -0.0,
+          "direction": "neutral",
+          "explanation": "No other Bedashing catchment reaches this area — no self-overlap."
+        }
+      ]
+    },
+    "top_drivers": [
+      "headroom_norm",
+      "competitive_position",
+      "rating_norm"
+    ],
+    "competition": {
+      "competitor_count": 6,
+      "competitors_per_km2": 0.0531,
+      "saturation_norm": 0.0164,
+      "competitor_mean_rating": 4.388,
+      "competitive_position_stars": 0.212,
+      "premium_share": 0.0,
+      "nearest_competitor_m": 2384,
+      "top_competitors": [
+        {
+          "competitor_id": "n4760257509",
+          "name": "Burjeel Gents Salon",
+          "tier": "mid",
+          "rating": 4.12,
+          "distance_m": 2384
+        },
+        {
+          "competitor_id": "n4753727101",
+          "name": "Nail Box",
+          "tier": "mid",
+          "rating": 4.59,
+          "distance_m": 4416
+        },
+        {
+          "competitor_id": "n4753727100",
+          "name": "Scissor",
+          "tier": "value",
+          "rating": 4.36,
+          "distance_m": 4424
+        },
+        {
+          "competitor_id": "n11312103782",
+          "name": "Urban CUTS",
+          "tier": "value",
+          "rating": 4.75,
+          "distance_m": 4523
+        },
+        {
+          "competitor_id": "n4753724640",
+          "name": "Body Art",
+          "tier": "mid",
+          "rating": 4.38,
+          "distance_m": 4532
+        },
+        {
+          "competitor_id": "n11312103794",
+          "name": "Like cut salon",
+          "tier": "value",
+          "rating": 4.13,
+          "distance_m": 4534
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.0,
+      "sibling_count": 0,
+      "siblings": []
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 113.097,
+    "confidence": {
+      "level": "high",
+      "caveats": [
+        "Location resolved to the district rather than the exact unit, so the catchment is centred within a few hundred metres of the real door — immaterial at a 6.0 km radius."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD19",
+    "name": "Bedashing Aesthetic Lounge Delma, Kim Tower",
+    "area": "Al Nahyan",
+    "emirate": "Abu Dhabi",
+    "address": "Shop 1 & 2, Kim Tower, Delma Street, Al Nahyan, Abu Dhabi",
+    "lat": 24.464462,
+    "lon": 54.386839,
+    "rating": 4.7,
+    "review_count": 456,
+    "urban_context": "dense_urban",
+    "catchment_radius_m": 2500,
+    "momentum": 0.7561,
+    "chair_utilisation": 0.6338,
+    "geocode_precision": "area",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.72 and market 0.00 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.7184,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.7,
+          "raw_display": "4.7★",
+          "normalised": 0.6667,
+          "weight": 0.3,
+          "contribution": 0.2,
+          "direction": "up",
+          "explanation": "4.7★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 456,
+          "raw_display": "456 reviews",
+          "normalised": 0.6956,
+          "weight": 0.25,
+          "contribution": 0.1739,
+          "direction": "up",
+          "explanation": "456 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.756,
+          "raw_display": "+51% vs own trend",
+          "normalised": 0.7561,
+          "weight": 0.2,
+          "contribution": 0.1512,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.273,
+          "raw_display": "+0.27★ vs local mean",
+          "normalised": 0.773,
+          "weight": 0.25,
+          "contribution": 0.1933,
+          "direction": "up",
+          "explanation": "We rate 0.27★ above the 114 rivals inside this catchment (their mean 4.43★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.0,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 5.806,
+          "raw_display": "114 rivals · 5.81/km²",
+          "normalised": 0.0,
+          "weight": 0.35,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "114 competing venues in the catchment (5.81/km²), 100% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.0,
+          "raw_display": "0% of catchment shared",
+          "normalised": 0.0,
+          "weight": -0.2,
+          "contribution": -0.0,
+          "direction": "neutral",
+          "explanation": "No other Bedashing catchment reaches this area — no self-overlap."
+        }
+      ]
+    },
+    "top_drivers": [
+      "rating_norm",
+      "competitive_position",
+      "review_volume_norm"
+    ],
+    "competition": {
+      "competitor_count": 114,
+      "competitors_per_km2": 5.806,
+      "saturation_norm": 1.0,
+      "competitor_mean_rating": 4.427,
+      "competitive_position_stars": 0.273,
+      "premium_share": 0.035,
+      "nearest_competitor_m": 250,
+      "top_competitors": [
+        {
+          "competitor_id": "n4751425522",
+          "name": "Farah Style",
+          "tier": "mid",
+          "rating": 4.52,
+          "distance_m": 250
+        },
+        {
+          "competitor_id": "n5468711128",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 3.72,
+          "distance_m": 322
+        },
+        {
+          "competitor_id": "n6764241887",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 4.05,
+          "distance_m": 379
+        },
+        {
+          "competitor_id": "n5099747721",
+          "name": "Unnamed salon (OSM)",
+          "tier": "mid",
+          "rating": 4.91,
+          "distance_m": 406
+        },
+        {
+          "competitor_id": "n5121902121",
+          "name": "San Giorgio",
+          "tier": "value",
+          "rating": 4.3,
+          "distance_m": 420
+        },
+        {
+          "competitor_id": "n5722481021",
+          "name": "Unnamed salon (OSM)",
+          "tier": "mid",
+          "rating": 4.88,
+          "distance_m": 462
+        },
+        {
+          "competitor_id": "n7112335788",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 3.84,
+          "distance_m": 470
+        },
+        {
+          "competitor_id": "n5722480724",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 4.17,
+          "distance_m": 481
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.0,
+      "sibling_count": 0,
+      "siblings": []
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 19.635,
+    "confidence": {
+      "level": "high",
+      "caveats": [
+        "Location resolved to the district rather than the exact unit, so the catchment is centred within a few hundred metres of the real door — immaterial at a 2.5 km radius."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD20",
+    "name": "Bedashing Beauty Center Al Ain",
+    "area": "Al Ain",
+    "emirate": "Abu Dhabi",
+    "address": "Villa 14, Hamdan Bin Mohammad St., Al Markaniyah, Al Ain",
+    "lat": 24.22487,
+    "lon": 55.745221,
+    "rating": 4.8,
+    "review_count": 829,
+    "urban_context": "suburban",
+    "catchment_radius_m": 4000,
+    "momentum": 0.5897,
+    "chair_utilisation": 0.5722,
+    "geocode_precision": "area",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.78 and market 0.30 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.7767,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.8,
+          "raw_display": "4.8★",
+          "normalised": 0.8,
+          "weight": 0.3,
+          "contribution": 0.24,
+          "direction": "up",
+          "explanation": "4.8★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 829,
+          "raw_display": "829 reviews",
+          "normalised": 0.8484,
+          "weight": 0.25,
+          "contribution": 0.2121,
+          "direction": "up",
+          "explanation": "829 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.59,
+          "raw_display": "+18% vs own trend",
+          "normalised": 0.5897,
+          "weight": 0.2,
+          "contribution": 0.1179,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.327,
+          "raw_display": "+0.33★ vs local mean",
+          "normalised": 0.827,
+          "weight": 0.25,
+          "contribution": 0.2067,
+          "direction": "up",
+          "explanation": "We rate 0.33★ above the 16 rivals inside this catchment (their mean 4.47★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.2982,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.318,
+          "raw_display": "16 rivals · 0.32/km²",
+          "normalised": 0.8521,
+          "weight": 0.35,
+          "contribution": 0.2982,
+          "direction": "up",
+          "explanation": "16 competing venues in the catchment (0.32/km²), 15% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.0,
+          "raw_display": "0% of catchment shared",
+          "normalised": 0.0,
+          "weight": -0.2,
+          "contribution": -0.0,
+          "direction": "neutral",
+          "explanation": "No other Bedashing catchment reaches this area — no self-overlap."
+        }
+      ]
+    },
+    "top_drivers": [
+      "headroom_norm",
+      "rating_norm",
+      "review_volume_norm"
+    ],
+    "competition": {
+      "competitor_count": 16,
+      "competitors_per_km2": 0.3183,
+      "saturation_norm": 0.1479,
+      "competitor_mean_rating": 4.473,
+      "competitive_position_stars": 0.327,
+      "premium_share": 0.188,
+      "nearest_competitor_m": 443,
+      "top_competitors": [
+        {
+          "competitor_id": "n6576965340",
+          "name": "مركز الارز للحلاقة الرجالية",
+          "tier": "value",
+          "rating": 5.0,
+          "distance_m": 443
+        },
+        {
+          "competitor_id": "n4739124519",
+          "name": "La Pacha Spa",
+          "tier": "premium",
+          "rating": 4.73,
+          "distance_m": 457
+        },
+        {
+          "competitor_id": "n4328264713",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 4.24,
+          "distance_m": 912
+        },
+        {
+          "competitor_id": "n4328264711",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 4.22,
+          "distance_m": 957
+        },
+        {
+          "competitor_id": "n4328283795",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 4.13,
+          "distance_m": 966
+        },
+        {
+          "competitor_id": "n5868398698",
+          "name": "France Style Salon",
+          "tier": "mid",
+          "rating": 4.9,
+          "distance_m": 1267
+        },
+        {
+          "competitor_id": "n8024801666",
+          "name": "Professional Hair Fixing",
+          "tier": "value",
+          "rating": 3.98,
+          "distance_m": 1707
+        },
+        {
+          "competitor_id": "n4906518767",
+          "name": "Freak Salon",
+          "tier": "value",
+          "rating": 4.13,
+          "distance_m": 1733
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.0,
+      "sibling_count": 0,
+      "siblings": []
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 50.265,
+    "confidence": {
+      "level": "high",
+      "caveats": [
+        "Location resolved to the district rather than the exact unit, so the catchment is centred within a few hundred metres of the real door — immaterial at a 4.0 km radius."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD21",
+    "name": "Bedashing Beauty Lounge Al Neem City Center",
+    "area": "Saqr Bin Mohd City",
+    "emirate": "Ras Al Khaimah",
+    "address": "Villa 3, Sheikh Rashid Bin Saeed Al Maktoum Rd, Saqr Bin Mohd City, Ras Al Khaimah",
+    "lat": 25.755,
+    "lon": 55.949,
+    "rating": 4.6,
+    "review_count": 352,
+    "urban_context": "suburban",
+    "catchment_radius_m": 4000,
+    "momentum": 0.6047,
+    "chair_utilisation": 0.5384,
+    "geocode_precision": "manual",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.46 and market 0.35 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.4633,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.6,
+          "raw_display": "4.6★",
+          "normalised": 0.5333,
+          "weight": 0.3,
+          "contribution": 0.16,
+          "direction": "up",
+          "explanation": "4.6★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 352,
+          "raw_display": "352 reviews",
+          "normalised": 0.6295,
+          "weight": 0.25,
+          "contribution": 0.1574,
+          "direction": "up",
+          "explanation": "352 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.605,
+          "raw_display": "+21% vs own trend",
+          "normalised": 0.6047,
+          "weight": 0.2,
+          "contribution": 0.1209,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": -0.4,
+          "raw_display": "-0.40★ vs local mean",
+          "normalised": 0.1,
+          "weight": 0.25,
+          "contribution": 0.025,
+          "direction": "up",
+          "explanation": "We rate 0.40★ below the 1 rivals inside this catchment (their mean 5.00★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.35,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.02,
+          "raw_display": "1 rivals · 0.02/km²",
+          "normalised": 1.0,
+          "weight": 0.35,
+          "contribution": 0.35,
+          "direction": "up",
+          "explanation": "1 competing venues in the catchment (0.02/km²), 0% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.0,
+          "raw_display": "0% of catchment shared",
+          "normalised": 0.0,
+          "weight": -0.2,
+          "contribution": -0.0,
+          "direction": "neutral",
+          "explanation": "No other Bedashing catchment reaches this area — no self-overlap."
+        }
+      ]
+    },
+    "top_drivers": [
+      "headroom_norm",
+      "rating_norm",
+      "review_volume_norm"
+    ],
+    "competition": {
+      "competitor_count": 1,
+      "competitors_per_km2": 0.0199,
+      "saturation_norm": 0.0,
+      "competitor_mean_rating": 5.0,
+      "competitive_position_stars": -0.4,
+      "premium_share": 1.0,
+      "nearest_competitor_m": 1944,
+      "top_competitors": [
+        {
+          "competitor_id": "w337133184",
+          "name": "Unnamed salon (OSM)",
+          "tier": "premium",
+          "rating": 5.0,
+          "distance_m": 1944
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.0,
+      "sibling_count": 0,
+      "siblings": []
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 50.265,
+    "confidence": {
+      "level": "low",
+      "caveats": [
+        "Only 1 competitors mapped in this catchment. That is more likely an OpenStreetMap coverage gap than a genuine competitive vacuum, so treat the headroom score as optimistic.",
+        "Geocoding could not resolve this address; the coordinate was placed by hand from the venue's stated location, so the catchment centre may be off by a kilometre or more."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD22",
+    "name": "Bedashing Beauty Spa Shahama",
+    "area": "Shahama",
+    "emirate": "Abu Dhabi",
+    "address": "Deerfields Mall, Shop No. 419B, Al Shahama Road, Abu Dhabi",
+    "lat": 24.548417,
+    "lon": 54.685093,
+    "rating": 4.6,
+    "review_count": 203,
+    "urban_context": "low_density",
+    "catchment_radius_m": 6000,
+    "momentum": 0.4123,
+    "chair_utilisation": 0.5477,
+    "geocode_precision": "area",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.50 and market 0.34 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.4972,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.6,
+          "raw_display": "4.6★",
+          "normalised": 0.5333,
+          "weight": 0.3,
+          "contribution": 0.16,
+          "direction": "up",
+          "explanation": "4.6★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 203,
+          "raw_display": "203 reviews",
+          "normalised": 0.4888,
+          "weight": 0.25,
+          "contribution": 0.1222,
+          "direction": "up",
+          "explanation": "203 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.412,
+          "raw_display": "-18% vs own trend",
+          "normalised": 0.4123,
+          "weight": 0.2,
+          "contribution": 0.0825,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.03,
+          "raw_display": "+0.03★ vs local mean",
+          "normalised": 0.53,
+          "weight": 0.25,
+          "contribution": 0.1325,
+          "direction": "up",
+          "explanation": "We rate 0.03★ above the 8 rivals inside this catchment (their mean 4.57★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.3411,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.071,
+          "raw_display": "8 rivals · 0.07/km²",
+          "normalised": 0.9748,
+          "weight": 0.35,
+          "contribution": 0.3412,
+          "direction": "up",
+          "explanation": "8 competing venues in the catchment (0.07/km²), 3% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.0,
+          "raw_display": "0% of catchment shared",
+          "normalised": 0.0003,
+          "weight": -0.2,
+          "contribution": -0.0001,
+          "direction": "down",
+          "explanation": "0% of this catchment is also covered by 1 of our own lounges, chiefly Bedashing Beauty Salon West Yas at 11.9 km."
+        }
+      ]
+    },
+    "top_drivers": [
+      "headroom_norm",
+      "rating_norm",
+      "competitive_position"
+    ],
+    "competition": {
+      "competitor_count": 8,
+      "competitors_per_km2": 0.0707,
+      "saturation_norm": 0.0252,
+      "competitor_mean_rating": 4.57,
+      "competitive_position_stars": 0.03,
+      "premium_share": 0.125,
+      "nearest_competitor_m": 386,
+      "top_competitors": [
+        {
+          "competitor_id": "n4739952288",
+          "name": "Al Masa Salon",
+          "tier": "value",
+          "rating": 4.92,
+          "distance_m": 386
+        },
+        {
+          "competitor_id": "n4740234902",
+          "name": "Super Oasis - Gents Spa ans Saloon",
+          "tier": "premium",
+          "rating": 4.51,
+          "distance_m": 769
+        },
+        {
+          "competitor_id": "n4738464850",
+          "name": "Face Look - Gents Saloon",
+          "tier": "value",
+          "rating": 4.19,
+          "distance_m": 957
+        },
+        {
+          "competitor_id": "n5257723122",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 4.69,
+          "distance_m": 1932
+        },
+        {
+          "competitor_id": "n5257688623",
+          "name": "Unnamed salon (OSM)",
+          "tier": "mid",
+          "rating": 4.29,
+          "distance_m": 2006
+        },
+        {
+          "competitor_id": "n4733320874",
+          "name": "Dark Candles Gent Saloon",
+          "tier": "value",
+          "rating": 4.95,
+          "distance_m": 2772
+        },
+        {
+          "competitor_id": "n4733426941",
+          "name": "Silver Palm Gents Saloon",
+          "tier": "value",
+          "rating": 4.72,
+          "distance_m": 2818
+        },
+        {
+          "competitor_id": "n5604257221",
+          "name": "Unnamed salon (OSM)",
+          "tier": "value",
+          "rating": 4.29,
+          "distance_m": 3096
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.0003,
+      "sibling_count": 1,
+      "siblings": [
+        {
+          "branch_id": "BD23",
+          "name": "Bedashing Beauty Salon West Yas",
+          "distance_m": 11943,
+          "share_of_my_catchment": 0.0003
+        }
+      ]
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 113.097,
+    "confidence": {
+      "level": "high",
+      "caveats": [
+        "Location resolved to the district rather than the exact unit, so the catchment is centred within a few hundred metres of the real door — immaterial at a 6.0 km radius."
+      ]
+    },
+    "analyst_note": null
+  },
+  {
+    "branch_id": "BD23",
+    "name": "Bedashing Beauty Salon West Yas",
+    "area": "West Yas",
+    "emirate": "Abu Dhabi",
+    "address": "West Yas Plaza, Yas Island, Abu Dhabi",
+    "lat": 24.494282,
+    "lon": 54.58313,
+    "rating": 4.6,
+    "review_count": 301,
+    "urban_context": "low_density",
+    "catchment_radius_m": 6000,
+    "momentum": 0.4431,
+    "chair_utilisation": 0.4168,
+    "geocode_precision": "area",
+    "flags": [],
+    "recommendation": "HOLD",
+    "decision_rule": "strength 0.53 and market 0.30 fall between the PROTECT and SHRINK thresholds",
+    "strength": {
+      "axis": "strength",
+      "score": 0.53,
+      "contributions": [
+        {
+          "signal": "rating_norm",
+          "label": "Guest rating",
+          "raw_value": 4.6,
+          "raw_display": "4.6★",
+          "normalised": 0.5333,
+          "weight": 0.3,
+          "contribution": 0.16,
+          "direction": "up",
+          "explanation": "4.6★ on a 4.2-4.95 market band — category ratings cluster tightly, so we normalise against the band the market actually occupies, not 0–5."
+        },
+        {
+          "signal": "review_volume_norm",
+          "label": "Review volume (scale proxy)",
+          "raw_value": 301,
+          "raw_display": "301 reviews",
+          "normalised": 0.5894,
+          "weight": 0.25,
+          "contribution": 0.1474,
+          "direction": "up",
+          "explanation": "301 reviews, log-normalised between 30 and 1500. Stands in for footfall, which we do not have."
+        },
+        {
+          "signal": "momentum",
+          "label": "Recent momentum",
+          "raw_value": 0.443,
+          "raw_display": "-11% vs own trend",
+          "normalised": 0.4431,
+          "weight": 0.2,
+          "contribution": 0.0886,
+          "direction": "up",
+          "explanation": "Recent-review trend versus the branch's own history. SIMULATED — the chain does not publish dated review feeds."
+        },
+        {
+          "signal": "competitive_position",
+          "label": "Position vs local rivals",
+          "raw_value": 0.036,
+          "raw_display": "+0.04★ vs local mean",
+          "normalised": 0.536,
+          "weight": 0.25,
+          "contribution": 0.134,
+          "direction": "up",
+          "explanation": "We rate 0.04★ above the 10 rivals inside this catchment (their mean 4.56★)."
+        }
+      ]
+    },
+    "market": {
+      "axis": "market",
+      "score": 0.3026,
+      "contributions": [
+        {
+          "signal": "demand_norm",
+          "label": "Catchment demand",
+          "raw_value": 0.0,
+          "raw_display": "0% of metro peak",
+          "normalised": 0.0,
+          "weight": 0.45,
+          "contribution": 0.0,
+          "direction": "neutral",
+          "explanation": "Built-form demand proxy for the catchment: residential, everyday-retail and premium-venue density from OpenStreetMap. A proxy for spending power, not a census."
+        },
+        {
+          "signal": "headroom_norm",
+          "label": "Competitive headroom",
+          "raw_value": 0.088,
+          "raw_display": "10 rivals · 0.09/km²",
+          "normalised": 0.966,
+          "weight": 0.35,
+          "contribution": 0.3381,
+          "direction": "up",
+          "explanation": "10 competing venues in the catchment (0.09/km²), 3% of the portfolio's saturation ceiling. Less crowded ground scores higher."
+        },
+        {
+          "signal": "cannibalisation_penalty",
+          "label": "Self-cannibalisation",
+          "raw_value": 0.177,
+          "raw_display": "18% of catchment shared",
+          "normalised": 0.1774,
+          "weight": -0.2,
+          "contribution": -0.0355,
+          "direction": "down",
+          "explanation": "18% of this catchment is also covered by 2 of our own lounges, chiefly Bedashing Beauty Lounge Khalifa City A at 6.2 km."
+        }
+      ]
+    },
+    "top_drivers": [
+      "headroom_norm",
+      "rating_norm",
+      "review_volume_norm"
+    ],
+    "competition": {
+      "competitor_count": 10,
+      "competitors_per_km2": 0.0884,
+      "saturation_norm": 0.034,
+      "competitor_mean_rating": 4.564,
+      "competitive_position_stars": 0.036,
+      "premium_share": 0.3,
+      "nearest_competitor_m": 2810,
+      "top_competitors": [
+        {
+          "competitor_id": "n4077677042",
+          "name": "The Loft Hair and Beauty",
+          "tier": "mid",
+          "rating": 4.51,
+          "distance_m": 2810
+        },
+        {
+          "competitor_id": "n5072822240",
+          "name": "Nstyle",
+          "tier": "mid",
+          "rating": 4.42,
+          "distance_m": 2822
+        },
+        {
+          "competitor_id": "n5076514418",
+          "name": "W Abu Dhabi - Yas Island - Hair Salon",
+          "tier": "value",
+          "rating": 4.62,
+          "distance_m": 3773
+        },
+        {
+          "competitor_id": "n3177396259",
+          "name": "Fantastic Spa",
+          "tier": "premium",
+          "rating": 4.88,
+          "distance_m": 5132
+        },
+        {
+          "competitor_id": "n3177348437",
+          "name": "Me & Only Man Spa",
+          "tier": "premium",
+          "rating": 4.65,
+          "distance_m": 5184
+        },
+        {
+          "competitor_id": "n3177642557",
+          "name": "Nails Couture",
+          "tier": "mid",
+          "rating": 4.5,
+          "distance_m": 5235
+        },
+        {
+          "competitor_id": "n3189272338",
+          "name": "NStyle International",
+          "tier": "value",
+          "rating": 4.42,
+          "distance_m": 5290
+        },
+        {
+          "competitor_id": "n3204620116",
+          "name": "Glamorous Hair Salon (Ladies)",
+          "tier": "mid",
+          "rating": 4.62,
+          "distance_m": 5406
+        }
+      ]
+    },
+    "cannibalisation": {
+      "overlapped_share": 0.1774,
+      "sibling_count": 2,
+      "siblings": [
+        {
+          "branch_id": "BD16",
+          "name": "Bedashing Beauty Lounge Khalifa City A",
+          "distance_m": 6221,
+          "share_of_my_catchment": 0.1771
+        },
+        {
+          "branch_id": "BD22",
+          "name": "Bedashing Beauty Spa Shahama",
+          "distance_m": 11943,
+          "share_of_my_catchment": 0.0003
+        }
+      ]
+    },
+    "demand": {
+      "demand_norm": 0.0,
+      "cells_in_catchment": 0,
+      "residential_features": 0,
+      "activity_features": 0,
+      "affluence_features": 0
+    },
+    "catchment_area_km2": 113.097,
+    "confidence": {
+      "level": "high",
+      "caveats": [
+        "Location resolved to the district rather than the exact unit, so the catchment is centred within a few hundred metres of the real door — immaterial at a 6.0 km radius."
+      ]
+    },
+    "analyst_note": null
+  }
+]

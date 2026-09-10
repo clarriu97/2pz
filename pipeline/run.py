@@ -47,27 +47,43 @@ MIN_ZONE_FEATURES_TO_KEEP = 1
 
 
 def _confidence(branch, competition) -> dict:
-    """Per-branch trust flags, shown in the UI next to the recommendation."""
-    caveats: list[str] = []
+    """Per-branch trust flags, shown in the UI next to the recommendation.
+
+    Caveats are split into ones that should move the confidence *level* and
+    ones that are worth stating but not worth downgrading a branch for. Most
+    of our coordinates resolve at district rather than unit precision, so
+    counting that as a demotion would mark almost the whole portfolio "low"
+    and the flag would stop meaning anything.
+    """
+    major: list[str] = []
+    minor: list[str] = []
+
     if branch.review_count < config.LOW_CONFIDENCE_REVIEW_THRESHOLD:
-        caveats.append(
-            f"Only {branch.review_count} reviews — the rating is statistically thin, "
-            f"so both the quality and the competitive-position signals are noisy."
+        major.append(
+            f"Only {branch.review_count} reviews — the rating is statistically thin, so both "
+            "the quality and the competitive-position signals are noisy here."
         )
     if competition.competitor_count < config.LOW_CONFIDENCE_COMPETITOR_THRESHOLD:
-        caveats.append(
-            f"Only {competition.competitor_count} competitors mapped in this catchment. "
-            "That is more likely an OpenStreetMap coverage gap than a genuine "
-            "competitive vacuum, so treat the headroom score as optimistic."
+        major.append(
+            f"Only {competition.competitor_count} competitors mapped in this catchment. That is "
+            "more likely an OpenStreetMap coverage gap than a genuine competitive vacuum, so "
+            "treat the headroom score as optimistic."
         )
-    if branch.geocode_precision in ("area", "emirate", "manual"):
-        caveats.append(
-            f"Location resolved at {branch.geocode_precision} precision, not to the "
-            "exact unit, so the catchment is centred within a few hundred metres "
-            "of the real door."
+    if branch.geocode_precision in ("emirate", "manual"):
+        major.append(
+            "Geocoding could not resolve this address; the coordinate was placed by hand from "
+            "the venue's stated location, so the catchment centre may be off by a kilometre or "
+            "more."
         )
-    level = "high" if not caveats else ("low" if len(caveats) >= 2 else "medium")
-    return {"level": level, "caveats": caveats}
+    elif branch.geocode_precision == "area":
+        minor.append(
+            "Location resolved to the district rather than the exact unit, so the catchment is "
+            "centred within a few hundred metres of the real door — immaterial at a "
+            f"{branch.catchment_radius_m / 1000:.1f} km radius."
+        )
+
+    level = "high" if not major else ("low" if len(major) >= 2 else "medium")
+    return {"level": level, "caveats": major + minor}
 
 
 def build(*, refresh: bool = False, with_notes: bool = False) -> dict:

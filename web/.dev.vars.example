@@ -1,0 +1,2 @@
+# Local-only secrets for `npx wrangler pages dev`. Copy to .dev.vars (gitignored).
+OPENAI_API_KEY=

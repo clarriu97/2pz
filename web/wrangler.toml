@@ -1,0 +1,10 @@
+# Cloudflare Pages project config. The build output is `dist`; `functions/`
+# is picked up automatically as Pages Functions, so /api/chat is served from
+# the same origin as the static app and no CORS is involved.
+name = "bedashing-network-intelligence"
+compatibility_date = "2026-09-01"
+pages_build_output_dir = "dist"
+
+# OPENAI_API_KEY is NOT declared here on purpose. It is set as an encrypted
+# secret on the Pages project (dashboard, or `wrangler pages secret put`), so
+# it never enters the repository or the client bundle.

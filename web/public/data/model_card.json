@@ -1,0 +1,144 @@
+{
+  "generated_at": "2026-09-10T12:43:03.869043+00:00",
+  "seed": 20260910,
+  "counts": {
+    "branches": 23,
+    "competitors": 1354,
+    "scored_zones": 0,
+    "branch_labels": {
+      "HOLD": 20,
+      "SHRINK": 3
+    },
+    "zone_labels": {}
+  },
+  "geography": {
+    "catchment_radius_m": {
+      "dense_urban": 2500,
+      "suburban": 4000,
+      "low_density": 6000
+    },
+    "catchment_method": "haversine radius by urban context",
+    "h3_resolution": 7,
+    "competitor_search_radius_m": 5000,
+    "whitespace_metros": [
+      "Dubai",
+      "Abu Dhabi",
+      "Sharjah"
+    ]
+  },
+  "branch_model": {
+    "strength_weights": {
+      "rating_norm": 0.3,
+      "review_volume_norm": 0.25,
+      "momentum": 0.2,
+      "competitive_position": 0.25
+    },
+    "market_weights": {
+      "demand_norm": 0.45,
+      "headroom_norm": 0.35,
+      "cannibalisation_penalty": -0.2
+    },
+    "thresholds": {
+      "strength_high": 0.58,
+      "strength_low": 0.42,
+      "market_high": 0.55,
+      "market_low": 0.4,
+      "cannibalisation_shrink_trigger": 0.45
+    }
+  },
+  "zone_model": {
+    "opportunity_weights": {
+      "demand_norm": 0.45,
+      "coverage_gap_norm": 0.35,
+      "saturation_norm": -0.2
+    },
+    "demand_components": {
+      "residential": 0.4,
+      "activity": 0.25,
+      "affluence": 0.35
+    },
+    "thresholds": {
+      "grow": 0.62,
+      "watch": 0.45,
+      "min_demand": 0.12,
+      "covered_zone_damping": 0.35
+    }
+  },
+  "normalisation": {
+    "rating_band": [
+      4.2,
+      4.95
+    ],
+    "review_volume_band": [
+      30,
+      1500
+    ],
+    "competitive_position_clip_stars": 0.5
+  },
+  "provenance": {
+    "branch.name": {
+      "tier": "real",
+      "source": "Bedashing public location listing"
+    },
+    "branch.area": {
+      "tier": "real",
+      "source": "Bedashing public location listing"
+    },
+    "branch.emirate": {
+      "tier": "real",
+      "source": "Bedashing public location listing"
+    },
+    "branch.address": {
+      "tier": "real",
+      "source": "Bedashing public location listing"
+    },
+    "branch.lat_lng": {
+      "tier": "real",
+      "source": "OpenStreetMap Nominatim geocoding"
+    },
+    "branch.rating": {
+      "tier": "real",
+      "source": "Public Google Maps rating aggregate"
+    },
+    "branch.review_count": {
+      "tier": "real",
+      "source": "Public Google Maps rating aggregate"
+    },
+    "competitor.location": {
+      "tier": "real",
+      "source": "OpenStreetMap (shop=beauty|hairdresser, leisure=spa)"
+    },
+    "competitor.name": {
+      "tier": "real",
+      "source": "OpenStreetMap"
+    },
+    "zone.demand": {
+      "tier": "derived",
+      "source": "OSM POI + residential density, normalised"
+    },
+    "catchment": {
+      "tier": "derived",
+      "source": "Haversine radius by urban context (config.CATCHMENT_RADIUS_M)"
+    },
+    "overlap": {
+      "tier": "derived",
+      "source": "Pairwise catchment intersection area"
+    },
+    "saturation": {
+      "tier": "derived",
+      "source": "Competitor count per catchment km^2"
+    },
+    "branch.momentum": {
+      "tier": "synthetic",
+      "source": "Simulated recent-review trend (seeded)"
+    },
+    "competitor.rating": {
+      "tier": "synthetic",
+      "source": "Simulated from local rating distribution (seeded)"
+    },
+    "branch.chair_utilisation": {
+      "tier": "synthetic",
+      "source": "Simulated operational metric (seeded)"
+    }
+  }
+}
