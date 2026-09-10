@@ -136,7 +136,11 @@ class TestBranchLabel:
         assert branch_label(config.STRENGTH_LOW - 0.01, 0.95, 0.0)[0] == "SHRINK"
 
     def test_middling_is_hold(self) -> None:
-        assert branch_label(0.5, 0.5, 0.0)[0] == "HOLD"
+        # Derived from the config rather than hard-coded, so re-tuning the
+        # portfolio's risk appetite does not make this test lie.
+        mid_strength = (config.STRENGTH_LOW + config.STRENGTH_HIGH) / 2
+        mid_market = (config.MARKET_LOW + config.MARKET_HIGH) / 2
+        assert branch_label(mid_strength, mid_market, 0.0)[0] == "HOLD"
 
     def test_at_the_protect_boundary_the_label_is_protect(self) -> None:
         # Thresholds are inclusive; pinning that stops a refactor flipping a

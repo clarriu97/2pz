@@ -23,6 +23,7 @@ from pipeline.run import build, main
 from pipeline.sourcing import branches as branches_mod
 from pipeline.sourcing import competitors as competitors_mod
 from pipeline.sourcing import demand as demand_mod
+from pipeline.sourcing import extract as extract_mod
 from pipeline.sourcing import osm as osm_mod
 
 # A three-branch seed spanning two clusters, so the run exercises both the
@@ -117,7 +118,22 @@ def isolated_pipeline(tmp_path, monkeypatch: pytest.MonkeyPatch):
         return _fake_osm_elements(bbox)  # type: ignore[arg-type]
 
     monkeypatch.setattr(competitors_mod, "overpass", overpass)
-    monkeypatch.setattr(demand_mod, "overpass", overpass)
+
+    # The demand layer streams a local OSM extract. Stub the download away and
+    # answer from the same synthetic feature set, so the test exercises our
+    # aggregation rather than a 250 MB file.
+    monkeypatch.setattr(demand_mod, "ensure_extract", lambda: raw / "fake.osm.pbf")
+
+    def stream(_path, bboxes, classify):
+        out = []
+        for bbox in bboxes:
+            for el in _fake_osm_elements(bbox):
+                component = classify(el["tags"])
+                if component is not None:
+                    out.append((component, el["lat"], el["lon"]))
+        return out
+
+    monkeypatch.setattr(demand_mod, "stream_features", stream)
 
     return {"raw": raw, "processed": processed, "web": web}
 
@@ -179,7 +195,8 @@ class TestFullBuild:
             raise AssertionError("a cached run must not hit the network")
 
         monkeypatch.setattr(competitors_mod, "overpass", explode)
-        monkeypatch.setattr(demand_mod, "overpass", explode)
+        monkeypatch.setattr(demand_mod, "ensure_extract", explode)
+        monkeypatch.setattr(demand_mod, "stream_features", explode)
         monkeypatch.setattr(branches_mod, "geocode_candidates", explode)
 
         result = build()
@@ -309,9 +326,9 @@ class TestOfflineMode:
         self, isolated_pipeline, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         monkeypatch.setattr(osm_mod, "OFFLINE", False)
-        # Restore the real client so nothing can quietly succeed.
+        # Restore the real clients so nothing can quietly succeed.
         monkeypatch.setattr(competitors_mod, "overpass", osm_mod.overpass)
-        monkeypatch.setattr(demand_mod, "overpass", osm_mod.overpass)
+        monkeypatch.setattr(demand_mod, "ensure_extract", extract_mod.ensure_extract)
         with pytest.raises(osm_mod.CacheMiss, match="--refresh"):
             build(offline=True)
 

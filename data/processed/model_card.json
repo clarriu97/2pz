@@ -1,15 +1,20 @@
 {
-  "generated_at": "2026-09-10T13:00:38.015566+00:00",
+  "generated_at": "2026-09-10T13:42:01.527672+00:00",
   "seed": 20260910,
   "counts": {
     "branches": 23,
     "competitors": 1354,
-    "scored_zones": 0,
+    "scored_zones": 573,
     "branch_labels": {
-      "HOLD": 20,
-      "SHRINK": 3
+      "HOLD": 15,
+      "SHRINK": 6,
+      "PROTECT": 2
     },
-    "zone_labels": {}
+    "zone_labels": {
+      "SKIP": 495,
+      "WATCH": 61,
+      "GROW": 17
+    }
   },
   "geography": {
     "catchment_radius_m": {
@@ -39,9 +44,9 @@
       "cannibalisation_penalty": -0.2
     },
     "thresholds": {
-      "strength_high": 0.58,
-      "strength_low": 0.42,
-      "market_high": 0.55,
+      "strength_high": 0.65,
+      "strength_low": 0.51,
+      "market_high": 0.47,
       "market_low": 0.4,
       "cannibalisation_shrink_trigger": 0.45
     }
@@ -106,7 +111,7 @@
     },
     "competitor.location": {
       "tier": "real",
-      "source": "OpenStreetMap (shop=beauty|hairdresser, leisure=spa)"
+      "source": "OpenStreetMap (shop=beauty|hairdresser|massage, leisure/amenity=spa)"
     },
     "competitor.name": {
       "tier": "real",
@@ -114,7 +119,7 @@
     },
     "zone.demand": {
       "tier": "derived",
-      "source": "OSM POI + residential density, normalised"
+      "source": "OSM residential + retail + premium-venue density, log-normalised"
     },
     "catchment": {
       "tier": "derived",
@@ -122,7 +127,7 @@
     },
     "overlap": {
       "tier": "derived",
-      "source": "Pairwise catchment intersection area"
+      "source": "Union of pairwise catchment intersections"
     },
     "saturation": {
       "tier": "derived",
@@ -134,7 +139,7 @@
     },
     "competitor.rating": {
       "tier": "synthetic",
-      "source": "Simulated from local rating distribution (seeded)"
+      "source": "Simulated from a per-tier rating prior (seeded)"
     },
     "branch.chair_utilisation": {
       "tier": "synthetic",

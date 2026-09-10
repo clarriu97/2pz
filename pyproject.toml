@@ -8,6 +8,10 @@ dependencies = [
     "numpy>=1.26",
     "shapely>=2.0",
     "h3>=4.1",
+    # Streams the OSM extract that feeds the demand layer. Bulk counts come
+    # from a local file rather than the public Overpass API; see
+    # pipeline/sourcing/extract.py for why.
+    "osmium>=4.0",
     "pydantic>=2.7",
     "openai>=1.40",
     "python-dotenv>=1.0",

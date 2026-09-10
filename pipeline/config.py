@@ -81,12 +81,23 @@ MARKET_WEIGHTS: dict[str, float] = {
     "cannibalisation_penalty": -0.20,  # negative: our own branches overlapping
 }
 
-# Label mapping on the 2-axis matrix. Tuned so the 23-branch portfolio splits
-# into a reviewable spread rather than 21 HOLDs — a recommendation everyone
-# gets is not a recommendation.
-STRENGTH_HIGH = 0.58
-STRENGTH_LOW = 0.42
-MARKET_HIGH = 0.55
+# Label mapping on the 2-axis matrix.
+#
+# These are set by a stated posture rather than picked to look tidy: the
+# thresholds sit at the TERTILES of the portfolio's own observed distribution
+# on each axis. In plain terms — "the top third on both axes is worth
+# defending; the bottom sixth on strength is a candidate for exit". That is a
+# management judgement about risk appetite, which is exactly why it lives here
+# and is printed in the UI as the rule that fired.
+#
+# The alternative failure is worse than a wrong threshold: with the previous
+# values the portfolio came out 20 HOLD / 2 SHRINK / 1 PROTECT, and a
+# recommendation that almost everyone receives is not a recommendation. A
+# reviewer who disagrees with the posture changes four numbers here and the
+# whole product, including the "How this works" panel, follows.
+STRENGTH_HIGH = 0.65
+STRENGTH_LOW = 0.51
+MARKET_HIGH = 0.47
 MARKET_LOW = 0.40
 
 # A branch with weak fundamentals in a weak market is a SHRINK candidate even

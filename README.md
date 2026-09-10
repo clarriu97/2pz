@@ -66,11 +66,11 @@ jobs:
 
 | Job | What it runs | Gate |
 |---|---|---|
-| **pipeline** | `ruff format --check` · `ruff check` · `pytest` | **283 tests**, coverage must stay **≥ 95%** (`--cov-fail-under` in [`pyproject.toml`](pyproject.toml)) |
+| **pipeline** | `ruff format --check` · `ruff check` · `pytest` | **299 tests**, coverage must stay **≥ 95%** (`--cov-fail-under` in [`pyproject.toml`](pyproject.toml)) |
 | **web** | `prettier --check` · `oxlint` · `tsc` · `vitest run --coverage` · `vite build` | **176 tests**, coverage must stay **≥ 85%** lines / **80%** branches (thresholds in [`web/vite.config.ts`](web/vite.config.ts)) |
 | **dataset** | `pipeline.run --offline` then `git diff` | the committed dataset must be reproducible **byte for byte** with no network |
 
-Current coverage — **97.98%** lines on the pipeline, **97.83%** statements on the web app. Both
+Current coverage — **97.80%** lines on the pipeline, **97.83%** statements on the web app. Both
 jobs write a coverage table into the GitHub Actions **run summary** and upload the full report as
 an artifact, so the numbers are visible on every run rather than only in a badge.
 
@@ -107,10 +107,11 @@ They are not shape tests. Each one guards a claim the product makes to a reviewe
 - **Reproducibility.** A full pipeline run with the network stubbed produces byte-identical output
   twice, and CI proves the committed dataset is what the committed code produces.
 
-Three real bugs were found by writing these, each of which would have shipped silently:
-unclosed H3 GeoJSON rings (dropped by some renderers), a percentile index that floored to zero and
-collapsed the saturation signal to a constant, and non-unique Overpass cluster keys that silently
-discarded a whole cluster's competitors.
+Four real bugs were found by writing these, each of which would have shipped silently: unclosed
+H3 GeoJSON rings (invalid GeoJSON that some renderers drop), a percentile index that floored to
+zero and collapsed the saturation signal to a constant 0.5 for every branch, non-unique Overpass
+cluster keys that discarded a whole cluster's competitors, and an extract reader that lost every
+way sharing a first node with another — which is most adjacent buildings.
 
 ### Tooling
 
@@ -140,7 +141,7 @@ Five toggleable map layers, one per functional block, plus a side panel with fiv
 | **Catchments** | Service area per lounge, 2.5–6 km by urban context. |
 | **Self-overlap** | The actual intersection polygons where our own catchments compete. |
 | **Competition** | 1,354 real salons, spas and hairdressers from OpenStreetMap. |
-| **Whitespace grid** | H3 cells across Dubai, Abu Dhabi and Sharjah, scored for growth. |
+| **Whitespace grid** | 573 H3 cells across Dubai, Abu Dhabi and Sharjah, scored for growth. |
 
 | Tab | What it answers |
 |---|---|
@@ -153,6 +154,18 @@ Five toggleable map layers, one per functional block, plus a side panel with fiv
 **Start here:** open **How** and read the framing, then turn on *Self-overlap*, click the largest
 red wedge in Abu Dhabi, and follow it into the two branches it belongs to. That path shows the
 geographic reasoning, the decision logic and the explainability in about ninety seconds.
+
+### What it currently concludes
+
+The portfolio splits **2 PROTECT · 15 HOLD · 6 SHRINK**, and
+**17 of 573** scored cells come out `GROW`.
+
+The headline finding is a real fact about the real network, not an artefact of the model:
+**Ministry Area shares 65% of its catchment with two of our own lounges, and Al Maqta 61%.** Both
+are individually *strong* branches — Ministry Area scores 0.71 on strength, well above the
+portfolio median — and both are flagged `SHRINK` purely because our own network already covers
+their ground. That is a consolidation decision, not a performance problem, and it is exactly the
+distinction the two-axis matrix exists to make. A single-score ranking would have buried it.
 
 ---
 
@@ -168,7 +181,7 @@ tag next to the number — a reviewer never has to guess whether they are lookin
 | **real** | branch names, areas, addresses, **Google rating and review count** | Bedashing's public location listing, cross-referenced with public Google Maps rating aggregates (`data/raw/branches_seed.csv`, committed) |
 | **real** | branch coordinates | OpenStreetMap Nominatim geocoding; two coarse results overridden by hand and flagged (`data/raw/branch_coords_override.json`) |
 | **real** | competitor existence, name, location, category | OpenStreetMap via Overpass (`shop=beauty\|hairdresser\|massage`, `leisure=spa`, `amenity=spa`) |
-| **real** | zone built-form counts | OpenStreetMap: residential buildings, everyday retail and services, premium venues |
+| **real** | zone built-form counts | OpenStreetMap: **37,137 features** — residential buildings, everyday retail and services, premium venues — streamed from a Geofabrik extract |
 | **derived** | catchments, overlap areas, saturation, coverage gaps, demand index | computed by `pipeline/geo/` from the real inputs above |
 | **synthetic** | **competitor ratings**, branch review **momentum**, **chair utilisation** | seeded draws from stated priors — see the caveats below |
 
@@ -205,11 +218,17 @@ model — it *is* the model.
 
 **Label mapping** — the rule that fired is printed verbatim in the UI for every branch:
 
-- `PROTECT` — strength ≥ 0.58 **and** market ≥ 0.55.
-- `SHRINK` — strength < 0.42, **or** (market < 0.40 **and** self-overlap ≥ 45%). The second clause
-  is the "we are competing with ourselves" exit: a branch can be individually decent and still be
+- `PROTECT` — strength ≥ 0.65 **and** market ≥ 0.47.
+- `SHRINK` — strength < 0.51, **or** (market < 0.40 **and** self-overlap ≥ 45%). The second clause
+  is the "we are competing with ourselves" exit: a branch can be individually strong and still be
   the wrong branch to keep.
 - `HOLD` — everything else.
+
+Those four numbers are set by a **stated posture**, not picked to look tidy: they sit at the
+tertiles of the portfolio's own observed distribution on each axis — *the top third on both axes is
+worth defending; the bottom sixth on strength is a candidate for exit.* The earlier values produced
+20 HOLD / 2 SHRINK / 1 PROTECT, and a recommendation almost everyone receives is not a
+recommendation. Disagreeing with the posture is a four-number change in one file.
 
 ### Whitespace zones
 

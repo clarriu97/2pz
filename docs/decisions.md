@@ -102,7 +102,38 @@ README trust section. `pipeline/geo/catchments.py` has one entry point to replac
 
 ---
 
-## 5. A built-form demand proxy, not a population raster
+## 5. Bulk OSM from a downloaded extract, not from Overpass
+
+**Chose:** the demand layer streams a Geofabrik `.osm.pbf` extract locally with pyosmium; only the
+per-hex aggregate is committed.
+
+**Against:** Overpass API queries, which is what the competitor layer already uses.
+
+**Why:** this decision was forced, and it turned out to be the better one anyway. Overpass is a
+shared free query service with a couple of concurrent slots per IP. It is exactly right for the
+competitor layer — five small bbox queries, a few hundred kilobytes cached — and exactly wrong for
+the demand layer, which needs every residential building, shop and hotel across three metros. I
+found that out by getting the IP rate-limited into a `406`, twice, mid-build.
+
+Bulk data belongs in a bulk channel. One 241 MB download, streamed once, yields 37,137 real
+features in about a minute with no rate limit and no dependence on a third party's load. The
+extract is gitignored and re-downloadable; the aggregate it produces is a few hundred kilobytes
+and *is* committed, so a re-run and CI never need the file.
+
+Two implementation notes, because both were traps. pyosmium's `with_locations()` resolves way
+geometry by indexing every node in the file — around 30 million for the GCC extract, gigabytes of
+RAM — for a signal that only needs bucketing into 5 km hexes; so the reader does two cheap passes
+instead, keeping matching nodes outright and resolving only the *first* node of each matching way.
+And filtering tags in Python meant materialising a dict for all 30 million objects: pushing a
+`KeyFilter` into pyosmium's C++ layer took the pass from over ten minutes to under one.
+
+**Consequence:** two OSM sourcing paths rather than one. That is a deliberate split — targeted
+queries over the network, bulk counts from a local file — and it is documented at the top of both
+modules rather than left for a reader to wonder about.
+
+---
+
+## 6. A built-form demand proxy, not a population raster
 
 **Chose:** demand = weighted log density of residential buildings (0.40), everyday retail and
 services (0.25) and premium venues — hotels, malls, gyms, private clinics, marinas (0.35), all from
@@ -125,7 +156,7 @@ customer postcodes, which is the real answer and needs no public data at all.
 
 ---
 
-## 6. Union, not sum, for cannibalisation
+## 7. Union, not sum, for cannibalisation
 
 **Chose:** a branch's cannibalisation index is the area of the **union** of its siblings'
 intersections with its own catchment, as a share of that catchment.
@@ -140,7 +171,7 @@ and commented in place.
 
 ---
 
-## 7. Damp covered zones, do not drop them
+## 8. Damp covered zones, do not drop them
 
 **Chose:** a whitespace cell already inside one of our catchments keeps its score, multiplied by
 0.35, and stays on the map.
@@ -158,7 +189,7 @@ cells below a demand floor are `SKIP` regardless of score, with the rule stated.
 
 ---
 
-## 8. Pre-generate the AI notes offline; keep only chat live
+## 9. Pre-generate the AI notes offline; keep only chat live
 
 **Chose:** notes generated at build time and committed; a single Pages Function for the live
 analyst.
@@ -175,7 +206,7 @@ matches is rendered as **stale** instead of being passed off as current.
 
 ---
 
-## 9. Function calling over the JSON — explicitly not RAG
+## 10. Function calling over the JSON — explicitly not RAG
 
 **Chose:** six typed tools over the static dataset, with the tool trace returned to the UI.
 
@@ -196,7 +227,7 @@ answer it" rather than a fluent guess, which is the behaviour the system prompt 
 
 ---
 
-## 10. Static committed JSON, no database
+## 11. Static committed JSON, no database
 
 **Chose:** the pipeline writes JSON; the pipeline's output is committed; the app fetches files.
 
@@ -214,7 +245,7 @@ disagree about a score. One source of truth, computed once.
 
 ---
 
-## 11. Cloudflare Pages, not AWS
+## 12. Cloudflare Pages, not AWS
 
 **Chose:** Cloudflare Pages for the static app, one Pages Function for `/api/chat`, GitHub Actions
 for CI.
@@ -232,13 +263,39 @@ GeoJSON. None of that changes the model or the product; it is a deployment targe
 
 ---
 
+## 13. Thresholds from a stated posture, not from a nice-looking result
+
+**Chose:** the four label thresholds sit at the tertiles of the portfolio's own observed
+distribution on each axis.
+
+**Against (a):** round numbers picked by feel. **Against (b):** tuning until the split looked
+good.
+
+**Why:** the first version of the thresholds produced **20 HOLD, 2 SHRINK, 1 PROTECT**. A
+recommendation that almost every branch receives is not a recommendation, so something had to
+change — but "adjust until it looks right" is how a model quietly becomes a rationalisation.
+
+So the thresholds got a stated rule instead: *the top third on both axes is worth defending; the
+bottom sixth on strength is a candidate for exit.* That is a management posture about risk
+appetite, it is written down in `config.py` next to the numbers, and the resulting split
+(2 / 15 / 6) is a **consequence** of it rather than a target. Anyone who disagrees with the posture
+changes four numbers and the whole product, including the panel that explains it, follows.
+
+**Consequence:** the split is sensitive to the posture, which is the honest situation. The UI
+prints the rule that fired for every branch precisely so that disagreement lands on the weights
+rather than on the label.
+
+---
+
 ## What I would do next, in order
 
 1. **Drive-time isochrones** (OpenRouteService). The single biggest fidelity gain, and it makes the
    overlap geometry meaningfully more honest.
 2. **Real competitor ratings** (Google Places). Removes the largest simulated dependency and makes
    `competitive_position` a real signal rather than an illustrative one.
-3. **Sensitivity analysis in the UI.** A slider on each weight, showing which labels flip. The
+3. **Sensitivity analysis in the UI.** A slider on each weight and threshold, showing which labels
+   flip. Given how much the split depends on the stated posture (§13), this is the highest-value
+   remaining feature. The
    fastest way to build trust in a judgement-based model is to let the decision-maker see how
    fragile each label is — and it turns "I disagree with this weight" into a two-second experiment.
 4. **The chain's own data.** Revenue per chair and booking density would replace three proxies at

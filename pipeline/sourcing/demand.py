@@ -23,11 +23,16 @@ This is honest about what it is: a built-form proxy, not a census. Its
 limitation -- that it under-reads brand-new districts OSM has not mapped yet --
 is stated in the README trust section and surfaced per zone as a flag.
 
-REQUEST BUDGET. One Overpass query per region, not one per component. The
-public Overpass instances are a shared free resource with a small number of
-concurrent slots per IP, and they will (rightly) drop a client that fans out.
-So we ask once for every tag we care about and classify the results locally,
-which is both kinder to the service and easier to test.
+SOURCING CHANNEL. This layer reads a downloaded OSM extract rather than the
+Overpass API. Overpass is right for the competitor layer -- five small bbox
+queries -- and wrong for this one, which needs every residential building,
+shop and hotel across three metros. Asking a shared free query service for
+tens of thousands of features is slow, antisocial, and in practice gets the
+client rate-limited into a 406. See `pipeline/sourcing/extract.py`.
+
+Only the aggregate is committed: per-H3-cell counts, a few hundred kilobytes.
+The 250 MB extract is gitignored and re-downloadable, so a re-run and CI read
+the aggregate and never need it.
 """
 
 from __future__ import annotations
@@ -36,7 +41,7 @@ import h3
 
 from pipeline import config
 from pipeline.models import ZoneActivity
-from pipeline.sourcing.osm import bbox_query, element_coords, overpass
+from pipeline.sourcing.extract import ensure_extract, stream_features
 from pipeline.util import read_json, write_json
 
 DEMAND_RAW = config.DATA_RAW / "zone_activity_counts.json"
@@ -178,40 +183,43 @@ def load_zone_activity(
         if cached:
             return {idx: ZoneActivity.model_validate(row) for idx, row in cached.items()}
 
+    from pipeline.sourcing import osm
+
+    if osm.OFFLINE:
+        raise osm.CacheMiss(
+            f"No committed demand aggregate at {DEMAND_RAW} and the pipeline is running "
+            "offline. Run `uv run python -m pipeline.run --refresh` with network access to "
+            "download the OSM extract and rebuild it, then commit the result."
+        )
+
     regions = merge_bboxes(bboxes)
-    print(f"    {len(bboxes)} regions merged to {len(regions)} Overpass queries")
+    print(f"    {len(bboxes)} regions merged to {len(regions)} bounding boxes")
+
+    path = ensure_extract()
+    features = stream_features(path, list(regions.values()), classify)
 
     cells: dict[str, ZoneActivity] = {}
-    seen: set[tuple[str, int]] = set()
+    tally = {"residential": 0, "activity": 0, "affluence": 0}
+    for component, lat, lon in features:
+        idx = h3.latlng_to_cell(lat, lon, config.H3_RESOLUTION)
+        cell = cells.setdefault(idx, ZoneActivity(region=_region_for(lat, lon, bboxes)))
+        setattr(cell, component, getattr(cell, component) + 1)
+        tally[component] += 1
 
-    for region, bbox in regions.items():
-        elements = overpass(
-            bbox_query(bbox, SELECTORS),
-            label=f"demand.{region.lower().replace(' ', '_').replace('+', '_and_')}",
-            refresh=refresh,
-        )
-        tally = {"residential": 0, "activity": 0, "affluence": 0, "unclassified": 0}
-        for el in elements:
-            key = (el["type"], el["id"])
-            if key in seen:
-                continue
-            seen.add(key)
-            component = classify(el.get("tags", {}))
-            if component is None:
-                tally["unclassified"] += 1
-                continue
-            coords = element_coords(el)
-            if coords is None:
-                continue
-            idx = h3.latlng_to_cell(coords[0], coords[1], config.H3_RESOLUTION)
-            cell = cells.setdefault(idx, ZoneActivity(region=region))
-            setattr(cell, component, getattr(cell, component) + 1)
-            tally[component] += 1
-        print(
-            f"    {region}: {len(elements)} features -> "
-            f"{tally['residential']} residential, {tally['activity']} activity, "
-            f"{tally['affluence']} affluence"
-        )
+    print(
+        f"    {len(cells)} cells: {tally['residential']} residential, "
+        f"{tally['activity']} activity, {tally['affluence']} affluence"
+    )
 
     write_json(DEMAND_RAW, {idx: cell.model_dump() for idx, cell in cells.items()}, compact=True)
     return cells
+
+
+def _region_for(
+    lat: float, lon: float, bboxes: dict[str, tuple[float, float, float, float]]
+) -> str:
+    """The first named region containing this point, for readable output."""
+    for name, (s, w, n, e) in bboxes.items():
+        if s <= lat <= n and w <= lon <= e:
+            return name
+    return "unknown"

@@ -21,3 +21,7 @@ web/dist/
 
 # cloudflare local secrets
 web/.dev.vars
+
+# Bulk OSM extracts: large, re-downloadable, and only an input to the
+# committed per-hex aggregate in data/raw/zone_activity_counts.json.
+data/raw/extracts/
