@@ -1,0 +1,14 @@
+{
+  "BD11": {
+    "lat": 25.1218,
+    "lon": 56.3286,
+    "precision": "manual",
+    "_note": "Nominatim only resolved 'Fujairah' to the emirate centroid (25.41, 56.23), ~35 km north of the city. Al Taif Mall sits in the Al Taif district of Fujairah city; coordinate set manually from the mall location."
+  },
+  "BD21": {
+    "lat": 25.755,
+    "lon": 55.949,
+    "precision": "manual",
+    "_note": "Nominatim resolved only to the Ras Al Khaimah emirate centroid. Al Neem City Center is on Sheikh Rashid Bin Saeed Al Maktoum Rd in Saqr Bin Mohd City; coordinate set manually."
+  }
+}
