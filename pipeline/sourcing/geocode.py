@@ -60,6 +60,14 @@ def geocode_candidates(candidates: list[str]) -> tuple[float, float, str] | None
                 return hit["lat"], hit["lon"], q
             continue
 
+    from pipeline.sourcing import osm
+
+    if osm.OFFLINE:
+        raise osm.CacheMiss(
+            f"No committed geocode for {candidates[0]!r} and the pipeline is running "
+            f"offline. Run with --refresh to populate {CACHE_PATH}, and commit the result."
+        )
+
     with httpx.Client(follow_redirects=True) as client:
         for q in candidates:
             if q in cache:

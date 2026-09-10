@@ -16,37 +16,25 @@ never disagree about why a branch got its label.
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
-
 from pipeline import config
+from pipeline.models import (
+    AxisScore,
+    Branch,
+    BranchLabel,
+    Cannibalisation,
+    CatchmentCompetition,
+    Contribution,
+    Direction,
+    Zone,
+    ZoneLabel,
+)
 from pipeline.util import clamp01, log_minmax, minmax
 
 
-@dataclass
-class Contribution:
-    signal: str
-    label: str  # human-readable, shown in the UI
-    raw_value: float | str
-    raw_display: str
-    normalised: float
-    weight: float
-    contribution: float
-    direction: str  # "up" | "down" | "neutral"
-    explanation: str
-
-
-@dataclass
-class AxisScore:
-    axis: str
-    score: float
-    contributions: list[Contribution] = field(default_factory=list)
-
-    def to_dict(self) -> dict:
-        return {
-            "axis": self.axis,
-            "score": round(self.score, 4),
-            "contributions": [asdict(c) for c in self.contributions],
-        }
+def _direction(contribution: float) -> Direction:
+    if abs(contribution) < 1e-9:
+        return "neutral"
+    return "up" if contribution > 0 else "down"
 
 
 def _mk(
@@ -58,11 +46,7 @@ def _mk(
     weight: float,
     explanation: str,
 ) -> Contribution:
-    contribution = weight * normalised
-    if abs(contribution) < 1e-9:
-        direction = "neutral"
-    else:
-        direction = "up" if contribution > 0 else "down"
+    contribution = round(weight * normalised, 4)
     return Contribution(
         signal=signal,
         label=label,
@@ -70,16 +54,30 @@ def _mk(
         raw_display=raw_display,
         normalised=round(normalised, 4),
         weight=weight,
-        contribution=round(contribution, 4),
-        direction=direction,
+        contribution=contribution,
+        direction=_direction(contribution),
         explanation=explanation,
+    )
+
+
+def _axis(axis: str, contributions: list[Contribution]) -> AxisScore:
+    """Build an axis whose score is, by construction, the sum of its parts.
+
+    Never compute the score independently of the breakdown: deriving it from
+    the contributions is what makes the sum-to-score invariant in
+    `AxisScore` hold rather than merely be checked.
+    """
+    return AxisScore(
+        axis=axis,
+        score=round(sum(c.contribution for c in contributions), 4),
+        contributions=contributions,
     )
 
 
 # --------------------------------------------------------------------------
 # Axis X -- branch strength
 # --------------------------------------------------------------------------
-def branch_strength(branch, competition) -> AxisScore:
+def branch_strength(branch: Branch, competition: CatchmentCompetition) -> AxisScore:
     w = config.STRENGTH_WEIGHTS
 
     rating_n = minmax(branch.rating, config.RATING_FLOOR, config.RATING_CEIL)
@@ -140,20 +138,23 @@ def branch_strength(branch, competition) -> AxisScore:
             ),
         ),
     ]
-    return AxisScore("strength", sum(c.contribution for c in contributions), contributions)
+    return _axis("strength", contributions)
 
 
 # --------------------------------------------------------------------------
 # Axis Y -- market attractiveness & defensibility
 # --------------------------------------------------------------------------
-def branch_market(branch, competition, cannibalisation, demand_norm: float) -> AxisScore:
+def branch_market(
+    branch: Branch,
+    competition: CatchmentCompetition,
+    cannibalisation: Cannibalisation,
+    demand_norm: float,
+) -> AxisScore:
     w = config.MARKET_WEIGHTS
 
     headroom = 1.0 - competition.saturation_norm
-    cann = clamp01(cannibalisation["overlapped_share"])
-    top_sibling = (
-        cannibalisation["siblings"][0] if cannibalisation.get("siblings") else None
-    )
+    cann = clamp01(cannibalisation.overlapped_share)
+    top_sibling = cannibalisation.siblings[0] if cannibalisation.siblings else None
 
     contributions = [
         _mk(
@@ -171,8 +172,7 @@ def branch_market(branch, competition, cannibalisation, demand_norm: float) -> A
             "headroom_norm",
             "Competitive headroom",
             round(competition.competitors_per_km2, 3),
-            f"{competition.competitor_count} rivals · "
-            f"{competition.competitors_per_km2:.2f}/km²",
+            f"{competition.competitor_count} rivals · {competition.competitors_per_km2:.2f}/km²",
             headroom,
             w["headroom_norm"],
             f"{competition.competitor_count} competing venues in the catchment "
@@ -189,9 +189,9 @@ def branch_market(branch, competition, cannibalisation, demand_norm: float) -> A
             w["cannibalisation_penalty"],
             (
                 f"{cann:.0%} of this catchment is also covered by "
-                f"{cannibalisation['sibling_count']} of our own lounges"
+                f"{cannibalisation.sibling_count} of our own lounges"
                 + (
-                    f", chiefly {top_sibling['name']} at {top_sibling['distance_m'] / 1000:.1f} km."
+                    f", chiefly {top_sibling.name} at {top_sibling.distance_m / 1000:.1f} km."
                     if top_sibling
                     else "."
                 )
@@ -200,13 +200,13 @@ def branch_market(branch, competition, cannibalisation, demand_norm: float) -> A
             ),
         ),
     ]
-    return AxisScore("market", sum(c.contribution for c in contributions), contributions)
+    return _axis("market", contributions)
 
 
 # --------------------------------------------------------------------------
 # Label mapping
 # --------------------------------------------------------------------------
-def branch_label(strength: float, market: float, cannibalisation: float) -> tuple[str, str]:
+def branch_label(strength: float, market: float, cannibalisation: float) -> tuple[BranchLabel, str]:
     """Map the two axes onto PROTECT / HOLD / SHRINK, and say which rule fired.
 
     The returned rule string is shown verbatim in the UI, so the reviewer sees
@@ -233,7 +233,7 @@ def branch_label(strength: float, market: float, cannibalisation: float) -> tupl
 # --------------------------------------------------------------------------
 # Whitespace opportunity
 # --------------------------------------------------------------------------
-def zone_opportunity(zone) -> AxisScore:
+def zone_opportunity(zone: Zone) -> AxisScore:
     w = config.OPPORTUNITY_WEIGHTS
     contributions = [
         _mk(
@@ -269,29 +269,28 @@ def zone_opportunity(zone) -> AxisScore:
             "Density of competing salons and spas already trading in this cell.",
         ),
     ]
-    score = sum(c.contribution for c in contributions)
+    undamped = round(sum(c.contribution for c in contributions), 4)
 
     if zone.inside_own_catchment:
-        damped = score * config.COVERED_ZONE_DAMPING
+        damped = round(undamped * config.COVERED_ZONE_DAMPING, 4)
         contributions.append(
             _mk(
                 "covered_zone_damping",
                 "Already inside our catchment",
                 config.COVERED_ZONE_DAMPING,
-                f"score × {config.COVERED_ZONE_DAMPING}",
+                f"{undamped:.2f} × {config.COVERED_ZONE_DAMPING} damping",
                 1.0,
-                round(damped - score, 4),
+                round(damped - undamped, 4),
                 "This cell is already served by an existing lounge, so opening here "
                 "would mostly move revenue rather than add it. Damped, not deleted, "
                 "so the map still shows why it was passed over.",
             )
         )
-        score = damped
 
-    return AxisScore("opportunity", score, contributions)
+    return _axis("opportunity", contributions)
 
 
-def zone_label(zone, score: float) -> tuple[str, str]:
+def zone_label(zone: Zone, score: float) -> tuple[ZoneLabel, str]:
     if zone.demand_norm < config.MIN_DEMAND_FOR_CONSIDERATION:
         return "SKIP", (
             f"demand {zone.demand_norm:.2f} < floor "

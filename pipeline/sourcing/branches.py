@@ -11,9 +11,9 @@ deterministically and tagged `synthetic` so they are never mistaken for fact.
 from __future__ import annotations
 
 import csv
-from dataclasses import asdict, dataclass, field
 
 from pipeline import config
+from pipeline.models import Branch
 from pipeline.sourcing.geocode import geocode_candidates
 from pipeline.util import read_json, seeded_normal, seeded_unit, write_json
 
@@ -51,29 +51,6 @@ AREA_CONTEXT: dict[str, str] = {
 }
 
 
-@dataclass
-class Branch:
-    branch_id: str
-    name: str
-    area: str
-    emirate: str
-    address: str
-    lat: float
-    lon: float
-    rating: float
-    review_count: int
-    urban_context: str
-    catchment_radius_m: int
-    # Synthetic operational fields (declared).
-    momentum: float = 0.0
-    chair_utilisation: float = 0.0
-    geocode_precision: str = "address"
-    flags: list[str] = field(default_factory=list)
-
-    def to_dict(self) -> dict:
-        return asdict(self)
-
-
 def _synthesise_operational(branch_id: str, review_count: int) -> tuple[float, float]:
     """Simulate momentum and chair utilisation.
 
@@ -95,7 +72,7 @@ def load_branches(*, refresh: bool = False) -> list[Branch]:
     if not refresh:
         cached = read_json(BRANCHES_RAW)
         if cached:
-            return [Branch(**row) for row in cached]
+            return [Branch.model_validate(row) for row in cached]
 
     overrides: dict = read_json(COORD_OVERRIDES, default={}) or {}
     branches: list[Branch] = []
@@ -154,5 +131,5 @@ def load_branches(*, refresh: bool = False) -> list[Branch]:
                 )
             )
 
-    write_json(BRANCHES_RAW, [b.to_dict() for b in branches])
+    write_json(BRANCHES_RAW, [b.model_dump() for b in branches])
     return branches

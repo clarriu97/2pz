@@ -65,7 +65,7 @@ that the value is in the processing, not the source.
 **Why:** the all-synthetic version is defensible in principle but weaker in practice — a reviewer
 cannot tell a well-reasoned model from a well-reasoned model *fed numbers that flatter it*. Twenty
 minutes of sourcing turned up Bedashing's public location list and public Google rating aggregates
-for all 23 branches, and OpenStreetMap has 1,352 genuine competing venues within 5 km of a branch,
+for all 23 branches, and OpenStreetMap has 1,354 genuine competing venues within 5 km of a branch,
 free and key-free. That much real data changes the character of the deliverable: the Abu Dhabi
 over-coverage finding is a real fact about a real network, not an artefact of a seed.
 

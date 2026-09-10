@@ -4,10 +4,26 @@ import type { Dataset, LayerState } from "../types";
  *  asks for, and each carries a one-line description of what it is *for*. A
  *  reviewer should be able to isolate exactly the capability they are grading. */
 const LAYERS: Array<{ key: keyof LayerState; label: string; hint: string }> = [
-  { key: "branches", label: "Branch network", hint: "23 lounges · size = review volume, colour = recommendation" },
-  { key: "catchments", label: "Catchments", hint: "Service radius per lounge, 2.5–6 km by urban context" },
-  { key: "overlaps", label: "Self-overlap", hint: "Where our own catchments compete with each other" },
-  { key: "competitors", label: "Competition", hint: "Salons, spas and hairdressers from OpenStreetMap" },
+  {
+    key: "branches",
+    label: "Branch network",
+    hint: "23 lounges · size = review volume, colour = recommendation",
+  },
+  {
+    key: "catchments",
+    label: "Catchments",
+    hint: "Service radius per lounge, 2.5–6 km by urban context",
+  },
+  {
+    key: "overlaps",
+    label: "Self-overlap",
+    hint: "Where our own catchments compete with each other",
+  },
+  {
+    key: "competitors",
+    label: "Competition",
+    hint: "Salons, spas and hairdressers from OpenStreetMap",
+  },
   { key: "whitespace", label: "Whitespace grid", hint: "H3 cells scored GROW / WATCH / SKIP" },
 ];
 

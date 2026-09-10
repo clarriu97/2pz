@@ -1,64 +1,55 @@
-name: build & deploy
+name: deploy
 
+# Deploys only from main, and only after CI has passed on that commit. The
+# gate is deliberate: the dataset-reproducibility check in CI is what stops a
+# build going out whose "How this works" panel describes a different model
+# from the one that produced its numbers.
 on:
-  push:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
     branches: [main]
-  pull_request:
   workflow_dispatch:
 
 concurrency:
-  group: deploy-${{ github.ref }}
-  cancel-in-progress: true
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  deployments: write
 
 jobs:
-  # The pipeline's output is committed, so CI does not need network access or
-  # any API key to verify the product builds. It only checks that the Python
-  # that produced the data still runs and that the committed data matches what
-  # the pipeline produces from the committed caches.
-  pipeline:
+  pages:
+    name: Cloudflare Pages
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
         with:
-          enable-cache: true
-      - run: uv sync --frozen
-      - name: Lint
-        run: uv run ruff check pipeline
-      - name: Rebuild data from committed caches
-        run: uv run python -m pipeline.run
-      - name: Fail if the committed dataset is not reproducible
-        run: |
-          if ! git diff --quiet -- data/processed web/public/data; then
-            echo "::error::Re-running the pipeline changed the committed data."
-            git diff --stat -- data/processed web/public/data
-            exit 1
-          fi
+          ref: ${{ github.event.workflow_run.head_sha || github.ref }}
 
-  web:
-    runs-on: ubuntu-latest
-    needs: pipeline
-    permissions:
-      contents: read
-      deployments: write
-    steps:
-      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
           cache-dependency-path: web/package-lock.json
+
       - run: npm ci
         working-directory: web
-      - name: Typecheck & build
-        run: npm run build
+
+      - run: npm run build
         working-directory: web
 
       - name: Deploy to Cloudflare Pages
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: web
+          # OPENAI_API_KEY is NOT set here. It is a Pages project secret, read
+          # by the Function at request time, so it never enters the build or
+          # this repository.
           command: pages deploy dist --project-name=bedashing-network-intelligence

@@ -29,18 +29,48 @@ const COLUMNS: Col[] = [
       </>
     ),
   },
-  { key: "strength", label: "Strength", num: true, get: (b) => b.strength.score,
-    render: (b) => b.strength.score.toFixed(2) },
-  { key: "market", label: "Market", num: true, get: (b) => b.market.score,
-    render: (b) => b.market.score.toFixed(2) },
-  { key: "rating", label: "Rating", num: true, get: (b) => b.rating,
-    render: (b) => `${b.rating.toFixed(1)}★` },
-  { key: "reviews", label: "Reviews", num: true, get: (b) => b.review_count,
-    render: (b) => b.review_count.toLocaleString() },
-  { key: "rivals", label: "Rivals", num: true, get: (b) => b.competition.competitor_count,
-    render: (b) => String(b.competition.competitor_count) },
-  { key: "overlap", label: "Overlap", num: true, get: (b) => b.cannibalisation.overlapped_share,
-    render: (b) => fmtPct(b.cannibalisation.overlapped_share) },
+  {
+    key: "strength",
+    label: "Strength",
+    num: true,
+    get: (b) => b.strength.score,
+    render: (b) => b.strength.score.toFixed(2),
+  },
+  {
+    key: "market",
+    label: "Market",
+    num: true,
+    get: (b) => b.market.score,
+    render: (b) => b.market.score.toFixed(2),
+  },
+  {
+    key: "rating",
+    label: "Rating",
+    num: true,
+    get: (b) => b.rating,
+    render: (b) => `${b.rating.toFixed(1)}★`,
+  },
+  {
+    key: "reviews",
+    label: "Reviews",
+    num: true,
+    get: (b) => b.review_count,
+    render: (b) => b.review_count.toLocaleString(),
+  },
+  {
+    key: "rivals",
+    label: "Rivals",
+    num: true,
+    get: (b) => b.competition.competitor_count,
+    render: (b) => String(b.competition.competitor_count),
+  },
+  {
+    key: "overlap",
+    label: "Overlap",
+    num: true,
+    get: (b) => b.cannibalisation.overlapped_share,
+    render: (b) => fmtPct(b.cannibalisation.overlapped_share),
+  },
 ];
 
 const FILTERS: Array<BranchLabel | "ALL"> = ["ALL", "PROTECT", "HOLD", "SHRINK"];
@@ -60,12 +90,13 @@ export function Ranking({
   const rows = useMemo(() => {
     const col = COLUMNS.find((c) => c.key === sort.key) ?? COLUMNS[1];
     const list = data.branches.filter((b) => filter === "ALL" || b.recommendation === filter);
-    return [...list].sort((a, b) => {
+    return list.toSorted((a, b) => {
       const va = col.get(a);
       const vb = col.get(b);
-      const cmp = typeof va === "number" && typeof vb === "number"
-        ? va - vb
-        : String(va).localeCompare(String(vb));
+      const cmp =
+        typeof va === "number" && typeof vb === "number"
+          ? va - vb
+          : String(va).localeCompare(String(vb));
       return sort.asc ? cmp : -cmp;
     });
   }, [data.branches, sort, filter]);
@@ -84,13 +115,13 @@ export function Ranking({
             key={f}
             className="suggestion"
             style={
-              filter === f
-                ? { borderColor: "var(--accent-dim)", color: "var(--text)" }
-                : undefined
+              filter === f ? { borderColor: "var(--accent-dim)", color: "var(--text)" } : undefined
             }
             onClick={() => setFilter(f)}
           >
-            {f === "ALL" ? `All ${data.branches.length}` : `${f} ${data.modelCard.counts.branch_labels[f] ?? 0}`}
+            {f === "ALL"
+              ? `All ${data.branches.length}`
+              : `${f} ${data.modelCard.counts.branch_labels[f] ?? 0}`}
           </button>
         ))}
       </div>
@@ -135,18 +166,12 @@ export function Ranking({
 
 /** The growth counterpart: top whitespace cells, since scanning 1,000 hexes on
  *  a map is not how anyone builds a shortlist. */
-export function TopZones({
-  data,
-  onSelect,
-}: {
-  data: Dataset;
-  onSelect: (s: Selection) => void;
-}) {
+export function TopZones({ data, onSelect }: { data: Dataset; onSelect: (s: Selection) => void }) {
   const rows = useMemo(
     () =>
-      [...data.zones]
+      data.zones
         .filter((z) => z.recommendation !== "SKIP")
-        .sort((a, b) => b.opportunity.score - a.opportunity.score)
+        .toSorted((a, b) => b.opportunity.score - a.opportunity.score)
         .slice(0, 30),
     [data.zones],
   );

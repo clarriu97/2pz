@@ -30,6 +30,17 @@ ENDPOINTS = [
 MIN_REQUEST_INTERVAL_S = 8.0
 _last_request_at = 0.0
 
+# When true, a cache miss raises instead of reaching for the network. CI runs
+# in this mode: the committed caches are the contract, and a silent fetch
+# would turn a missing-cache bug into a green build that only works because
+# the runner happened to have internet.
+OFFLINE = False
+
+
+class CacheMiss(RuntimeError):
+    """Raised in offline mode when a query has no committed response."""
+
+
 # Element types we ask for. Deliberately NOT `nwr`: making Overpass compute
 # geometric centres for *relations* over a metro-sized bbox reliably times the
 # public instances out (504), while node+way returns the same POIs in ~4s.
@@ -59,9 +70,7 @@ def bbox_query(bbox: tuple[float, float, float, float], selectors: list[str]) ->
 CLUSTER_LINK_DISTANCE_M = 40_000
 
 
-def cluster_bboxes(
-    branches, pad_m: float
-) -> dict[str, tuple[float, float, float, float]]:
+def cluster_bboxes(branches, pad_m: float) -> dict[str, tuple[float, float, float, float]]:
     """One padded bbox per geographic cluster of branches.
 
     Single-linkage clustering on great-circle distance: branches within
@@ -96,10 +105,14 @@ def cluster_bboxes(
         lons = [b.lon for b in members]
         m_lat, m_lon = local_metres_per_degree(sum(lats) / len(lats))
         dlat, dlon = pad_m / m_lat, pad_m / m_lon
-        # Name the cluster after its largest branch's area, so cache filenames
-        # and log lines are readable.
+        # Name the cluster after its largest branch, so cache filenames and log
+        # lines are readable. The branch id is part of the key because
+        # emirate+area alone is not unique across clusters: two distant
+        # clusters anchored on same-named districts would collide in this dict
+        # and one would be silently dropped, along with every competitor
+        # around it.
         anchor = max(members, key=lambda b: b.review_count)
-        name = f"{anchor.emirate}-{anchor.area}".replace(" ", "_")
+        name = f"{anchor.emirate}-{anchor.area}-{anchor.branch_id}".replace(" ", "_")
         out[name] = (
             round(min(lats) - dlat, 4),
             round(min(lons) - dlon, 4),
@@ -109,22 +122,49 @@ def cluster_bboxes(
     return out
 
 
+def _query_digest(query: str) -> str:
+    return hashlib.sha256(query.encode("utf-8")).hexdigest()[:12]
+
+
 def _cache_path(query: str, label: str):
-    """Cache filename keyed by a hash of the query text, so changing the query
-    invalidates the cache automatically instead of silently serving stale data."""
-    digest = hashlib.sha256(query.encode("utf-8")).hexdigest()[:12]
-    return CACHE_DIR / f"{label}.{digest}.json"
+    """Where a response is written: a readable label plus the query's digest.
+
+    The digest is what identifies the response; the label is only there so a
+    human can tell the cache files apart.
+    """
+    return CACHE_DIR / f"{label}.{_query_digest(query)}.json"
+
+
+def _find_cached(query: str):
+    """Look a response up by query digest alone, ignoring the label.
+
+    Renaming a cluster (a cosmetic change) must not invalidate a cache that
+    took an hour of polite rate-limited requests to fill. Matching on the
+    digest means the cache tracks the *query*, which is the thing that
+    actually determines the response.
+    """
+    matches = sorted(CACHE_DIR.glob(f"*.{_query_digest(query)}.json"))
+    return matches[0] if matches else None
 
 
 def overpass(query: str, *, label: str, refresh: bool = False) -> list[dict]:
     """Run an Overpass QL query and return its `elements`, cached by content."""
     path = _cache_path(query, label)
     if not refresh:
-        cached = read_json(path)
-        if cached is not None:
-            return cached["elements"]
+        existing = _find_cached(query)
+        if existing is not None:
+            cached = read_json(existing)
+            if cached is not None:
+                return cached["elements"]
 
     global _last_request_at
+    if OFFLINE:
+        raise CacheMiss(
+            f"No committed Overpass response for {label!r} and the pipeline is running "
+            f"offline. Run `uv run python -m pipeline.run --refresh` with network access to "
+            f"populate {CACHE_DIR}, and commit the result."
+        )
+
     last_error: Exception | None = None
     for endpoint in ENDPOINTS:
         for attempt in range(3):
@@ -145,8 +185,9 @@ def overpass(query: str, *, label: str, refresh: bool = False) -> list[dict]:
                 return payload["elements"]
             except Exception as exc:  # rate limit / gateway timeout -> back off
                 last_error = exc
-                print(f"    overpass attempt {attempt + 1} failed ({type(exc).__name__}), "
-                      f"backing off")
+                print(
+                    f"    overpass attempt {attempt + 1} failed ({type(exc).__name__}), backing off"
+                )
                 time.sleep(15 * (attempt + 1))
         print(f"  overpass endpoint failed ({endpoint}): {last_error}")
     raise RuntimeError(f"all Overpass endpoints failed for {label}: {last_error}")

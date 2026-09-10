@@ -2,30 +2,25 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from statistics import mean
 
 from pipeline import config
-from pipeline.util import haversine_m
+from pipeline.models import (
+    Branch,
+    Catchment,
+    CatchmentCompetition,
+    Competitor,
+    TopCompetitor,
+    Zone,
+)
+from pipeline.util import haversine_m, percentile
 
 
-@dataclass
-class CatchmentCompetition:
-    branch_id: str
-    competitor_count: int
-    competitors_per_km2: float
-    # Saturation normalised against the portfolio, so "saturated" means
-    # saturated *relative to where else we trade* -- the comparison a portfolio
-    # team actually makes.
-    saturation_norm: float
-    competitor_mean_rating: float
-    competitive_position_stars: float
-    premium_share: float
-    nearest_competitor_m: int
-    top_competitors: list[dict]
-
-
-def compute_competition(branches, competitors, catchments) -> dict[str, CatchmentCompetition]:
+def compute_competition(
+    branches: list[Branch],
+    competitors: list[Competitor],
+    catchments: dict[str, Catchment],
+) -> dict[str, CatchmentCompetition]:
     raw: dict[str, dict] = {}
 
     for b in branches:
@@ -50,24 +45,32 @@ def compute_competition(branches, competitors, catchments) -> dict[str, Catchmen
             ),
             "nearest_m": int(inside[0][0]) if inside else -1,
             "top": [
-                {
-                    "competitor_id": c.competitor_id,
-                    "name": c.name,
-                    "tier": c.tier,
-                    "rating": c.rating,
-                    "distance_m": int(d),
-                }
+                TopCompetitor(
+                    competitor_id=c.competitor_id,
+                    name=c.name,
+                    tier=c.tier,
+                    rating=c.rating,
+                    distance_m=int(d),
+                )
                 for d, c in inside[:8]
             ],
         }
 
     # Normalise density across the portfolio, not against an absolute constant:
     # what counts as a crowded catchment is market-specific.
+    if not raw:
+        return {}
+
     densities = sorted(v["per_km2"] for v in raw.values())
     lo = densities[0]
     # Cap at the 90th percentile so one hyper-dense catchment (Downtown-style)
-    # does not compress every other branch into the bottom of the scale.
-    hi = densities[max(0, int(0.9 * (len(densities) - 1)))]
+    # does not compress every other branch into the bottom of the scale. Fall
+    # back to the maximum when the p90 coincides with the floor, which happens
+    # on a small or highly skewed portfolio and would otherwise leave a
+    # zero-width band and a constant score.
+    hi = percentile(densities, 0.9)
+    if hi <= lo:
+        hi = densities[-1]
 
     out: dict[str, CatchmentCompetition] = {}
     for b in branches:
@@ -88,7 +91,9 @@ def compute_competition(branches, competitors, catchments) -> dict[str, Catchmen
     return out
 
 
-def zone_saturation(competitors, cell_lookup, cell_area_km2: float) -> dict[str, float]:
+def zone_saturation(
+    competitors: list[Competitor], cell_lookup: dict[str, Zone], cell_area_km2: float
+) -> dict[str, float]:
     """Competitor count per H3 cell, normalised across the gridded metros."""
     import h3
 
@@ -99,9 +104,9 @@ def zone_saturation(competitors, cell_lookup, cell_area_km2: float) -> dict[str,
             counts[idx] = counts.get(idx, 0) + 1
 
     if not counts:
-        return {idx: 0.0 for idx in cell_lookup}
+        return dict.fromkeys(cell_lookup, 0.0)
     densities = sorted(v / cell_area_km2 for v in counts.values())
-    hi = densities[max(0, int(0.9 * (len(densities) - 1)))]
+    hi = percentile(densities, 0.9) or densities[-1]
     return {
         idx: round(min(1.0, (counts.get(idx, 0) / cell_area_km2) / hi), 4) if hi > 0 else 0.0
         for idx in cell_lookup

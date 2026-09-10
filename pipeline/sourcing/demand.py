@@ -35,6 +35,7 @@ from __future__ import annotations
 import h3
 
 from pipeline import config
+from pipeline.models import ZoneActivity
 from pipeline.sourcing.osm import bbox_query, element_coords, overpass
 from pipeline.util import read_json, write_json
 
@@ -162,7 +163,7 @@ def merge_bboxes(
 
 def load_zone_activity(
     bboxes: dict[str, tuple[float, float, float, float]], *, refresh: bool = False
-) -> dict[str, dict]:
+) -> dict[str, ZoneActivity]:
     """Per-H3-cell counts of each demand component.
 
     We collect over the union of the whitespace metro boxes AND the branch
@@ -170,18 +171,17 @@ def load_zone_activity(
     Ras Al Khaimah) still gets a real demand reading for its own catchment even
     though we do not offer it as growth territory.
 
-    Returns {h3_index: {"region": str, "residential": int, "activity": int,
-    "affluence": int}}.
+    Returns {h3_index: ZoneActivity}.
     """
     if not refresh:
         cached = read_json(DEMAND_RAW)
         if cached:
-            return cached
+            return {idx: ZoneActivity.model_validate(row) for idx, row in cached.items()}
 
     regions = merge_bboxes(bboxes)
     print(f"    {len(bboxes)} regions merged to {len(regions)} Overpass queries")
 
-    cells: dict[str, dict] = {}
+    cells: dict[str, ZoneActivity] = {}
     seen: set[tuple[str, int]] = set()
 
     for region, bbox in regions.items():
@@ -204,10 +204,8 @@ def load_zone_activity(
             if coords is None:
                 continue
             idx = h3.latlng_to_cell(coords[0], coords[1], config.H3_RESOLUTION)
-            cell = cells.setdefault(
-                idx, {"region": region, "residential": 0, "activity": 0, "affluence": 0}
-            )
-            cell[component] += 1
+            cell = cells.setdefault(idx, ZoneActivity(region=region))
+            setattr(cell, component, getattr(cell, component) + 1)
             tally[component] += 1
         print(
             f"    {region}: {len(elements)} features -> "
@@ -215,5 +213,5 @@ def load_zone_activity(
             f"{tally['affluence']} affluence"
         )
 
-    write_json(DEMAND_RAW, cells, compact=True)
+    write_json(DEMAND_RAW, {idx: cell.model_dump() for idx, cell in cells.items()}, compact=True)
     return cells

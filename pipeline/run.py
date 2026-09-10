@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import shutil
+from collections import Counter
 from datetime import UTC, datetime
 
 from pipeline import config
@@ -27,6 +28,21 @@ from pipeline.geo.catchments import (
 )
 from pipeline.geo.saturation import compute_competition, zone_saturation
 from pipeline.geo.whitespace import build_zones, catchment_demand
+from pipeline.models import (
+    Branch,
+    BranchRecord,
+    Cannibalisation,
+    Catchment,
+    CatchmentCompetition,
+    CatchmentDemand,
+    Competitor,
+    Confidence,
+    ModelCard,
+    ModelCardCounts,
+    OverlapPair,
+    Zone,
+    ZoneRecord,
+)
 from pipeline.scoring.model import (
     branch_label,
     branch_market,
@@ -34,6 +50,7 @@ from pipeline.scoring.model import (
     zone_label,
     zone_opportunity,
 )
+from pipeline.sourcing import osm
 from pipeline.sourcing.branches import load_branches
 from pipeline.sourcing.competitors import load_competitors
 from pipeline.sourcing.demand import COMPONENT_WEIGHTS, load_zone_activity
@@ -46,14 +63,14 @@ from pipeline.util import write_json
 MIN_ZONE_FEATURES_TO_KEEP = 1
 
 
-def _confidence(branch, competition) -> dict:
+def build_confidence(branch: Branch, competition: CatchmentCompetition) -> Confidence:
     """Per-branch trust flags, shown in the UI next to the recommendation.
 
     Caveats are split into ones that should move the confidence *level* and
-    ones that are worth stating but not worth downgrading a branch for. Most
-    of our coordinates resolve at district rather than unit precision, so
-    counting that as a demotion would mark almost the whole portfolio "low"
-    and the flag would stop meaning anything.
+    ones worth stating but not worth downgrading a branch for. Most of our
+    coordinates resolve at district rather than unit precision, so counting
+    that as a demotion would mark almost the whole portfolio "low" and the flag
+    would stop meaning anything.
     """
     major: list[str] = []
     minor: list[str] = []
@@ -83,19 +100,123 @@ def _confidence(branch, competition) -> dict:
         )
 
     level = "high" if not major else ("low" if len(major) >= 2 else "medium")
-    return {"level": level, "caveats": major + minor}
+    return Confidence(level=level, caveats=major + minor)
 
 
-def build(*, refresh: bool = False, with_notes: bool = False) -> dict:
+def score_branches(
+    branches: list[Branch],
+    competition: dict[str, CatchmentCompetition],
+    cannibalisation: dict[str, Cannibalisation],
+    demand: dict[str, CatchmentDemand],
+    catchments: dict[str, Catchment],
+) -> list[BranchRecord]:
+    """Turn sourced branches into scored, labelled, explained records."""
+    records: list[BranchRecord] = []
+    for b in branches:
+        comp = competition[b.branch_id]
+        cann = cannibalisation[b.branch_id]
+        dem = demand[b.branch_id]
+
+        strength = branch_strength(b, comp)
+        market = branch_market(b, comp, cann, dem.demand_norm)
+        label, rule = branch_label(strength.score, market.score, cann.overlapped_share)
+
+        drivers = sorted(
+            strength.contributions + market.contributions, key=lambda c: -abs(c.contribution)
+        )
+
+        records.append(
+            BranchRecord(
+                **b.model_dump(),
+                recommendation=label,
+                decision_rule=rule,
+                strength=strength,
+                market=market,
+                top_drivers=[c.signal for c in drivers[:3]],
+                competition=comp,
+                cannibalisation=cann,
+                demand=dem,
+                catchment_area_km2=catchments[b.branch_id].area_km2,
+                confidence=build_confidence(b, comp),
+            )
+        )
+    return records
+
+
+def score_zones(zones: list[Zone]) -> list[ZoneRecord]:
+    """Score every gridded cell, dropping only the empty desert."""
+    records: list[ZoneRecord] = []
+    for z in zones:
+        opportunity = zone_opportunity(z)
+        label, rule = zone_label(z, opportunity.score)
+        if z.mapped_feature_count < MIN_ZONE_FEATURES_TO_KEEP and label == "SKIP":
+            continue
+        records.append(
+            ZoneRecord(
+                zone_id=z.h3_index,
+                metro=z.metro,
+                lat=z.lat,
+                lon=z.lon,
+                boundary=z.boundary,
+                area_km2=z.area_km2,
+                residential_count=z.residential_count,
+                activity_count=z.activity_count,
+                affluence_count=z.affluence_count,
+                demand_norm=z.demand_norm,
+                coverage_gap_norm=z.coverage_gap_norm,
+                saturation_norm=z.saturation_norm,
+                nearest_branch_id=z.nearest_branch_id,
+                nearest_branch_distance_m=z.nearest_branch_distance_m,
+                inside_own_catchment=z.inside_own_catchment,
+                opportunity=opportunity,
+                recommendation=label,
+                decision_rule=rule,
+                flags=z.flags,
+            )
+        )
+    return records
+
+
+def build(
+    *, refresh: bool = False, with_notes: bool = False, offline: bool = False
+) -> dict[str, int]:
     started = datetime.now(UTC)
+
+    if offline and refresh:
+        raise ValueError("--offline and --refresh are contradictory")
+    if offline:
+        print("     offline: a cache miss will fail rather than hit the network")
+    osm.OFFLINE = offline
+    try:
+        return _build(started, refresh=refresh, with_notes=with_notes)
+    finally:
+        # Never leave the global set: a leaked flag would make an unrelated
+        # later run in the same process refuse to fetch.
+        osm.OFFLINE = False
+
+
+def _build(started: datetime, *, refresh: bool, with_notes: bool) -> dict[str, int]:
+
     print("1/7  branches (real listing + Nominatim geocoding)")
     branches = load_branches(refresh=refresh)
     print(f"     {len(branches)} branches resolved")
+    if not branches:
+        # Without a single coordinate there is no catchment, no overlap and no
+        # product. Saying so here beats an IndexError six stages downstream,
+        # and beats silently shipping an empty dataset that looks like a
+        # working one.
+        raise RuntimeError(
+            "No branches could be resolved. Every geocoding candidate failed, which "
+            "usually means Nominatim is unreachable or rate-limiting. Re-run without "
+            "--refresh to use the committed cache in data/raw/."
+        )
 
     print("2/7  competitors (OpenStreetMap via Overpass)")
     competitors = load_competitors(branches, refresh=refresh)
-    print(f"     {len(competitors)} competing venues within "
-          f"{config.COMPETITOR_SEARCH_RADIUS_M / 1000:.0f} km of a branch")
+    print(
+        f"     {len(competitors)} competing venues within "
+        f"{config.COMPETITOR_SEARCH_RADIUS_M / 1000:.0f} km of a branch"
+    )
 
     print("3/7  zone activity (OSM built-form demand proxy)")
     bboxes = dict(config.WHITESPACE_BBOXES)
@@ -120,101 +241,38 @@ def build(*, refresh: bool = False, with_notes: bool = False) -> dict:
     print(f"     {len(zones)} cells gridded across {len(config.WHITESPACE_BBOXES)} metros")
 
     print("6/7  scoring")
-    branch_rows: list[dict] = []
-    for b in branches:
-        comp = competition[b.branch_id]
-        cann = cannibalisation[b.branch_id]
-        demand = branch_demand[b.branch_id]
-
-        x = branch_strength(b, comp)
-        y = branch_market(b, comp, cann, demand["demand_norm"])
-        label, rule = branch_label(x.score, y.score, cann["overlapped_share"])
-
-        merged = x.contributions + y.contributions
-        drivers = sorted(merged, key=lambda c: -abs(c.contribution))
-
-        branch_rows.append(
-            {
-                **b.to_dict(),
-                "recommendation": label,
-                "decision_rule": rule,
-                "strength": x.to_dict(),
-                "market": y.to_dict(),
-                "top_drivers": [c.signal for c in drivers[:3]],
-                "competition": {
-                    "competitor_count": comp.competitor_count,
-                    "competitors_per_km2": comp.competitors_per_km2,
-                    "saturation_norm": comp.saturation_norm,
-                    "competitor_mean_rating": comp.competitor_mean_rating,
-                    "competitive_position_stars": comp.competitive_position_stars,
-                    "premium_share": comp.premium_share,
-                    "nearest_competitor_m": comp.nearest_competitor_m,
-                    "top_competitors": comp.top_competitors,
-                },
-                "cannibalisation": cann,
-                "demand": demand,
-                "catchment_area_km2": catchments[b.branch_id].area_km2,
-                "confidence": _confidence(b, comp),
-                "analyst_note": None,
-            }
-        )
-
-    zone_rows: list[dict] = []
-    for z in zones:
-        score = zone_opportunity(z)
-        label, rule = zone_label(z, score.score)
-        has_signal = (
-            z.residential_count + z.activity_count + z.affluence_count
-            >= MIN_ZONE_FEATURES_TO_KEEP
-        )
-        if not has_signal and label == "SKIP":
-            continue
-        zone_rows.append(
-            {
-                "zone_id": z.h3_index,
-                "metro": z.metro,
-                "lat": z.lat,
-                "lon": z.lon,
-                "boundary": z.boundary,
-                "area_km2": z.area_km2,
-                "residential_count": z.residential_count,
-                "activity_count": z.activity_count,
-                "affluence_count": z.affluence_count,
-                "demand_norm": z.demand_norm,
-                "coverage_gap_norm": z.coverage_gap_norm,
-                "saturation_norm": z.saturation_norm,
-                "nearest_branch_id": z.nearest_branch_id,
-                "nearest_branch_distance_m": z.nearest_branch_distance_m,
-                "inside_own_catchment": z.inside_own_catchment,
-                "opportunity": score.to_dict(),
-                "recommendation": label,
-                "decision_rule": rule,
-                "flags": z.flags,
-                "analyst_note": None,
-            }
-        )
-    print(f"     {len(branch_rows)} branches, {len(zone_rows)} scored zones "
-          f"({len(zones) - len(zone_rows)} empty cells dropped)")
+    branch_rows = score_branches(branches, competition, cannibalisation, branch_demand, catchments)
+    zone_rows = score_zones(zones)
+    print(
+        f"     {len(branch_rows)} branches, {len(zone_rows)} scored zones "
+        f"({len(zones) - len(zone_rows)} empty cells dropped)"
+    )
 
     print("7/7  writing data/processed")
-    _write_outputs(branch_rows, zone_rows, competitors, catchments, branches, overlaps, started)
+    write_outputs(branch_rows, zone_rows, competitors, catchments, branches, overlaps, started)
 
     if with_notes:
         from pipeline.ai.notes import generate_notes
 
         generate_notes(branch_rows, zone_rows)
-        _write_outputs(
-            branch_rows, zone_rows, competitors, catchments, branches, overlaps, started
-        )
+        write_outputs(branch_rows, zone_rows, competitors, catchments, branches, overlaps, started)
 
-    _mirror_to_web()
+    mirror_to_web()
     return {"branches": len(branch_rows), "zones": len(zone_rows)}
 
 
-def _write_outputs(branch_rows, zone_rows, competitors, catchments, branches, overlaps, started):
+def write_outputs(
+    branch_rows: list[BranchRecord],
+    zone_rows: list[ZoneRecord],
+    competitors: list[Competitor],
+    catchments: dict[str, Catchment],
+    branches: list[Branch],
+    overlaps: list[OverlapPair],
+    started: datetime,
+) -> None:
     P = config.DATA_PROCESSED
 
-    write_json(P / "branches.json", branch_rows)
+    write_json(P / "branches.json", [r.model_dump() for r in branch_rows])
 
     write_json(
         P / "catchments.geojson",
@@ -223,14 +281,17 @@ def _write_outputs(branch_rows, zone_rows, competitors, catchments, branches, ov
             "features": [
                 {
                     "type": "Feature",
-                    "geometry": {"type": "Polygon", "coordinates": [catchments[r["branch_id"]].ring]},
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [catchments[r.branch_id].ring],
+                    },
                     "properties": {
-                        "branch_id": r["branch_id"],
-                        "name": r["name"],
-                        "radius_m": catchments[r["branch_id"]].radius_m,
-                        "urban_context": r["urban_context"],
-                        "recommendation": r["recommendation"],
-                        "overlapped_share": r["cannibalisation"]["overlapped_share"],
+                        "branch_id": r.branch_id,
+                        "name": r.name,
+                        "radius_m": catchments[r.branch_id].radius_m,
+                        "urban_context": r.urban_context,
+                        "recommendation": r.recommendation,
+                        "overlapped_share": r.cannibalisation.overlapped_share,
                     },
                 }
                 for r in branch_rows
@@ -276,8 +337,8 @@ def _write_outputs(branch_rows, zone_rows, competitors, catchments, branches, ov
             "features": [
                 {
                     "type": "Feature",
-                    "geometry": {"type": "Polygon", "coordinates": [z["boundary"]]},
-                    "properties": {k: v for k, v in z.items() if k != "boundary"},
+                    "geometry": {"type": "Polygon", "coordinates": [z.boundary]},
+                    "properties": {k: v for k, v in z.model_dump().items() if k != "boundary"},
                 }
                 for z in zone_rows
             ],
@@ -285,36 +346,42 @@ def _write_outputs(branch_rows, zone_rows, competitors, catchments, branches, ov
         compact=True,
     )
 
-    write_json(P / "model_card.json", _model_card(branch_rows, zone_rows, competitors, started))
+    write_json(
+        P / "model_card.json",
+        build_model_card(branch_rows, zone_rows, competitors, started).model_dump(),
+    )
 
 
-def _model_card(branch_rows, zone_rows, competitors, started) -> dict:
+def build_model_card(
+    branch_rows: list[BranchRecord],
+    zone_rows: list[ZoneRecord],
+    competitors: list[Competitor],
+    started: datetime,
+) -> ModelCard:
     """A machine-readable snapshot of exactly how this dataset was produced.
 
     The frontend renders this in the "How this works" panel and the chat
     endpoint is given it as context, so the parameters a reviewer reads are
     provably the ones that produced the numbers on screen.
     """
-    from collections import Counter
-
-    return {
-        "generated_at": started.isoformat(),
-        "seed": config.RANDOM_SEED,
-        "counts": {
-            "branches": len(branch_rows),
-            "competitors": len(competitors),
-            "scored_zones": len(zone_rows),
-            "branch_labels": dict(Counter(r["recommendation"] for r in branch_rows)),
-            "zone_labels": dict(Counter(z["recommendation"] for z in zone_rows)),
-        },
-        "geography": {
+    return ModelCard(
+        generated_at=started.isoformat(),
+        seed=config.RANDOM_SEED,
+        counts=ModelCardCounts(
+            branches=len(branch_rows),
+            competitors=len(competitors),
+            scored_zones=len(zone_rows),
+            branch_labels=dict(Counter(r.recommendation for r in branch_rows)),
+            zone_labels=dict(Counter(z.recommendation for z in zone_rows)),
+        ),
+        geography={
             "catchment_radius_m": config.CATCHMENT_RADIUS_M,
             "catchment_method": "haversine radius by urban context",
             "h3_resolution": config.H3_RESOLUTION,
             "competitor_search_radius_m": config.COMPETITOR_SEARCH_RADIUS_M,
             "whitespace_metros": list(config.WHITESPACE_BBOXES),
         },
-        "branch_model": {
+        branch_model={
             "strength_weights": config.STRENGTH_WEIGHTS,
             "market_weights": config.MARKET_WEIGHTS,
             "thresholds": {
@@ -325,7 +392,7 @@ def _model_card(branch_rows, zone_rows, competitors, started) -> dict:
                 "cannibalisation_shrink_trigger": config.CANNIBALISATION_SHRINK_TRIGGER,
             },
         },
-        "zone_model": {
+        zone_model={
             "opportunity_weights": config.OPPORTUNITY_WEIGHTS,
             "demand_components": COMPONENT_WEIGHTS,
             "thresholds": {
@@ -335,16 +402,16 @@ def _model_card(branch_rows, zone_rows, competitors, started) -> dict:
                 "covered_zone_damping": config.COVERED_ZONE_DAMPING,
             },
         },
-        "normalisation": {
+        normalisation={
             "rating_band": [config.RATING_FLOOR, config.RATING_CEIL],
             "review_volume_band": [config.REVIEW_VOLUME_FLOOR, config.REVIEW_VOLUME_CEIL],
             "competitive_position_clip_stars": config.COMPETITIVE_POSITION_CLIP,
         },
-        "provenance": config.PROVENANCE,
-    }
+        provenance=config.PROVENANCE,
+    )
 
 
-def _mirror_to_web() -> None:
+def mirror_to_web() -> None:
     dst = config.WEB_PUBLIC_DATA
     dst.mkdir(parents=True, exist_ok=True)
     for src in sorted(config.DATA_PROCESSED.glob("*")):
@@ -357,8 +424,13 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--refresh", action="store_true", help="re-fetch remote sources")
     ap.add_argument("--notes", action="store_true", help="regenerate AI analyst notes")
+    ap.add_argument(
+        "--offline",
+        action="store_true",
+        help="fail on a cache miss instead of reaching for the network (used by CI)",
+    )
     args = ap.parse_args()
-    result = build(refresh=args.refresh, with_notes=args.notes)
+    result = build(refresh=args.refresh, with_notes=args.notes, offline=args.offline)
     print(f"\ndone: {result['branches']} branches, {result['zones']} zones")
 
 

@@ -28,8 +28,8 @@ function Note({ note }: { note: Branch["analyst_note"] }) {
         </div>
         <p className="hint">
           No pre-generated note for this record. Notes are produced offline by{" "}
-          <code>pipeline/ai/notes.py</code> and committed, so they appear without an API key —
-          run <code>--notes</code> to generate the missing ones.
+          <code>pipeline/ai/notes.py</code> and committed, so they appear without an API key — run{" "}
+          <code>--notes</code> to generate the missing ones.
         </p>
       </div>
     );
@@ -202,7 +202,9 @@ function BranchDetail({
         <div className="section">
           <div className="section-head">
             <h3>Nearest rivals</h3>
-            <span className="score">{c.top_competitors.length} of {c.competitor_count}</span>
+            <span className="score">
+              {c.top_competitors.length} of {c.competitor_count}
+            </span>
           </div>
           <table className="rank-table">
             <thead>
@@ -330,14 +332,14 @@ function ZoneDetail({
         </div>
         <ul className="caveats">
           <li>
-            Demand is a built-form proxy from OpenStreetMap — residential, retail and premium
-            venue density — not census population or income. It under-reads brand-new districts
-            that OSM has not mapped yet.
+            Demand is a built-form proxy from OpenStreetMap — residential, retail and premium venue
+            density — not census population or income. It under-reads brand-new districts that OSM
+            has not mapped yet.
           </li>
           {zone.flags.includes("no_osm_features") && (
             <li>
-              No mapped features at all in this cell. Treat the demand figure as unknown rather
-              than low.
+              No mapped features at all in this cell. Treat the demand figure as unknown rather than
+              low.
             </li>
           )}
           {zone.flags.includes("non_residential_zone") && (
@@ -347,8 +349,8 @@ function ZoneDetail({
             </li>
           )}
           <li>
-            A hex is a site <em>search area</em>, roughly a neighbourhood, not a site. It says
-            where to look, not where to sign.
+            A hex is a site <em>search area</em>, roughly a neighbourhood, not a site. It says where
+            to look, not where to sign.
           </li>
         </ul>
       </div>
@@ -368,8 +370,8 @@ function OverlapDetail({
   const f = data.overlaps.features.find((x) => x.properties.pair_id === pairId);
   if (!f) return <p className="empty">Overlap not found.</p>;
   const p = f.properties;
-  const a = data.branches.find((b) => b.branch_id === p.branch_a);
-  const b = data.branches.find((b) => b.branch_id === p.branch_b);
+  const first = data.branches.find((x) => x.branch_id === p.branch_a);
+  const second = data.branches.find((x) => x.branch_id === p.branch_b);
 
   return (
     <>
@@ -402,11 +404,11 @@ function OverlapDetail({
           </thead>
           <tbody>
             {[
-              { b: a, share: p.share_of_a },
-              { b: b, share: p.share_of_b },
+              { b: first, share: p.share_of_a },
+              { b: second, share: p.share_of_b },
             ]
               .filter((r) => r.b)
-              .sort((x, y) => y.share - x.share)
+              .toSorted((x, y) => y.share - x.share)
               .map((r) => (
                 <tr
                   key={r.b!.branch_id}

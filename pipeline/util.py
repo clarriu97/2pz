@@ -97,6 +97,24 @@ def log_minmax(value: float, floor: float, ceil: float) -> float:
     return minmax(math.log(v), math.log(max(floor, 1e-9)), math.log(max(ceil, 1e-9)))
 
 
+def percentile(sorted_values: list[float], q: float) -> float:
+    """Linearly-interpolated quantile of an already-sorted list.
+
+    Written out rather than indexed with `int(q * (n - 1))`, which floors to 0
+    for a two-element list and would collapse a normalisation band to zero
+    width -- turning a real signal into a constant.
+    """
+    if not sorted_values:
+        return 0.0
+    if len(sorted_values) == 1:
+        return sorted_values[0]
+    pos = clamp01(q) * (len(sorted_values) - 1)
+    lo = math.floor(pos)
+    hi = min(lo + 1, len(sorted_values) - 1)
+    frac = pos - lo
+    return sorted_values[lo] * (1 - frac) + sorted_values[hi] * frac
+
+
 def percentile_rank(value: float, population: list[float]) -> float:
     """Share of the population at or below `value`, in [0, 1]."""
     if not population:

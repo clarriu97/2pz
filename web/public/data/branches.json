@@ -35,7 +35,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 568,
+          "raw_value": 568.0,
           "raw_display": "568 reviews",
           "normalised": 0.7518,
           "weight": 0.25,
@@ -112,6 +112,7 @@
       "competitive_position"
     ],
     "competition": {
+      "branch_id": "BD01",
       "competitor_count": 18,
       "competitors_per_km2": 0.3581,
       "saturation_norm": 0.1677,
@@ -242,7 +243,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 286,
+          "raw_value": 286.0,
           "raw_display": "286 reviews",
           "normalised": 0.5764,
           "weight": 0.25,
@@ -319,6 +320,7 @@
       "review_volume_norm"
     ],
     "competition": {
+      "branch_id": "BD02",
       "competitor_count": 171,
       "competitors_per_km2": 3.402,
       "saturation_norm": 1.0,
@@ -449,7 +451,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 454,
+          "raw_value": 454.0,
           "raw_display": "454 reviews",
           "normalised": 0.6945,
           "weight": 0.25,
@@ -526,6 +528,7 @@
       "competitive_position"
     ],
     "competition": {
+      "branch_id": "BD03",
       "competitor_count": 39,
       "competitors_per_km2": 1.9862,
       "saturation_norm": 0.9748,
@@ -647,7 +650,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 280,
+          "raw_value": 280.0,
           "raw_display": "280 reviews",
           "normalised": 0.571,
           "weight": 0.25,
@@ -724,6 +727,7 @@
       "rating_norm"
     ],
     "competition": {
+      "branch_id": "BD04",
       "competitor_count": 16,
       "competitors_per_km2": 0.3183,
       "saturation_norm": 0.1479,
@@ -860,7 +864,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 319,
+          "raw_value": 319.0,
           "raw_display": "319 reviews",
           "normalised": 0.6043,
           "weight": 0.25,
@@ -937,6 +941,7 @@
       "competitive_position"
     ],
     "competition": {
+      "branch_id": "BD05",
       "competitor_count": 34,
       "competitors_per_km2": 0.3006,
       "saturation_norm": 0.1392,
@@ -1067,7 +1072,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 98,
+          "raw_value": 98.0,
           "raw_display": "98 reviews",
           "normalised": 0.3026,
           "weight": 0.25,
@@ -1144,6 +1149,7 @@
       "momentum"
     ],
     "competition": {
+      "branch_id": "BD06",
       "competitor_count": 49,
       "competitors_per_km2": 2.4955,
       "saturation_norm": 1.0,
@@ -1268,7 +1274,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 396,
+          "raw_value": 396.0,
           "raw_display": "396 reviews",
           "normalised": 0.6596,
           "weight": 0.25,
@@ -1345,6 +1351,7 @@
       "review_volume_norm"
     ],
     "competition": {
+      "branch_id": "BD07",
       "competitor_count": 40,
       "competitors_per_km2": 2.0372,
       "saturation_norm": 1.0,
@@ -1475,7 +1482,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 78,
+          "raw_value": 78.0,
           "raw_display": "78 reviews",
           "normalised": 0.2442,
           "weight": 0.25,
@@ -1552,6 +1559,7 @@
       "competitive_position"
     ],
     "competition": {
+      "branch_id": "BD08",
       "competitor_count": 2,
       "competitors_per_km2": 0.0398,
       "saturation_norm": 0.0099,
@@ -1642,7 +1650,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 158,
+          "raw_value": 158.0,
           "raw_display": "158 reviews",
           "normalised": 0.4247,
           "weight": 0.25,
@@ -1719,6 +1727,7 @@
       "headroom_norm"
     ],
     "competition": {
+      "branch_id": "BD09",
       "competitor_count": 93,
       "competitors_per_km2": 0.8223,
       "saturation_norm": 0.3978,
@@ -1849,7 +1858,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 38,
+          "raw_value": 38.0,
           "raw_display": "38 reviews",
           "normalised": 0.0604,
           "weight": 0.25,
@@ -1926,6 +1935,7 @@
       "headroom_norm"
     ],
     "competition": {
+      "branch_id": "BD10",
       "competitor_count": 107,
       "competitors_per_km2": 0.9461,
       "saturation_norm": 0.4591,
@@ -2063,7 +2073,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 125,
+          "raw_value": 125.0,
           "raw_display": "125 reviews",
           "normalised": 0.3648,
           "weight": 0.25,
@@ -2140,6 +2150,7 @@
       "competitive_position"
     ],
     "competition": {
+      "branch_id": "BD11",
       "competitor_count": 9,
       "competitors_per_km2": 0.1791,
       "saturation_norm": 0.0789,
@@ -2263,7 +2274,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 486,
+          "raw_value": 486.0,
           "raw_display": "486 reviews",
           "normalised": 0.7119,
           "weight": 0.25,
@@ -2340,6 +2351,7 @@
       "rating_norm"
     ],
     "competition": {
+      "branch_id": "BD12",
       "competitor_count": 15,
       "competitors_per_km2": 0.2984,
       "saturation_norm": 0.1381,
@@ -2476,7 +2488,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 384,
+          "raw_value": 384.0,
           "raw_display": "384 reviews",
           "normalised": 0.6517,
           "weight": 0.25,
@@ -2553,6 +2565,7 @@
       "review_volume_norm"
     ],
     "competition": {
+      "branch_id": "BD13",
       "competitor_count": 36,
       "competitors_per_km2": 0.7162,
       "saturation_norm": 0.3452,
@@ -2681,7 +2694,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 443,
+          "raw_value": 443.0,
           "raw_display": "443 reviews",
           "normalised": 0.6882,
           "weight": 0.25,
@@ -2758,6 +2771,7 @@
       "headroom_norm"
     ],
     "competition": {
+      "branch_id": "BD14",
       "competitor_count": 17,
       "competitors_per_km2": 0.8658,
       "saturation_norm": 0.4193,
@@ -2894,7 +2908,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 515,
+          "raw_value": 515.0,
           "raw_display": "515 reviews",
           "normalised": 0.7267,
           "weight": 0.25,
@@ -2971,6 +2985,7 @@
       "rating_norm"
     ],
     "competition": {
+      "branch_id": "BD15",
       "competitor_count": 2,
       "competitors_per_km2": 0.0398,
       "saturation_norm": 0.0099,
@@ -3052,7 +3067,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 1382,
+          "raw_value": 1382.0,
           "raw_display": "1,382 reviews",
           "normalised": 0.9791,
           "weight": 0.25,
@@ -3129,6 +3144,7 @@
       "competitive_position"
     ],
     "competition": {
+      "branch_id": "BD16",
       "competitor_count": 17,
       "competitors_per_km2": 0.3382,
       "saturation_norm": 0.1578,
@@ -3257,7 +3273,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 1028,
+          "raw_value": 1028.0,
           "raw_display": "1,028 reviews",
           "normalised": 0.9034,
           "weight": 0.25,
@@ -3334,6 +3350,7 @@
       "rating_norm"
     ],
     "competition": {
+      "branch_id": "BD17",
       "competitor_count": 40,
       "competitors_per_km2": 0.7958,
       "saturation_norm": 0.3846,
@@ -3464,7 +3481,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 365,
+          "raw_value": 365.0,
           "raw_display": "365 reviews",
           "normalised": 0.6387,
           "weight": 0.25,
@@ -3541,6 +3558,7 @@
       "rating_norm"
     ],
     "competition": {
+      "branch_id": "BD18",
       "competitor_count": 6,
       "competitors_per_km2": 0.0531,
       "saturation_norm": 0.0164,
@@ -3650,7 +3668,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 456,
+          "raw_value": 456.0,
           "raw_display": "456 reviews",
           "normalised": 0.6956,
           "weight": 0.25,
@@ -3727,6 +3745,7 @@
       "review_volume_norm"
     ],
     "competition": {
+      "branch_id": "BD19",
       "competitor_count": 114,
       "competitors_per_km2": 5.806,
       "saturation_norm": 1.0,
@@ -3850,7 +3869,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 829,
+          "raw_value": 829.0,
           "raw_display": "829 reviews",
           "normalised": 0.8484,
           "weight": 0.25,
@@ -3927,6 +3946,7 @@
       "review_volume_norm"
     ],
     "competition": {
+      "branch_id": "BD20",
       "competitor_count": 16,
       "competitors_per_km2": 0.3183,
       "saturation_norm": 0.1479,
@@ -4050,7 +4070,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 352,
+          "raw_value": 352.0,
           "raw_display": "352 reviews",
           "normalised": 0.6295,
           "weight": 0.25,
@@ -4127,6 +4147,7 @@
       "review_volume_norm"
     ],
     "competition": {
+      "branch_id": "BD21",
       "competitor_count": 1,
       "competitors_per_km2": 0.0199,
       "saturation_norm": 0.0,
@@ -4202,7 +4223,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 203,
+          "raw_value": 203.0,
           "raw_display": "203 reviews",
           "normalised": 0.4888,
           "weight": 0.25,
@@ -4279,6 +4300,7 @@
       "competitive_position"
     ],
     "competition": {
+      "branch_id": "BD22",
       "competitor_count": 8,
       "competitors_per_km2": 0.0707,
       "saturation_norm": 0.0252,
@@ -4409,7 +4431,7 @@
         {
           "signal": "review_volume_norm",
           "label": "Review volume (scale proxy)",
-          "raw_value": 301,
+          "raw_value": 301.0,
           "raw_display": "301 reviews",
           "normalised": 0.5894,
           "weight": 0.25,
@@ -4486,6 +4508,7 @@
       "review_volume_norm"
     ],
     "competition": {
+      "branch_id": "BD23",
       "competitor_count": 10,
       "competitors_per_km2": 0.0884,
       "saturation_norm": 0.034,

@@ -1,0 +1,181 @@
+name: CI
+
+# Runs on every push to any branch and on every pull request. Any failure in
+# formatting, linting, typechecking, tests or coverage fails the run.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # ------------------------------------------------------------------ python
+  pipeline:
+    name: pipeline (ruff + pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      - name: Code style (ruff format)
+        run: uv run ruff format --check --diff .
+
+      - name: Lint (ruff check)
+        run: uv run ruff check --output-format=github .
+
+      - name: Tests + coverage
+        # --cov-fail-under is set in pyproject.toml, so a coverage regression
+        # fails the job rather than merely reporting a lower number.
+        run: uv run pytest
+
+      - name: Publish coverage to the run summary
+        if: always()
+        run: |
+          {
+            echo "### Pipeline coverage"
+            echo
+            if [ -f coverage.xml ]; then
+              python - <<'PY'
+          import xml.etree.ElementTree as ET
+
+          root = ET.parse("coverage.xml").getroot()
+          line = float(root.get("line-rate", 0)) * 100
+          branch = float(root.get("branch-rate", 0)) * 100
+          print(f"| metric | coverage |")
+          print(f"| --- | --- |")
+          print(f"| lines | **{line:.2f}%** |")
+          print(f"| branches | **{branch:.2f}%** |")
+          print()
+          print("| module | line coverage |")
+          print("| --- | --- |")
+          for package in sorted(
+              root.iter("class"), key=lambda c: c.get("filename", "")
+          ):
+              name = package.get("filename")
+              rate = float(package.get("line-rate", 0)) * 100
+              print(f"| `{name}` | {rate:.1f}% |")
+          PY
+            else
+              echo "No coverage report produced."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipeline-coverage
+          path: coverage.xml
+          if-no-files-found: ignore
+
+  # --------------------------------------------------------------------- web
+  web:
+    name: web (prettier + oxlint + tsc + vitest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: web
+
+      - name: Code style (prettier)
+        run: npm run format:check
+        working-directory: web
+
+      - name: Lint (oxlint)
+        run: npm run lint
+        working-directory: web
+
+      - name: Typecheck
+        run: npm run typecheck
+        working-directory: web
+
+      - name: Tests + coverage
+        # Thresholds live in vite.config.ts, so a regression fails the job.
+        run: npm run test:coverage
+        working-directory: web
+
+      - name: Publish coverage to the run summary
+        if: always()
+        run: |
+          {
+            echo "### Web coverage"
+            echo
+            if [ -f web/coverage/coverage-summary.json ]; then
+              node -e '
+                const s = require("./web/coverage/coverage-summary.json").total;
+                const rows = ["lines", "statements", "functions", "branches"]
+                  .map((k) => `| ${k} | **${s[k].pct}%** |`)
+                  .join("\n");
+                console.log("| metric | coverage |\n| --- | --- |\n" + rows);
+              '
+            else
+              echo "No coverage report produced."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Build
+        run: npm run build
+        working-directory: web
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-coverage
+          path: web/coverage
+          if-no-files-found: ignore
+
+  # ------------------------------------------------------- committed dataset
+  dataset:
+    name: committed dataset is reproducible
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - run: uv sync --frozen
+
+      - name: Rebuild the dataset from the committed source caches
+        # --offline turns a cache miss into a failure. Without it a missing
+        # cache would silently be fetched over the runner's network and the
+        # build would go green for the wrong reason.
+        run: uv run python -m pipeline.run --offline
+
+      - name: Fail if the committed dataset is not byte-identical
+        # Catches a config change committed without regenerating the data,
+        # which would leave the UI describing a model that did not produce the
+        # numbers on screen.
+        run: |
+          if ! git diff --quiet -- data/processed web/public/data; then
+            echo "::error::Re-running the pipeline changed the committed dataset."
+            git diff --stat -- data/processed web/public/data
+            git diff -- data/processed | head -100
+            exit 1
+          fi
+          echo "Dataset reproduced byte for byte." >> "$GITHUB_STEP_SUMMARY"

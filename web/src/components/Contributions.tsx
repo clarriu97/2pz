@@ -68,7 +68,7 @@ interface Props {
 
 export function ContributionBreakdown({ axis, title, hint, sortByImpact = true }: Props) {
   const rows = sortByImpact
-    ? [...axis.contributions].sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution))
+    ? axis.contributions.toSorted((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution))
     : axis.contributions;
   const scale = Math.max(...rows.map((c) => Math.abs(c.contribution)), 0.001);
   const total = rows.reduce((s, c) => s + c.contribution, 0);

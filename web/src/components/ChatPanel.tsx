@@ -17,11 +17,17 @@ interface ToolCall {
 }
 
 interface Msg {
+  /** Stable identity for React. The transcript is append-only, so an index
+   *  would work today and break the moment anything edits or removes a turn. */
+  id: string;
   role: "user" | "assistant";
   content: string;
   tools?: ToolCall[];
   error?: boolean;
 }
+
+let messageCounter = 0;
+const nextId = () => `m${++messageCounter}`;
 
 const SUGGESTIONS = [
   "Which branches are most at risk, and why?",
@@ -33,11 +39,7 @@ const SUGGESTIONS = [
 
 /** Turn any branch or zone id the answer mentions into a click that moves the
  *  map. The analyst and the map should be one product, not two. */
-function linkify(
-  text: string,
-  data: Dataset,
-  onSelect: (s: Selection) => void,
-): React.ReactNode[] {
+function linkify(text: string, data: Dataset, onSelect: (s: Selection) => void): React.ReactNode[] {
   const ids = new Map<string, Selection>();
   for (const b of data.branches) ids.set(b.branch_id, { kind: "branch", id: b.branch_id });
   const pattern = /\b(BD\d{2})\b/g;
@@ -91,15 +93,22 @@ export function ChatPanel({
   const [busy, setBusy] = useState(false);
   const logRef = useRef<HTMLDivElement>(null);
 
+  // `messages` and `busy` are change triggers rather than values this effect
+  // reads: a new turn or the thinking indicator appearing should scroll the
+  // log to the bottom. The exhaustive-deps rule cannot express that
+  // distinction, so it is disabled here deliberately rather than worked
+  // around by moving the scroll into every call site.
+  /* oxlint-disable react/exhaustive-effect-dependencies */
   useEffect(() => {
     logRef.current?.scrollTo({ top: logRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, busy]);
+  /* oxlint-enable react/exhaustive-effect-dependencies */
 
   async function send(text: string) {
     const question = text.trim();
     if (!question || busy) return;
 
-    const next: Msg[] = [...messages, { role: "user", content: question }];
+    const next: Msg[] = [...messages, { id: nextId(), role: "user", content: question }];
     setMessages(next);
     setInput("");
     setBusy(true);
@@ -126,6 +135,7 @@ export function ChatPanel({
         setMessages([
           ...next,
           {
+            id: nextId(),
             role: "assistant",
             content:
               res.status === 501
@@ -140,12 +150,13 @@ export function ChatPanel({
       const payload = (await res.json()) as { answer: string; tools: ToolCall[] };
       setMessages([
         ...next,
-        { role: "assistant", content: payload.answer, tools: payload.tools },
+        { id: nextId(), role: "assistant", content: payload.answer, tools: payload.tools },
       ]);
     } catch (err) {
       setMessages([
         ...next,
         {
+          id: nextId(),
           role: "assistant",
           content:
             "Could not reach /api/chat. In local `npm run dev` there is no Pages Function — " +
@@ -166,11 +177,10 @@ export function ChatPanel({
         {messages.length === 0 && (
           <>
             <p className="hint" style={{ marginBottom: 4 }}>
-              Ask the network analyst. It answers by calling tools over the same committed data
-              this map renders — <code>list_branches</code>, <code>get_branch</code>,{" "}
-              <code>compare_branches</code>, <code>find_overlaps</code>,{" "}
-              <code>top_whitespace</code>, <code>network_summary</code> — and the trace of every
-              call is shown with the answer.
+              Ask the network analyst. It answers by calling tools over the same committed data this
+              map renders — <code>list_branches</code>, <code>get_branch</code>,{" "}
+              <code>compare_branches</code>, <code>find_overlaps</code>, <code>top_whitespace</code>
+              , <code>network_summary</code> — and the trace of every call is shown with the answer.
             </p>
             <p className="hint">
               Deliberately no vector store: {data.branches.length} branches and{" "}
@@ -188,13 +198,10 @@ export function ChatPanel({
           </>
         )}
 
-        {messages.map((m, i) => (
-          <div className={`msg msg-${m.role}`} key={i}>
+        {messages.map((m) => (
+          <div className={`msg msg-${m.role}`} key={m.id}>
             <div className="msg-role">{m.role === "user" ? "You" : "Network analyst"}</div>
-            <div
-              className="msg-body"
-              style={m.error ? { color: "var(--hold)" } : undefined}
-            >
+            <div className="msg-body" style={m.error ? { color: "var(--hold)" } : undefined}>
               {m.role === "assistant" ? linkify(m.content, data, onSelect) : m.content}
             </div>
             {m.tools && m.tools.length > 0 && (
@@ -206,8 +213,7 @@ export function ChatPanel({
                 <pre>
                   {m.tools
                     .map(
-                      (t) =>
-                        `${t.name}(${JSON.stringify(t.arguments)})\n  → ${t.result_summary}`,
+                      (t) => `${t.name}(${JSON.stringify(t.arguments)})\n  → ${t.result_summary}`,
                     )
                     .join("\n\n")}
                 </pre>

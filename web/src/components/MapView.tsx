@@ -18,18 +18,24 @@ const UAE_BOUNDS: [[number, number], [number, number]] = [
 const BRANCH_COLOUR = [
   "match",
   ["get", "recommendation"],
-  "PROTECT", "#3fb98a",
-  "HOLD", "#d9a838",
-  "SHRINK", "#e05c5c",
+  "PROTECT",
+  "#3fb98a",
+  "HOLD",
+  "#d9a838",
+  "SHRINK",
+  "#e05c5c",
   "#8b949e",
 ] as never;
 
 const ZONE_COLOUR = [
   "match",
   ["get", "recommendation"],
-  "GROW", "#4a9ede",
-  "WATCH", "#a07cd4",
-  "SKIP", "#5b6672",
+  "GROW",
+  "#4a9ede",
+  "WATCH",
+  "#a07cd4",
+  "SKIP",
+  "#5b6672",
   "#5b6672",
 ] as never;
 
@@ -46,9 +52,12 @@ export function MapView({ data, layers, selection, onSelect }: Props) {
   const popup = useRef<maplibregl.Popup | null>(null);
   // Keep the latest onSelect in a ref: the map's click handlers are registered
   // once on load, and we do not want to tear the map down when a parent
-  // re-render hands us a new callback identity.
+  // re-render hands us a new callback identity. Assigned in an effect rather
+  // than during render, because a render must not have side effects.
   const onSelectRef = useRef(onSelect);
-  onSelectRef.current = onSelect;
+  useEffect(() => {
+    onSelectRef.current = onSelect;
+  }, [onSelect]);
 
   useEffect(() => {
     if (!container.current || map.current) return;
@@ -163,8 +172,10 @@ export function MapView({ data, layers, selection, onSelect }: Props) {
           "circle-color": [
             "match",
             ["get", "tier"],
-            "premium", "#f0a0c0",
-            "mid", "#c08fd0",
+            "premium",
+            "#f0a0c0",
+            "mid",
+            "#c08fd0",
             "#8090b0",
           ],
           "circle-opacity": 0.75,
@@ -185,8 +196,10 @@ export function MapView({ data, layers, selection, onSelect }: Props) {
             "interpolate",
             ["linear"],
             ["sqrt", ["get", "review_count"]],
-            5, 5,
-            38, 15,
+            5,
+            5,
+            38,
+            15,
           ],
           "circle-color": BRANCH_COLOUR,
           "circle-opacity": 0.9,
@@ -204,8 +217,10 @@ export function MapView({ data, layers, selection, onSelect }: Props) {
             "interpolate",
             ["linear"],
             ["sqrt", ["get", "review_count"]],
-            5, 9,
-            38, 19,
+            5,
+            9,
+            38,
+            19,
           ],
           "circle-color": "transparent",
           "circle-stroke-width": 2,
@@ -289,7 +304,13 @@ export function MapView({ data, layers, selection, onSelect }: Props) {
   }, [data]);
 
   /* Layer visibility. Driven by props rather than by imperative toggles so the
-     checkbox state and the map can never drift apart. */
+     checkbox state and the map can never drift apart.
+
+     `data` is a change trigger, not a value this effect reads: a new dataset
+     rebuilds the map above, and the freshly-created layers then need the
+     current visibility applied to them. The exhaustive-deps rule has no way to
+     express a trigger dependency. */
+  /* oxlint-disable react/exhaustive-effect-dependencies */
   useEffect(() => {
     const m = map.current;
     if (!m) return;
@@ -311,6 +332,7 @@ export function MapView({ data, layers, selection, onSelect }: Props) {
     if (m.isStyleLoaded() && m.getLayer("branch-points")) apply();
     else m.once("idle", apply);
   }, [layers, data]);
+  /* oxlint-enable react/exhaustive-effect-dependencies */
 
   /* Fly to and highlight the current selection. */
   useEffect(() => {

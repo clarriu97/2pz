@@ -12,9 +12,8 @@ and in the README's trust section rather than hidden.
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
-
 from pipeline import config
+from pipeline.models import Branch, Competitor
 from pipeline.sourcing.osm import bbox_query, cluster_bboxes, element_coords, overpass
 from pipeline.util import read_json, seeded_normal, write_json
 
@@ -36,22 +35,6 @@ OSM_SELECTORS = [
 PREMIUM_HINTS = ("spa", "lounge", "luxury", "salon & spa", "wellness", "clinic")
 
 
-@dataclass
-class Competitor:
-    competitor_id: str
-    name: str
-    lat: float
-    lon: float
-    category: str
-    tier: str
-    rating: float  # SYNTHETIC
-    nearest_branch_id: str
-    distance_to_nearest_m: int
-
-    def to_dict(self) -> dict:
-        return asdict(self)
-
-
 def _category(tags: dict) -> str:
     if tags.get("leisure") == "spa" or tags.get("amenity") == "spa":
         return "spa"
@@ -62,7 +45,7 @@ def _category(tags: dict) -> str:
 
 
 def _tier(name: str, tags: dict, category: str) -> str:
-    blob = f"{name} {tags.get('description','')}".lower()
+    blob = f"{name} {tags.get('description', '')}".lower()
     if category == "spa" or any(h in blob for h in PREMIUM_HINTS):
         return "premium"
     if category == "hairdresser":
@@ -87,11 +70,11 @@ TIER_RATING_PRIOR = {
 }
 
 
-def load_competitors(branches, *, refresh: bool = False) -> list[Competitor]:
+def load_competitors(branches: list[Branch], *, refresh: bool = False) -> list[Competitor]:
     if not refresh:
         cached = read_json(COMPETITORS_RAW)
         if cached:
-            return [Competitor(**row) for row in cached]
+            return [Competitor.model_validate(row) for row in cached]
 
     from pipeline.util import haversine_m
 
@@ -146,5 +129,5 @@ def load_competitors(branches, *, refresh: bool = False) -> list[Competitor]:
             )
         )
 
-    write_json(COMPETITORS_RAW, [c.to_dict() for c in out])
+    write_json(COMPETITORS_RAW, [c.model_dump() for c in out])
     return out

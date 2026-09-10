@@ -14,34 +14,13 @@ keeps shapely's Euclidean area calculation valid at these distances.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from shapely.geometry import Point
 
-from shapely.geometry import Point, Polygon
-
+from pipeline.models import Branch, Cannibalisation, Catchment, OverlapPair, Sibling
 from pipeline.util import circle_polygon, haversine_m, local_metres_per_degree
 
 
-@dataclass
-class Catchment:
-    branch_id: str
-    radius_m: int
-    area_km2: float
-    ring: list[list[float]]  # GeoJSON [lon, lat] closed ring
-
-
-@dataclass
-class OverlapPair:
-    branch_a: str
-    branch_b: str
-    centroid_distance_m: int
-    overlap_area_km2: float
-    # Share of A's catchment covered by B, and vice versa. Asymmetric on
-    # purpose: a small branch swallowed by a big one is the interesting case.
-    share_of_a: float
-    share_of_b: float
-
-
-def build_catchments(branches) -> dict[str, Catchment]:
+def build_catchments(branches: list[Branch]) -> dict[str, Catchment]:
     out: dict[str, Catchment] = {}
     for b in branches:
         r = b.catchment_radius_m
@@ -62,7 +41,7 @@ def _planar_circle(lat: float, lon: float, radius_m: float, ref_lat: float, ref_
     return Point(x, y).buffer(radius_m, quad_segs=32)
 
 
-def compute_overlaps(branches) -> list[OverlapPair]:
+def compute_overlaps(branches: list[Branch]) -> list[OverlapPair]:
     """Pairwise self-overlap between our own catchments.
 
     Only pairs whose catchments can physically intersect are evaluated, so this
@@ -94,7 +73,9 @@ def compute_overlaps(branches) -> list[OverlapPair]:
     return pairs
 
 
-def cannibalisation_index(branches, overlaps: list[OverlapPair]) -> dict[str, dict]:
+def cannibalisation_index(
+    branches: list[Branch], overlaps: list[OverlapPair]
+) -> dict[str, Cannibalisation]:
     """Per-branch cannibalisation: how much of my catchment do siblings cover?
 
     We take the *union* of sibling intersections, not the sum, so three
@@ -107,7 +88,7 @@ def cannibalisation_index(branches, overlaps: list[OverlapPair]) -> dict[str, di
         by_branch[p.branch_a].append(p)
         by_branch[p.branch_b].append(p)
 
-    index: dict[str, dict] = {}
+    index: dict[str, Cannibalisation] = {}
     lookup = {b.branch_id: b for b in branches}
     for bid, plist in by_branch.items():
         me = lookup[bid]
@@ -123,24 +104,26 @@ def cannibalisation_index(branches, overlaps: list[OverlapPair]) -> dict[str, di
                 continue
             union = clipped if union is None else union.union(clipped)
             neighbours.append(
-                {
-                    "branch_id": other_id,
-                    "name": other.name,
-                    "distance_m": int(haversine_m(me.lat, me.lon, other.lat, other.lon)),
-                    "share_of_my_catchment": round(clipped.area / mine.area, 4),
-                }
+                Sibling(
+                    branch_id=other_id,
+                    name=other.name,
+                    distance_m=int(haversine_m(me.lat, me.lon, other.lat, other.lon)),
+                    share_of_my_catchment=min(1.0, round(clipped.area / mine.area, 4)),
+                )
             )
         covered = 0.0 if union is None else union.area / mine.area
-        neighbours.sort(key=lambda n: -n["share_of_my_catchment"])
-        index[bid] = {
-            "overlapped_share": round(covered, 4),
-            "sibling_count": len(neighbours),
-            "siblings": neighbours,
-        }
+        neighbours.sort(key=lambda n: -n.share_of_my_catchment)
+        index[bid] = Cannibalisation(
+            # The union can exceed 1.0 only by floating-point noise; clamping
+            # keeps the value a genuine share rather than a leaky abstraction.
+            overlapped_share=min(1.0, round(covered, 4)),
+            sibling_count=len(neighbours),
+            siblings=neighbours,
+        )
     return index
 
 
-def overlap_features(branches, overlaps: list[OverlapPair]) -> list[dict]:
+def overlap_features(branches: list[Branch], overlaps: list[OverlapPair]) -> list[dict]:
     """The actual intersection polygons, as GeoJSON features for the map.
 
     Drawing the overlap *shape* rather than a number is the difference between

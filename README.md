@@ -1,5 +1,9 @@
 # Bedashing Network Intelligence
 
+[![CI](https://github.com/clarriu97/2pz/actions/workflows/ci.yml/badge.svg)](https://github.com/clarriu97/2pz/actions/workflows/ci.yml)
+![pipeline coverage](https://img.shields.io/badge/pipeline%20coverage-98%25-brightgreen)
+![web coverage](https://img.shields.io/badge/web%20coverage-98%25-brightgreen)
+
 **AI-enabled geospatial decision support for retail network right-sizing.**
 
 A decision-support tool for the **Head of Retail Portfolio** at [Bedashing Beauty
@@ -44,12 +48,85 @@ npx wrangler pages dev dist       # serves the app AND functions/api/chat.js
 ```bash
 uv sync
 uv run python -m pipeline.run              # rebuild from committed caches — no network, no keys
+uv run python -m pipeline.run --offline    # same, but a cache miss is an error (what CI runs)
 uv run python -m pipeline.run --refresh    # re-fetch Nominatim + Overpass (slow; public rate limits)
 uv run python -m pipeline.run --notes      # also regenerate the AI notes (needs OPENAI_API_KEY)
 ```
 
 Every remote response is cached under `data/raw/` and committed, so the default invocation is fully
 offline and reproduces the committed dataset byte for byte. CI asserts exactly that.
+
+---
+
+## Tests, linting and CI
+
+Every push and pull request runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml), which
+fails on any formatting, linting, typechecking, test or **coverage** regression. Three independent
+jobs:
+
+| Job | What it runs | Gate |
+|---|---|---|
+| **pipeline** | `ruff format --check` · `ruff check` · `pytest` | **283 tests**, coverage must stay **≥ 95%** (`--cov-fail-under` in [`pyproject.toml`](pyproject.toml)) |
+| **web** | `prettier --check` · `oxlint` · `tsc` · `vitest run --coverage` · `vite build` | **176 tests**, coverage must stay **≥ 85%** lines / **80%** branches (thresholds in [`web/vite.config.ts`](web/vite.config.ts)) |
+| **dataset** | `pipeline.run --offline` then `git diff` | the committed dataset must be reproducible **byte for byte** with no network |
+
+Current coverage — **97.98%** lines on the pipeline, **97.83%** statements on the web app. Both
+jobs write a coverage table into the GitHub Actions **run summary** and upload the full report as
+an artifact, so the numbers are visible on every run rather than only in a badge.
+
+Run the same gates locally:
+
+```bash
+uv sync && uv run ruff format --check . && uv run ruff check . && uv run pytest
+```
+
+```bash
+cd web && npm ci && npm run check
+```
+
+### What the tests actually assert
+
+They are not shape tests. Each one guards a claim the product makes to a reviewer:
+
+- **The explainability invariant.** `AxisScore` refuses to exist if its signed contributions do not
+  sum to its score. That is the whole basis of the "why" panel, so it is enforced by a validator
+  rather than trusted — and there is a test that the validator rejects a score the breakdown cannot
+  explain.
+- **Signal direction.** Better ratings, more reviews and a stronger local position must each *raise*
+  the strength score; saturation and self-overlap must *lower* the market score. If a sign ever
+  flipped, every explanation in the product would still add up correctly while being a lie.
+- **Threshold boundaries.** `PROTECT` at exactly `STRENGTH_HIGH`, `HOLD` one epsilon below. An
+  off-by-one there silently reclassifies a lease.
+- **The union-not-sum guarantee.** Four lounges stacked on the same spot must produce a
+  cannibalisation share ≤ 1.0, and strictly less than the naive sum of their pairwise overlaps.
+- **The demand floor.** Empty desert scores beautifully on "coverage gap"; a test pins that it can
+  never surface as an opportunity.
+- **Grounding.** The note payload is asserted to contain no field the model could hallucinate
+  revenue or rent from, and the chat tools are asserted to return the contribution breakdown with
+  every score.
+- **Reproducibility.** A full pipeline run with the network stubbed produces byte-identical output
+  twice, and CI proves the committed dataset is what the committed code produces.
+
+Three real bugs were found by writing these, each of which would have shipped silently:
+unclosed H3 GeoJSON rings (dropped by some renderers), a percentile index that floored to zero and
+collapsed the saturation signal to a constant, and non-unique Overpass cluster keys that silently
+discarded a whole cluster's competitors.
+
+### Tooling
+
+| Concern | Python | Web |
+|---|---|---|
+| Formatting | `ruff format` | `prettier` |
+| Linting | `ruff check` (E, W, F, I, UP, B, C4, SIM, RUF) | `oxlint` (correctness, suspicious, perf + react/typescript/unicorn) |
+| Types | Pydantic models validate at every boundary | `tsc --noEmit`, strict |
+| Tests | `pytest` + `pytest-cov` | `vitest` + `@testing-library/react` + `@vitest/coverage-v8` |
+| Dev deps | `[dependency-groups] dev` in `pyproject.toml` | `devDependencies` in `web/package.json` |
+
+All data modelling goes through **Pydantic** ([`pipeline/models.py`](pipeline/models.py)) rather
+than dicts or dataclasses. These shapes are a contract between the Python pipeline, the React app
+and the chat endpoint's tools; `extra="forbid"` means a renamed field fails inside the pipeline
+where the traceback points at the cause, instead of surfacing as `undefined` in a map layer or as
+a confidently wrong answer from the analyst.
 
 ---
 
@@ -62,7 +139,7 @@ Five toggleable map layers, one per functional block, plus a side panel with fiv
 | **Branch network** | 23 lounges. Circle size = review volume (our scale proxy), colour = recommendation. |
 | **Catchments** | Service area per lounge, 2.5–6 km by urban context. |
 | **Self-overlap** | The actual intersection polygons where our own catchments compete. |
-| **Competition** | 1,352 real salons, spas and hairdressers from OpenStreetMap. |
+| **Competition** | 1,354 real salons, spas and hairdressers from OpenStreetMap. |
 | **Whitespace grid** | H3 cells across Dubai, Abu Dhabi and Sharjah, scored for growth. |
 
 | Tab | What it answers |
@@ -275,14 +352,19 @@ S3 + DynamoDB once the dataset outgrew a JSON file. That is a deployment target,
 ```
 pipeline/
   config.py          every weight, threshold, radius — the single tuning surface
+  models.py          Pydantic contracts for every record that crosses a boundary
   sourcing/          branches, geocoding, Overpass client, competitors, demand proxy
   geo/               catchments + overlap, saturation, H3 whitespace grid
   scoring/model.py   the decision model and its signed contributions
   ai/                prompt design + offline note generation
   run.py             orchestrates end to end, writes data/processed/
+tests/               pytest suite — invariants, geometry, scoring, AI grounding, end to end
 data/raw/            committed source caches — re-runs need no network
 data/processed/      what the product reads
-web/                 React + MapLibre app; functions/api/chat.js is the analyst endpoint
+web/
+  src/               React + MapLibre app, with colocated *.test.tsx
+  functions/api/     the analyst endpoint and its tool tests
+.github/workflows/   ci.yml (every commit) and deploy.yml (main, after CI passes)
 docs/decisions.md    the trade-off log
 ```
 

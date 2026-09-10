@@ -17,10 +17,10 @@
  * what was actually looked up.
  */
 
-const MODEL = "gpt-4.1-mini";
+export const MODEL = "gpt-4.1-mini";
 const MAX_ROUNDS = 5; // enough for look-up -> compare -> answer; bounds cost and latency
 
-const SYSTEM = `You are the Bedashing Network Analyst, an assistant to the Head of Retail \
+export const SYSTEM = `You are the Bedashing Network Analyst, an assistant to the Head of Retail \
 Portfolio for a premium UAE salon and wellness chain with 23 lounges.
 
 You answer questions about the branch network and growth opportunities by calling the tools \
@@ -46,7 +46,7 @@ preamble, no restating the question. British English.`;
 
 /* ------------------------------------------------------------------ tools */
 
-const TOOLS = [
+export const TOOLS = [
   {
     type: "function",
     function: {
@@ -183,8 +183,7 @@ const TOOLS = [
 /** Trim a contribution list to what the model needs to argue from. */
 const slimContribs = (axis) =>
   axis.contributions
-    .slice()
-    .sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution))
+    .toSorted((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution))
     .map((c) => ({
       signal: c.signal,
       label: c.label,
@@ -209,7 +208,7 @@ const slimBranch = (b) => ({
   demand: b.demand.demand_norm,
 });
 
-function matchBranch(branches, query) {
+export function matchBranch(branches, query) {
   const q = String(query).trim().toLowerCase();
   return (
     branches.find((b) => b.branch_id.toLowerCase() === q) ??
@@ -230,7 +229,7 @@ const SORT_KEYS = {
   demand: (b) => b.demand.demand_norm,
 };
 
-function runTool(name, args, data) {
+export function runTool(name, args, data) {
   const { branches, zones, overlaps, modelCard } = data;
 
   switch (name) {
@@ -269,7 +268,7 @@ function runTool(name, args, data) {
       }
       const key = SORT_KEYS[args.sort_by] ?? SORT_KEYS.strength;
       const dir = args.order === "desc" ? -1 : 1;
-      rows = rows.slice().sort((a, b) => (key(a) - key(b)) * dir);
+      rows = rows.toSorted((a, b) => (key(a) - key(b)) * dir);
       const limit = Math.min(args.limit ?? 10, 23);
       return { total_matching: rows.length, branches: rows.slice(0, limit).map(slimBranch) };
     }
@@ -342,7 +341,7 @@ function runTool(name, args, data) {
             const vals = byBranch.map((x) => x.contributions[s]?.contribution ?? 0);
             return { signal: s, spread: Math.max(...vals) - Math.min(...vals) };
           })
-          .sort((a, b) => b.spread - a.spread)
+          .toSorted((a, b) => b.spread - a.spread)
           .slice(0, 4),
       };
     }
@@ -352,7 +351,9 @@ function runTool(name, args, data) {
       const rows = overlaps.features
         .map((f) => f.properties)
         .filter((p) => Math.max(p.share_of_a, p.share_of_b) >= min)
-        .sort((a, b) => Math.max(b.share_of_a, b.share_of_b) - Math.max(a.share_of_a, a.share_of_b))
+        .toSorted(
+          (a, b) => Math.max(b.share_of_a, b.share_of_b) - Math.max(a.share_of_a, a.share_of_b),
+        )
         .slice(0, args.limit ?? 10);
       return {
         total_overlapping_pairs: overlaps.features.length,
@@ -376,8 +377,7 @@ function runTool(name, args, data) {
       rows = rows.filter((z) => z.recommendation === (args.label ?? z.recommendation));
       if (!args.label) rows = rows.filter((z) => z.recommendation !== "SKIP");
       rows = rows
-        .slice()
-        .sort((a, b) => b.opportunity.score - a.opportunity.score)
+        .toSorted((a, b) => b.opportunity.score - a.opportunity.score)
         .slice(0, args.limit ?? 8);
       return {
         total_matching: rows.length,
@@ -494,6 +494,11 @@ export async function onRequestPost({ request, env }) {
 
   const trace = [];
 
+  // The tool-calling loop is sequential by necessity: each round's prompt
+  // contains the previous round's tool results, so there is nothing to run in
+  // parallel. `no-await-in-loop` is good advice for independent work and wrong
+  // for a dependent chain.
+  /* oxlint-disable no-await-in-loop */
   for (let round = 0; round < MAX_ROUNDS; round++) {
     const res = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -547,11 +552,15 @@ export async function onRequestPost({ request, env }) {
         // A short, human-readable summary for the UI trace. The model gets the
         // full payload; the reviewer gets enough to see the call was real.
         result_summary:
-          serialised.length > 400 ? `${serialised.slice(0, 400)}… (${serialised.length} bytes)` : serialised,
+          serialised.length > 400
+            ? `${serialised.slice(0, 400)}… (${serialised.length} bytes)`
+            : serialised,
       });
       messages.push({ role: "tool", tool_call_id: call.id, content: serialised });
     }
   }
+
+  /* oxlint-enable no-await-in-loop */
 
   return json(
     {

@@ -68,16 +68,16 @@ COMPETITOR_SEARCH_RADIUS_M = 5000
 # Weights are signed and sum to 1.0 in magnitude so the score lands in [0, 1]
 # and each contribution reads directly as "share of the final score".
 STRENGTH_WEIGHTS: dict[str, float] = {
-    "rating_norm": 0.30,          # absolute service quality
-    "review_volume_norm": 0.25,   # log reviews -> proxy for footfall/scale
-    "momentum": 0.20,             # recent-review trend -> is it improving?
+    "rating_norm": 0.30,  # absolute service quality
+    "review_volume_norm": 0.25,  # log reviews -> proxy for footfall/scale
+    "momentum": 0.20,  # recent-review trend -> is it improving?
     "competitive_position": 0.25,  # our rating minus the local rival mean
 }
 
 # Y axis: MARKET ATTRACTIVENESS & DEFENSIBILITY — is the ground worth holding?
 MARKET_WEIGHTS: dict[str, float] = {
-    "demand_norm": 0.45,            # latent demand in the catchment
-    "headroom_norm": 0.35,          # 1 - competitive saturation
+    "demand_norm": 0.45,  # latent demand in the catchment
+    "headroom_norm": 0.35,  # 1 - competitive saturation
     "cannibalisation_penalty": -0.20,  # negative: our own branches overlapping
 }
 
@@ -163,13 +163,34 @@ PROVENANCE: dict[str, dict[str, str]] = {
     "branch.lat_lng": {"tier": "real", "source": "OpenStreetMap Nominatim geocoding"},
     "branch.rating": {"tier": "real", "source": "Public Google Maps rating aggregate"},
     "branch.review_count": {"tier": "real", "source": "Public Google Maps rating aggregate"},
-    "competitor.location": {"tier": "real", "source": "OpenStreetMap (shop=beauty|hairdresser, leisure=spa)"},
+    "competitor.location": {
+        "tier": "real",
+        "source": "OpenStreetMap (shop=beauty|hairdresser|massage, leisure/amenity=spa)",
+    },
     "competitor.name": {"tier": "real", "source": "OpenStreetMap"},
-    "zone.demand": {"tier": "derived", "source": "OSM POI + residential density, normalised"},
-    "catchment": {"tier": "derived", "source": "Haversine radius by urban context (config.CATCHMENT_RADIUS_M)"},
-    "overlap": {"tier": "derived", "source": "Pairwise catchment intersection area"},
+    "zone.demand": {
+        "tier": "derived",
+        "source": "OSM residential + retail + premium-venue density, log-normalised",
+    },
+    "catchment": {
+        "tier": "derived",
+        "source": "Haversine radius by urban context (config.CATCHMENT_RADIUS_M)",
+    },
+    "overlap": {
+        "tier": "derived",
+        "source": "Union of pairwise catchment intersections",
+    },
     "saturation": {"tier": "derived", "source": "Competitor count per catchment km^2"},
-    "branch.momentum": {"tier": "synthetic", "source": "Simulated recent-review trend (seeded)"},
-    "competitor.rating": {"tier": "synthetic", "source": "Simulated from local rating distribution (seeded)"},
-    "branch.chair_utilisation": {"tier": "synthetic", "source": "Simulated operational metric (seeded)"},
+    "branch.momentum": {
+        "tier": "synthetic",
+        "source": "Simulated recent-review trend (seeded)",
+    },
+    "competitor.rating": {
+        "tier": "synthetic",
+        "source": "Simulated from a per-tier rating prior (seeded)",
+    },
+    "branch.chair_utilisation": {
+        "tier": "synthetic",
+        "source": "Simulated operational metric (seeded)",
+    },
 }

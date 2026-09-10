@@ -14,14 +14,78 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["ruff>=0.6"]
-
-[tool.ruff]
-line-length = 100
-target-version = "py311"
-
-[tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B"]
+dev = [
+    "ruff>=0.6",
+    "pytest>=8.3",
+    "pytest-cov>=5.0",
+]
 
 [tool.uv]
 package = false
+
+# ---------------------------------------------------------------- ruff
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["web"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # import sorting
+    "UP",   # pyupgrade
+    "B",    # bugbear
+    "C4",   # comprehensions
+    "SIM",  # simplify
+    "RUF",  # ruff-specific
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests legitimately compare against magic numbers and build throwaway models.
+"tests/*" = ["E501", "SLF001"]
+# Explanation strings are rendered verbatim in the UI, where an en dash and a
+# multiplication sign are correct typography rather than ambiguous characters.
+"pipeline/scoring/model.py" = ["RUF001"]
+"pipeline/run.py" = ["RUF001"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+# ---------------------------------------------------------------- pytest
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--cov=pipeline",
+    "--cov-report=term-missing:skip-covered",
+    "--cov-report=xml",
+    # The decision model is the part a reviewer has to trust, so the bar is
+    # set high enough that a regression in it cannot slip through silently.
+    "--cov-fail-under=95",
+]
+filterwarnings = ["error"]
+
+# ---------------------------------------------------------------- coverage
+[tool.coverage.run]
+branch = true
+source = ["pipeline"]
+omit = [
+    # Thin network shims: exercised via their cached-response paths in tests,
+    # but the live HTTP calls are not worth mocking end to end.
+    "pipeline/sourcing/geocode.py",
+]
+
+[tool.coverage.report]
+skip_covered = false
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+]

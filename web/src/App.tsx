@@ -32,7 +32,9 @@ export default function App() {
   });
 
   useEffect(() => {
-    loadDataset().then(setData).catch((e) => setError(String(e)));
+    loadDataset()
+      .then(setData)
+      .catch((e) => setError(String(e)));
   }, []);
 
   /** Selecting from a list should show the reasoning, not leave the reader on
@@ -74,8 +76,7 @@ export default function App() {
         <div className="header-title">
           <strong>Bedashing Network Intelligence</strong>
           <span>
-            Retail network right-sizing · {data.modelCard.counts.branches} lounges ·{" "}
-            {headline}
+            Retail network right-sizing · {data.modelCard.counts.branches} lounges · {headline}
           </span>
         </div>
         <div className="header-persona">
@@ -117,9 +118,7 @@ export default function App() {
               {tab === "detail" && (
                 <DetailPanel selection={selection} data={data} onSelect={select} />
               )}
-              {tab === "compare" && (
-                <Ranking data={data} selection={selection} onSelect={select} />
-              )}
+              {tab === "compare" && <Ranking data={data} selection={selection} onSelect={select} />}
               {tab === "growth" && <TopZones data={data} onSelect={select} />}
               {tab === "about" && <HowItWorks data={data} />}
             </div>
