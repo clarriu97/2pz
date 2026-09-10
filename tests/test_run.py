@@ -9,7 +9,6 @@ holds on the real bytes rather than only on fixtures.
 from __future__ import annotations
 
 import json
-from datetime import UTC, datetime
 
 import pytest
 
@@ -146,7 +145,7 @@ class TestModelCard:
     def card(self) -> ModelCard:
         from tests.helpers import make_branch_record, make_zone_record
 
-        return build_model_card([make_branch_record()], [make_zone_record()], [], datetime.now(UTC))
+        return build_model_card([make_branch_record()], [make_zone_record()], [])
 
     def test_reports_the_configured_weights_verbatim(self, card) -> None:
         """The UI renders this card, so it must be the live config.
@@ -159,6 +158,15 @@ class TestModelCard:
 
     def test_reports_the_seed_so_the_dataset_is_reproducible(self, card) -> None:
         assert card.seed == config.RANDOM_SEED
+
+    def test_carries_a_content_fingerprint_rather_than_a_run_timestamp(self, card) -> None:
+        """A clock reading made the output differ on every run for no reason.
+
+        It also answered a question nobody has. The fingerprint answers the
+        real one: is this the data and the model that produced these numbers?
+        """
+        assert len(card.dataset_fingerprint) == 16
+        assert card.sources_as_of == config.SOURCES_AS_OF
 
     def test_carries_the_full_provenance_registry(self, card) -> None:
         assert set(card.provenance) == set(config.PROVENANCE)

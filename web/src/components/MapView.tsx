@@ -72,13 +72,50 @@ export function MapView({ data, layers, selection, onSelect }: Props) {
     m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
     m.addControl(new maplibregl.ScaleControl({ unit: "metric" }), "bottom-left");
 
+    // A map in a grid cell is frequently constructed before the browser has
+    // given that cell its size, and MapLibre computes the initial fitBounds
+    // zoom from whatever the container measured at construction — which
+    // produces a wildly wrong zoom, or a blank canvas, from a momentary zero
+    // height. Observing the container and re-fitting on the first real size
+    // makes the initial view independent of that timing.
+    let fitted = false;
+    const observer = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect;
+      if (width < 1 || height < 1) return;
+      m.resize();
+      if (!fitted) {
+        fitted = true;
+        m.fitBounds(UAE_BOUNDS, { padding: 60, duration: 0 });
+      }
+    });
+    observer.observe(container.current);
+
+    // Without a handler MapLibre only console-logs a style failure, which
+    // reads as "the map is just dark" rather than "the basemap did not load".
+    m.on("error", (event) => {
+      console.error("[map]", event.error?.message ?? event);
+    });
+
     popup.current = new maplibregl.Popup({
       closeButton: false,
       closeOnClick: false,
       offset: 10,
     });
 
-    m.on("load", () => {
+    /* Our data layers are added on `styledata` rather than `load`.
+     *
+     * `load` waits for the *whole* basemap pipeline — vector tiles, sprite
+     * atlas and glyph ranges. None of that is a prerequisite for drawing our
+     * own GeoJSON, and if any of it stalls (a slow CDN, a constrained or
+     * headless renderer) `load` never fires and the product's entire data
+     * layer silently never appears. `styledata` fires as soon as the style is
+     * parsed, which is the only thing `addSource`/`addLayer` actually need.
+     */
+    let layersAdded = false;
+    const addLayers = () => {
+      if (layersAdded || !m.getStyle()) return;
+      layersAdded = true;
+
       const branchPoints = {
         type: "FeatureCollection" as const,
         features: data.branches.map((b) => ({
@@ -295,9 +332,13 @@ export function MapView({ data, layers, selection, onSelect }: Props) {
         const id = e.features?.[0]?.properties?.pair_id;
         if (id) onSelectRef.current({ kind: "overlap", id: String(id) });
       });
-    });
+    };
+
+    m.on("styledata", addLayers);
+    if (m.getStyle()) addLayers();
 
     return () => {
+      observer.disconnect();
       m.remove();
       map.current = null;
     };
@@ -329,8 +370,10 @@ export function MapView({ data, layers, selection, onSelect }: Props) {
         }
       }
     };
-    if (m.isStyleLoaded() && m.getLayer("branch-points")) apply();
-    else m.once("idle", apply);
+    // Waiting on "idle" would inherit the basemap's stall; our own layer
+    // existing is the real precondition.
+    if (m.getLayer("branch-points")) apply();
+    else m.once("styledata", apply);
   }, [layers, data]);
   /* oxlint-enable react/exhaustive-effect-dependencies */
 
@@ -370,8 +413,8 @@ export function MapView({ data, layers, selection, onSelect }: Props) {
       }
     };
 
-    if (m.isStyleLoaded() && m.getLayer("branch-selected")) apply();
-    else m.once("idle", apply);
+    if (m.getLayer("branch-selected")) apply();
+    else m.once("styledata", apply);
   }, [selection, data]);
 
   return <div className="map" ref={container} />;

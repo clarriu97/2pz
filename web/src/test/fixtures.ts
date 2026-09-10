@@ -160,7 +160,8 @@ export function zone(over: Partial<Zone> = {}): Zone {
 
 export function modelCard(over: Partial<ModelCard> = {}): ModelCard {
   return {
-    generated_at: "2026-09-10T12:00:00+00:00",
+    sources_as_of: "2026-09-10",
+    dataset_fingerprint: "89ab39341d83260b",
     seed: 20260910,
     counts: {
       branches: 3,

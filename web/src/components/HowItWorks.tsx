@@ -197,8 +197,10 @@ export function HowItWorks({ data }: { data: Dataset }) {
           <h3>This dataset</h3>
         </div>
         <dl className="kv">
-          <dt>generated</dt>
-          <dd>{new Date(mc.generated_at).toISOString().slice(0, 16).replace("T", " ")}Z</dd>
+          <dt>sources as of</dt>
+          <dd>{mc.sources_as_of}</dd>
+          <dt>fingerprint</dt>
+          <dd>{mc.dataset_fingerprint}</dd>
           <dt>seed</dt>
           <dd>{mc.seed}</dd>
           <dt>branches</dt>
@@ -210,7 +212,10 @@ export function HowItWorks({ data }: { data: Dataset }) {
         </dl>
         <p className="hint" style={{ marginTop: 9 }}>
           Every synthetic field is a pure function of the seed and the record id, so re-running the
-          pipeline reproduces this dataset byte for byte.
+          pipeline reproduces this dataset byte for byte — CI checks exactly that on every commit.
+          The fingerprint is a content hash of the raw inputs and of every weight and threshold, so
+          it changes if any of them do. There is deliberately no build timestamp: it would make the
+          output differ on every run while telling you nothing you could verify.
         </p>
       </div>
     </>

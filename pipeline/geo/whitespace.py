@@ -30,10 +30,18 @@ def _closed_ring(h3_index: str) -> list[list[float]]:
     return [*ring, ring[0]]
 
 
-def _cells_for_bbox(bbox: tuple[float, float, float, float]) -> set[str]:
+def _cells_for_bbox(bbox: tuple[float, float, float, float]) -> list[str]:
+    """The H3 cells covering a bbox, in a stable order.
+
+    `polygon_to_cells` returns them in an arbitrary order, and putting that
+    through a set made the order depend on PYTHONHASHSEED — so the committed
+    GeoJSON's feature order changed between runs even though every value in it
+    was identical. Sorting makes the output byte-reproducible, which is what
+    CI checks.
+    """
     s, w, n, e = bbox
     poly = h3.LatLngPoly([(s, w), (s, e), (n, e), (n, w), (s, w)])
-    return set(h3.polygon_to_cells(poly, config.H3_RESOLUTION))
+    return sorted(set(h3.polygon_to_cells(poly, config.H3_RESOLUTION)))
 
 
 def build_zones(branches: list[Branch], activity: dict[str, ZoneActivity]) -> list[Zone]:

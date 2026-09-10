@@ -23,6 +23,13 @@ WEB_PUBLIC_DATA = ROOT / "web" / "public" / "data"
 # seed plus the branch/zone id, so the committed dataset is reproducible.
 RANDOM_SEED = 20260910
 
+# The date the raw caches in data/raw/ were last refreshed from their sources.
+# Declared here rather than stamped from the clock at build time: a run
+# timestamp would make the output differ on every run for no reason, and it
+# would describe when the script ran rather than how old the data is. Update
+# this deliberately when re-running with --refresh.
+SOURCES_AS_OF = "2026-09-10"
+
 # --------------------------------------------------------------------------
 # Geography
 # --------------------------------------------------------------------------

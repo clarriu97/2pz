@@ -131,9 +131,17 @@ a {
   min-width: 0;
   min-height: 0;
 }
-.map {
+/* MapLibre's own stylesheet is imported from the component, so it is appended
+   after this file and its `.maplibregl-map { position: relative }` wins the
+   cascade against a bare `.map` selector at equal specificity — which
+   collapsed the container to zero height and rendered a blank map. Two belts:
+   a more specific selector, and explicit dimensions so the layer still fills
+   its parent if positioning is ever overridden again. */
+.map-wrap > .map {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .map-overlay {

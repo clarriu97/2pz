@@ -15,9 +15,10 @@ deliverable reviewable offline with no keys.
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
 import shutil
 from collections import Counter
-from datetime import UTC, datetime
 
 from pipeline import config
 from pipeline.geo.catchments import (
@@ -180,22 +181,20 @@ def score_zones(zones: list[Zone]) -> list[ZoneRecord]:
 def build(
     *, refresh: bool = False, with_notes: bool = False, offline: bool = False
 ) -> dict[str, int]:
-    started = datetime.now(UTC)
-
     if offline and refresh:
         raise ValueError("--offline and --refresh are contradictory")
     if offline:
         print("     offline: a cache miss will fail rather than hit the network")
     osm.OFFLINE = offline
     try:
-        return _build(started, refresh=refresh, with_notes=with_notes)
+        return _build(refresh=refresh, with_notes=with_notes)
     finally:
         # Never leave the global set: a leaked flag would make an unrelated
         # later run in the same process refuse to fetch.
         osm.OFFLINE = False
 
 
-def _build(started: datetime, *, refresh: bool, with_notes: bool) -> dict[str, int]:
+def _build(*, refresh: bool, with_notes: bool) -> dict[str, int]:
 
     print("1/7  branches (real listing + Nominatim geocoding)")
     branches = load_branches(refresh=refresh)
@@ -249,13 +248,13 @@ def _build(started: datetime, *, refresh: bool, with_notes: bool) -> dict[str, i
     )
 
     print("7/7  writing data/processed")
-    write_outputs(branch_rows, zone_rows, competitors, catchments, branches, overlaps, started)
+    write_outputs(branch_rows, zone_rows, competitors, catchments, branches, overlaps)
 
     if with_notes:
         from pipeline.ai.notes import generate_notes
 
         generate_notes(branch_rows, zone_rows)
-        write_outputs(branch_rows, zone_rows, competitors, catchments, branches, overlaps, started)
+        write_outputs(branch_rows, zone_rows, competitors, catchments, branches, overlaps)
 
     mirror_to_web()
     return {"branches": len(branch_rows), "zones": len(zone_rows)}
@@ -268,7 +267,6 @@ def write_outputs(
     catchments: dict[str, Catchment],
     branches: list[Branch],
     overlaps: list[OverlapPair],
-    started: datetime,
 ) -> None:
     P = config.DATA_PROCESSED
 
@@ -348,7 +346,7 @@ def write_outputs(
 
     write_json(
         P / "model_card.json",
-        build_model_card(branch_rows, zone_rows, competitors, started).model_dump(),
+        build_model_card(branch_rows, zone_rows, competitors).model_dump(),
     )
 
 
@@ -356,7 +354,6 @@ def build_model_card(
     branch_rows: list[BranchRecord],
     zone_rows: list[ZoneRecord],
     competitors: list[Competitor],
-    started: datetime,
 ) -> ModelCard:
     """A machine-readable snapshot of exactly how this dataset was produced.
 
@@ -365,7 +362,8 @@ def build_model_card(
     provably the ones that produced the numbers on screen.
     """
     return ModelCard(
-        generated_at=started.isoformat(),
+        sources_as_of=config.SOURCES_AS_OF,
+        dataset_fingerprint=dataset_fingerprint(),
         seed=config.RANDOM_SEED,
         counts=ModelCardCounts(
             branches=len(branch_rows),
@@ -409,6 +407,50 @@ def build_model_card(
         },
         provenance=config.PROVENANCE,
     )
+
+
+def dataset_fingerprint() -> str:
+    """A content hash of everything that determines the output.
+
+    Every committed raw input plus the model parameters. This replaces a build
+    timestamp: it is reproducible, and unlike a clock reading it answers the
+    question a reviewer actually has — "is this the data and the model that
+    produced the numbers I am looking at?"
+    """
+    digest = hashlib.sha256()
+    for path in sorted(config.DATA_RAW.rglob("*")):
+        # Bulk extracts are inputs to a committed aggregate, not inputs to the
+        # scoring, and they are gitignored — hashing them would make the
+        # fingerprint depend on whether someone had downloaded one.
+        if path.is_file() and "extracts" not in path.parts:
+            digest.update(path.name.encode())
+            digest.update(path.read_bytes())
+    digest.update(
+        json.dumps(
+            {
+                "seed": config.RANDOM_SEED,
+                "strength": config.STRENGTH_WEIGHTS,
+                "market": config.MARKET_WEIGHTS,
+                "opportunity": config.OPPORTUNITY_WEIGHTS,
+                "demand": COMPONENT_WEIGHTS,
+                "thresholds": [
+                    config.STRENGTH_HIGH,
+                    config.STRENGTH_LOW,
+                    config.MARKET_HIGH,
+                    config.MARKET_LOW,
+                    config.CANNIBALISATION_SHRINK_TRIGGER,
+                    config.OPPORTUNITY_GROW,
+                    config.OPPORTUNITY_WATCH,
+                    config.MIN_DEMAND_FOR_CONSIDERATION,
+                    config.COVERED_ZONE_DAMPING,
+                ],
+                "radii": config.CATCHMENT_RADIUS_M,
+                "h3": config.H3_RESOLUTION,
+            },
+            sort_keys=True,
+        ).encode()
+    )
+    return digest.hexdigest()[:16]
 
 
 def mirror_to_web() -> None:

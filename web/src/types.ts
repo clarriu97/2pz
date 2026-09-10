@@ -119,7 +119,10 @@ export interface Zone {
 }
 
 export interface ModelCard {
-  generated_at: string;
+  /** Declared in config, not read from the clock — see pipeline/config.py. */
+  sources_as_of: string;
+  /** Content hash of the raw inputs and the model parameters. */
+  dataset_fingerprint: string;
   seed: number;
   counts: {
     branches: number;

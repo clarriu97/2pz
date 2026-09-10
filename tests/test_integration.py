@@ -358,3 +358,54 @@ class TestOfflineMode:
         monkeypatch.setattr(osm_mod, "OFFLINE", True)
         with pytest.raises(osm_mod.CacheMiss, match="No committed geocode"):
             build(offline=True)
+
+
+class TestReproducibility:
+    """Guards the two defects the CI gate caught.
+
+    Both would have shipped as "the dataset just changes sometimes", which is
+    the kind of noise that makes a reproducibility check get switched off.
+    """
+
+    def test_output_is_identical_under_a_different_hash_seed(
+        self, isolated_pipeline, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """H3 cells arrived via a set, so their order tracked PYTHONHASHSEED.
+
+        Every value in the file was the same; only the feature order moved.
+        This test cannot change the interpreter's hash seed in-process, so it
+        asserts the property directly: the cell order is sorted, which makes
+        it independent of the seed.
+        """
+        from pipeline.geo.whitespace import _cells_for_bbox
+
+        cells = _cells_for_bbox((25.0, 55.2, 25.2, 55.4))
+        assert cells == sorted(cells)
+        assert len(cells) == len(set(cells))
+
+    def test_the_model_card_contains_no_wall_clock_value(self, isolated_pipeline) -> None:
+        # A timestamp makes byte-reproducibility impossible by construction.
+        build(refresh=True)
+        card = json.loads((isolated_pipeline["processed"] / "model_card.json").read_text())
+        assert "generated_at" not in card
+        assert card["sources_as_of"] == config.SOURCES_AS_OF
+
+    def test_the_fingerprint_changes_when_a_weight_changes(
+        self, isolated_pipeline, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        from pipeline.run import dataset_fingerprint
+
+        before = dataset_fingerprint()
+        monkeypatch.setitem(config.STRENGTH_WEIGHTS, "rating_norm", 0.99)
+        assert dataset_fingerprint() != before
+
+    def test_the_fingerprint_ignores_the_bulk_extract(self, isolated_pipeline) -> None:
+        """The extract is gitignored, so hashing it would make the fingerprint
+        depend on whether the person running it had downloaded one."""
+        from pipeline.run import dataset_fingerprint
+
+        before = dataset_fingerprint()
+        extracts = isolated_pipeline["raw"] / "extracts"
+        extracts.mkdir(parents=True, exist_ok=True)
+        (extracts / "region.osm.pbf").write_bytes(b"pretend extract")
+        assert dataset_fingerprint() == before

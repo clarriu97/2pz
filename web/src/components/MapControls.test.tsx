@@ -140,9 +140,17 @@ describe("HowItWorks", () => {
     expect(screen.getByText(/Trust the geometry, question the weights\./)).toBeInTheDocument();
   });
 
-  it("reports the seed so the dataset is reproducible", () => {
+  it("reports the seed and the content fingerprint", () => {
     render(<HowItWorks data={data} />);
     expect(screen.getByText("20260910")).toBeInTheDocument();
+    expect(screen.getByText("89ab39341d83260b")).toBeInTheDocument();
+  });
+
+  it("explains why there is no build timestamp", () => {
+    // A clock reading would make the dataset differ on every run while
+    // telling a reviewer nothing they could check.
+    render(<HowItWorks data={data} />);
+    expect(screen.getByText(/deliberately no build timestamp/)).toBeInTheDocument();
   });
 
   it("shows the catchment radii per urban context", () => {

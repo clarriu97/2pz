@@ -383,7 +383,15 @@ class ModelCard(Model):
     on screen rather than a hand-written description that can drift.
     """
 
-    generated_at: str
+    sources_as_of: str = Field(
+        description="Declared in config, not read from the clock: the date the raw caches "
+        "were last refreshed. A run timestamp would make the output non-reproducible and "
+        "would tell a reviewer nothing they could check."
+    )
+    dataset_fingerprint: str = Field(
+        description="sha256 over the committed raw inputs and the model config — identifies "
+        "this dataset version, and changes if any input or weight does."
+    )
     seed: int
     counts: ModelCardCounts
     geography: dict[str, object]
