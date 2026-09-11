@@ -22,6 +22,11 @@ data the map renders.
 
 ## Run it
 
+**Live: [2pz.larri.dev](https://2pz.larri.dev)** — or
+[bedashing-network-intelligence.pages.dev](https://bedashing-network-intelligence.pages.dev) if the
+custom domain has not propagated. The conversational analyst is live there; everything else works
+offline too.
+
 The product is static. All scoring happens offline in a Python pipeline whose output is committed,
 so **no API key is needed to see the whole thing**:
 
