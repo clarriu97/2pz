@@ -71,11 +71,11 @@ jobs:
 
 | Job | What it runs | Gate |
 |---|---|---|
-| **pipeline** | `ruff format --check` · `ruff check` · `pytest` | **299 tests**, coverage must stay **≥ 95%** (`--cov-fail-under` in [`pyproject.toml`](pyproject.toml)) |
-| **web** | `prettier --check` · `oxlint` · `tsc` · `vitest run --coverage` · `vite build` | **176 tests**, coverage must stay **≥ 85%** lines / **80%** branches (thresholds in [`web/vite.config.ts`](web/vite.config.ts)) |
+| **pipeline** | `ruff format --check` · `ruff check` · `pytest` | **313 tests**, coverage must stay **≥ 95%** (`--cov-fail-under` in [`pyproject.toml`](pyproject.toml)) |
+| **web** | `prettier --check` · `oxlint` · `tsc` · `vitest run --coverage` · `vite build` | **179 tests**, coverage must stay **≥ 85%** lines / **80%** branches (thresholds in [`web/vite.config.ts`](web/vite.config.ts)) |
 | **dataset** | `pipeline.run --offline` then `git diff` | the committed dataset must be reproducible **byte for byte** with no network |
 
-Current coverage — **97.80%** lines on the pipeline, **97.83%** statements on the web app. Both
+Current coverage — **97.82%** lines on the pipeline, **97.83%** statements on the web app. Both
 jobs write a coverage table into the GitHub Actions **run summary** and upload the full report as
 an artifact, so the numbers are visible on every run rather than only in a badge.
 
