@@ -276,3 +276,109 @@ class TestClient:
     def test_builds_a_client_when_a_key_is_present(self, monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.setenv("OPENAI_API_KEY", "sk-test-not-a-real-key")
         assert notes_mod._client() is not None
+
+
+class TestAttachNotes:
+    """Attaching is separate from regenerating, and that separation matters.
+
+    The notes are part of the committed dataset. If they were only attached
+    behind `--notes`, a plain `pipeline.run` would write nulls and disagree
+    with what is committed — which is precisely what the CI reproducibility
+    gate checks, so the build would break for a reason with nothing to do with
+    the data.
+    """
+
+    def _cache(self, tmp_path, entries: dict) -> None:
+        from pipeline.util import write_json
+
+        write_json(tmp_path / "notes.json", entries)
+
+    def test_attaches_committed_notes_without_a_key(
+        self, tmp_path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        monkeypatch.setattr(notes_mod, "CACHE_PATH", tmp_path / "notes.json")
+        monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+
+        record = make_branch_record()
+        self._cache(
+            tmp_path,
+            {
+                f"branch:{record.branch_id}": {
+                    "note": "Committed note.",
+                    "fingerprint": notes_mod._fingerprint(notes_mod.branch_payload(record)),
+                    "model": "gpt-4.1-mini",
+                }
+            },
+        )
+
+        assert notes_mod.attach_notes([record], []) == 0
+        assert record.analyst_note is not None
+        assert record.analyst_note.text == "Committed note."
+        assert record.analyst_note.stale is False
+
+    def test_never_calls_the_api(self, tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.setattr(notes_mod, "CACHE_PATH", tmp_path / "notes.json")
+
+        def explode():  # pragma: no cover - must never run
+            raise AssertionError("attaching must not build a client")
+
+        monkeypatch.setattr(notes_mod, "_client", explode)
+        notes_mod.attach_notes([make_branch_record()], [])
+
+    def test_reports_how_many_notes_are_stale(
+        self, tmp_path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        monkeypatch.setattr(notes_mod, "CACHE_PATH", tmp_path / "notes.json")
+        record = make_branch_record()
+        self._cache(
+            tmp_path,
+            {f"branch:{record.branch_id}": {"note": "Old.", "fingerprint": "0" * 16}},
+        )
+        assert notes_mod.attach_notes([record], []) == 1
+        assert record.analyst_note is not None
+        assert record.analyst_note.stale is True
+
+    def test_leaves_a_row_with_no_cached_note_alone(
+        self, tmp_path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        monkeypatch.setattr(notes_mod, "CACHE_PATH", tmp_path / "notes.json")
+        record = make_branch_record()
+        assert notes_mod.attach_notes([record], []) == 0
+        assert record.analyst_note is None
+
+
+class TestJobSelection:
+    def test_one_job_per_branch_and_per_actionable_zone(self) -> None:
+        branches = [make_branch_record("BD01"), make_branch_record("BD02")]
+        zones = [
+            make_zone_record("871e1d0ffffffff", recommendation="GROW"),
+            make_zone_record("871e1d1ffffffff", recommendation="WATCH"),
+            make_zone_record("871e1d2ffffffff", recommendation="SKIP"),
+        ]
+        keys = [k for k, _p, _r in notes_mod._jobs(branches, zones)]
+        assert keys == [
+            "branch:BD01",
+            "branch:BD02",
+            "zone:871e1d0ffffffff",
+            "zone:871e1d1ffffffff",
+        ]
+
+    def test_each_record_gets_its_own_cache_key(self) -> None:
+        # Sharing a key would make two branches overwrite each other's note.
+        jobs = notes_mod._jobs([make_branch_record("BD01"), make_branch_record("BD02")], [])
+        assert len({k for k, _p, _r in jobs}) == 2
+
+    def test_the_payload_changes_when_the_record_does(self) -> None:
+        """The fingerprint is a hash of the payload, so this is what makes a
+        note go stale when the model or the data behind it changes."""
+        base = notes_mod.branch_payload(make_branch_record(overlap=0.0))
+        changed = notes_mod.branch_payload(make_branch_record(overlap=0.6, siblings=2))
+        assert base != changed
+        assert notes_mod._fingerprint(base) != notes_mod._fingerprint(changed)
+
+    def test_two_records_with_identical_inputs_produce_the_same_payload(self) -> None:
+        # Not a defect: the payload is a function of the scored record, so
+        # identical inputs should read identically. Their cache keys still
+        # differ, which is what keeps the notes separate.
+        jobs = notes_mod._jobs([make_branch_record("BD01"), make_branch_record("BD02")], [])
+        assert jobs[0][1] == jobs[1][1]

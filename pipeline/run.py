@@ -196,7 +196,7 @@ def build(
 
 def _build(*, refresh: bool, with_notes: bool) -> dict[str, int]:
 
-    print("1/7  branches (real listing + Nominatim geocoding)")
+    print("1/8  branches (real listing + Nominatim geocoding)")
     branches = load_branches(refresh=refresh)
     print(f"     {len(branches)} branches resolved")
     if not branches:
@@ -210,20 +210,20 @@ def _build(*, refresh: bool, with_notes: bool) -> dict[str, int]:
             "--refresh to use the committed cache in data/raw/."
         )
 
-    print("2/7  competitors (OpenStreetMap via Overpass)")
+    print("2/8  competitors (OpenStreetMap via Overpass)")
     competitors = load_competitors(branches, refresh=refresh)
     print(
         f"     {len(competitors)} competing venues within "
         f"{config.COMPETITOR_SEARCH_RADIUS_M / 1000:.0f} km of a branch"
     )
 
-    print("3/7  zone activity (OSM built-form demand proxy)")
+    print("3/8  zone activity (OSM built-form demand proxy)")
     bboxes = dict(config.WHITESPACE_BBOXES)
     bboxes.update(cluster_bboxes(branches, config.COMPETITOR_SEARCH_RADIUS_M))
     activity = load_zone_activity(bboxes, refresh=refresh)
     print(f"     {len(activity)} H3 cells carry at least one mapped feature")
 
-    print("4/7  geography (catchments, self-overlap, saturation)")
+    print("4/8  geography (catchments, self-overlap, saturation)")
     catchments = build_catchments(branches)
     overlaps = compute_overlaps(branches)
     cannibalisation = cannibalisation_index(branches, overlaps)
@@ -231,7 +231,7 @@ def _build(*, refresh: bool, with_notes: bool) -> dict[str, int]:
     branch_demand = catchment_demand(branches, activity)
     print(f"     {len(overlaps)} overlapping catchment pairs")
 
-    print("5/7  whitespace grid")
+    print("5/8  whitespace grid")
     zones = build_zones(branches, activity)
     cell_lookup = {z.h3_index: z for z in zones}
     sat = zone_saturation(competitors, cell_lookup, zones[0].area_km2 if zones else 1.0)
@@ -239,7 +239,7 @@ def _build(*, refresh: bool, with_notes: bool) -> dict[str, int]:
         z.saturation_norm = sat.get(z.h3_index, 0.0)
     print(f"     {len(zones)} cells gridded across {len(config.WHITESPACE_BBOXES)} metros")
 
-    print("6/7  scoring")
+    print("6/8  scoring")
     branch_rows = score_branches(branches, competition, cannibalisation, branch_demand, catchments)
     zone_rows = score_zones(zones)
     print(
@@ -247,14 +247,21 @@ def _build(*, refresh: bool, with_notes: bool) -> dict[str, int]:
         f"({len(zones) - len(zone_rows)} empty cells dropped)"
     )
 
-    print("7/7  writing data/processed")
-    write_outputs(branch_rows, zone_rows, competitors, catchments, branches, overlaps)
-
+    print("7/8  analyst notes")
     if with_notes:
         from pipeline.ai.notes import generate_notes
 
         generate_notes(branch_rows, zone_rows)
-        write_outputs(branch_rows, zone_rows, competitors, catchments, branches, overlaps)
+    else:
+        # Attaching is free and keyless; regenerating is what needs --notes.
+        # Every build must attach, or a plain run would write null notes and
+        # disagree with the committed dataset.
+        from pipeline.ai.notes import attach_notes
+
+        attach_notes(branch_rows, zone_rows)
+
+    print("8/8  writing data/processed")
+    write_outputs(branch_rows, zone_rows, competitors, catchments, branches, overlaps)
 
     mirror_to_web()
     return {"branches": len(branch_rows), "zones": len(zone_rows)}

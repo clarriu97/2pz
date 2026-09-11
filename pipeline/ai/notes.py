@@ -100,41 +100,39 @@ def zone_payload(row: ZoneRecord, branch_names: dict[str, str]) -> str:
     )
 
 
-def generate_notes(branch_rows: list[BranchRecord], zone_rows: list[ZoneRecord]) -> dict[str, dict]:
-    """Fill `analyst_note` on every row, generating only what is missing or stale."""
-    cache: dict = read_json(CACHE_PATH, default={}) or {}
+def _jobs(
+    branch_rows: list[BranchRecord], zone_rows: list[ZoneRecord]
+) -> list[tuple[str, str, BranchRecord | ZoneRecord]]:
+    """Every record worth a note, paired with the payload the model would see."""
     branch_names = {r.branch_id: r.name for r in branch_rows}
+    jobs: list[tuple[str, str, BranchRecord | ZoneRecord]] = [
+        (f"branch:{row.branch_id}", branch_payload(row), row) for row in branch_rows
+    ]
+    jobs += [
+        (f"zone:{row.zone_id}", zone_payload(row, branch_names), row)
+        for row in zone_rows
+        if row.recommendation in ZONE_LABELS_WORTH_A_NOTE
+    ]
+    return jobs
 
-    jobs: list[tuple[str, str, BranchRecord | ZoneRecord]] = []
-    for row in branch_rows:
-        jobs.append((f"branch:{row.branch_id}", branch_payload(row), row))
-    for row in zone_rows:
-        if row.recommendation in ZONE_LABELS_WORTH_A_NOTE:
-            jobs.append((f"zone:{row.zone_id}", zone_payload(row, branch_names), row))
 
-    todo = [(k, p, r) for k, p, r in jobs if cache.get(k, {}).get("fingerprint") != _fingerprint(p)]
-    print(f"     {len(jobs)} notes total, {len(todo)} to (re)generate")
+def attach_notes(branch_rows: list[BranchRecord], zone_rows: list[ZoneRecord]) -> int:
+    """Attach the committed notes to every row. No network, no key, no cost.
 
-    if todo:
-        client = _client()
-        if client is None:
-            print(
-                "     !! OPENAI_API_KEY not set — keeping cached notes, "
-                "regenerating none. The product still runs; notes may be stale."
-            )
-        else:
-            for i, (key, payload, _row) in enumerate(todo, 1):
-                note = _one_note(client, payload)
-                cache[key] = {
-                    "note": note,
-                    "fingerprint": _fingerprint(payload),
-                    "model": config.OPENAI_NOTES_MODEL,
-                }
-                print(f"     [{i}/{len(todo)}] {key}")
-            write_json(CACHE_PATH, cache)
+    This runs on EVERY build, not only when regenerating. The notes are part of
+    the committed dataset — that is the whole point of pre-generating them — so
+    a plain `pipeline.run` has to reproduce them, or the committed output and a
+    fresh build would disagree, which is exactly what CI checks.
 
+    Returns the number of stale notes: present in the cache, but generated from
+    a payload that has since changed. Those are surfaced in the UI as stale
+    rather than passed off as current.
+    """
+    cache: dict = read_json(CACHE_PATH, default={}) or {}
     stale = 0
-    for key, payload, row in jobs:
+    attached = 0
+
+    for key, payload, row in _jobs(branch_rows, zone_rows):
         entry = cache.get(key)
         if not entry:
             continue
@@ -143,11 +141,49 @@ def generate_notes(branch_rows: list[BranchRecord], zone_rows: list[ZoneRecord])
             model=entry.get("model", config.OPENAI_NOTES_MODEL),
             stale=entry.get("fingerprint") != _fingerprint(payload),
         )
+        attached += 1
         stale += int(row.analyst_note.stale)
-    if stale:
-        print(f"     !! {stale} notes are stale (payload changed since generation)")
 
-    write_json(CACHE_PATH, cache)
+    suffix = f", {stale} STALE (payload changed since generation)" if stale else ""
+    print(f"     {attached} committed notes attached{suffix}")
+    return stale
+
+
+def generate_notes(branch_rows: list[BranchRecord], zone_rows: list[ZoneRecord]) -> dict[str, dict]:
+    """Regenerate missing and stale notes, then attach them all.
+
+    Only reached with --notes. Anything already cached whose payload still
+    matches is left alone, so a re-run costs nothing.
+    """
+    cache: dict = read_json(CACHE_PATH, default={}) or {}
+    jobs = _jobs(branch_rows, zone_rows)
+
+    todo = [(k, p, r) for k, p, r in jobs if cache.get(k, {}).get("fingerprint") != _fingerprint(p)]
+    print(f"     {len(jobs)} notes total, {len(todo)} to (re)generate")
+
+    client = _client() if todo else None
+    if todo and client is None:
+        print(
+            "     !! OPENAI_API_KEY not set — keeping cached notes, regenerating none. "
+            "The product still runs; notes may be stale."
+        )
+
+    for i, (key, payload, _row) in enumerate(todo, 1):
+        if client is None:
+            break
+        cache[key] = {
+            "note": _one_note(client, payload),
+            "fingerprint": _fingerprint(payload),
+            "model": config.OPENAI_NOTES_MODEL,
+        }
+        # Written every iteration on purpose: a hundred sequential API calls
+        # is long enough that an interruption part-way through should not
+        # throw away the tokens already paid for.
+        write_json(CACHE_PATH, cache)
+        if i % 10 == 0 or i == len(todo):
+            print(f"     [{i}/{len(todo)}] generated")
+
+    attach_notes(branch_rows, zone_rows)
     return cache
 
 
