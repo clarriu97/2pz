@@ -49,7 +49,37 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: web
+          # --branch=main is load-bearing. Without it wrangler tries to infer
+          # the branch from git, and this is a detached checkout at a specific
+          # sha, so it infers nothing and publishes a PREVIEW deployment. The
+          # run goes green, a URL is printed, and the live site silently never
+          # moves — which is exactly what happened before this line existed.
+          #
           # OPENAI_API_KEY is NOT set here. It is a Pages project secret, read
           # by the Function at request time, so it never enters the build or
           # this repository.
-          command: pages deploy dist --project-name=bedashing-network-intelligence
+          command: pages deploy dist --project-name=bedashing-network-intelligence --branch=main
+
+      - name: Verify the live site is serving this commit
+        # A deployment that succeeds but does not become the production
+        # deployment is the failure mode this job is most likely to have, and
+        # the one least likely to be noticed. Assert it rather than trust it.
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          EXPECTED_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: |
+          sleep 15
+          api="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/bedashing-network-intelligence"
+          live=$(curl -sf "$api" -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            | python3 -c "import json,sys;d=json.load(sys.stdin)['result'].get('canonical_deployment') or {};print(((d.get('deployment_trigger') or {}).get('metadata') or {}).get('commit_hash',''))")
+          echo "expected $EXPECTED_SHA"
+          echo "live     $live"
+          if [ "$live" != "$EXPECTED_SHA" ]; then
+            echo "::error::The production deployment is $live, not $EXPECTED_SHA. The deploy probably went to a preview environment."
+            exit 1
+          fi
+          code=$(curl -s -o /dev/null -w '%{http_code}' https://2pz.larri.dev/)
+          echo "https://2pz.larri.dev -> $code"
+          [ "$code" = "200" ] || { echo "::error::Live site returned $code"; exit 1; }
+          echo "Live at https://2pz.larri.dev serving $live" >> "$GITHUB_STEP_SUMMARY"
