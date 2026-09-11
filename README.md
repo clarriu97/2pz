@@ -89,6 +89,36 @@ uv sync && uv run ruff format --check . && uv run ruff check . && uv run pytest
 cd web && npm ci && npm run check
 ```
 
+### Deployment
+
+`main` deploys itself. A push runs CI; if **every** job passes, `deploy.yml` fires on the
+`workflow_run` event and publishes to Cloudflare Pages. `workflow_run.conclusion` is `success` only
+when all three CI jobs succeed, so a failing test or a drifted dataset stops the release — there is
+no path to production that skips the gate.
+
+```
+push to main ──► CI (pipeline · web · dataset) ──► deploy ──► 2pz.larri.dev
+                        any failure ──► no deploy
+```
+
+Two details that were bugs before they were features:
+
+- **`--branch=main` on the deploy command.** Without it wrangler infers the branch from git, and the
+  workflow checks out a detached sha, so it inferred nothing and published a *preview* deployment.
+  The run went green, a URL was printed, and the live site never moved. Two "successful" deploys
+  had shipped nothing.
+- **The job asserts that production actually moved.** It reads the project's canonical deployment
+  back from the Cloudflare API and fails unless it is this commit with a successful deploy stage.
+  A deploy that succeeds without becoming production is indistinguishable from success at a glance,
+  which is exactly why it is checked rather than assumed. It deliberately does *not* curl the live
+  URL: Cloudflare's bot protection answers 403 to datacenter IP ranges, so that check failed from a
+  GitHub runner against a perfectly healthy site.
+
+**Secrets.** `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are repository secrets, used only at
+deploy time. `OPENAI_API_KEY` is **not** a GitHub secret — the analyst endpoint reads it at request
+time from the Cloudflare Pages environment, so it never enters the build, the bundle or this
+repository.
+
 ### What the tests actually assert
 
 They are not shape tests. Each one guards a claim the product makes to a reviewer:
