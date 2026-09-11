@@ -53,33 +53,66 @@ jobs:
           # the branch from git, and this is a detached checkout at a specific
           # sha, so it infers nothing and publishes a PREVIEW deployment. The
           # run goes green, a URL is printed, and the live site silently never
-          # moves — which is exactly what happened before this line existed.
+          # moves — which is exactly what happened before this flag existed.
           #
           # OPENAI_API_KEY is NOT set here. It is a Pages project secret, read
           # by the Function at request time, so it never enters the build or
           # this repository.
           command: pages deploy dist --project-name=bedashing-network-intelligence --branch=main
 
-      - name: Verify the live site is serving this commit
-        # A deployment that succeeds but does not become the production
-        # deployment is the failure mode this job is most likely to have, and
-        # the one least likely to be noticed. Assert it rather than trust it.
+      - name: Verify the deployment became production
+        # The failure this job is most likely to have is a deploy that
+        # succeeds without becoming the production deployment. That is
+        # indistinguishable from success at a glance, so it is asserted rather
+        # than assumed.
+        #
+        # Deliberately no HTTP request to the site: Cloudflare's bot
+        # protection answers 403 to requests from datacenter IP ranges, so a
+        # curl from a GitHub runner fails against a perfectly healthy site.
+        # A check that cries wolf is worse than no check, and the Cloudflare
+        # API answers the question directly.
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           EXPECTED_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
         run: |
-          sleep 15
-          api="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/bedashing-network-intelligence"
-          live=$(curl -sf "$api" -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
-            | python3 -c "import json,sys;d=json.load(sys.stdin)['result'].get('canonical_deployment') or {};print(((d.get('deployment_trigger') or {}).get('metadata') or {}).get('commit_hash',''))")
-          echo "expected $EXPECTED_SHA"
-          echo "live     $live"
+          api="https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/bedashing-network-intelligence"
+          live=""
+          stage=""
+
+          # Promotion to canonical is not instant, so poll rather than guess a
+          # sleep long enough to be safe and short enough to be quick.
+          #
+          # The response goes to a file rather than through a pipe: Cloudflare
+          # embeds the raw commit message, which for this repository contains
+          # newlines, and piping it through `echo` in a shell that expands
+          # backslash escapes corrupts the JSON before the parser sees it.
+          for attempt in $(seq 1 12); do
+            if curl -sf "$api" -H "Authorization: Bearer $CF_TOKEN" -o project.json; then
+              live=$(jq -r '.result.canonical_deployment.deployment_trigger.metadata.commit_hash // ""' project.json)
+              stage=$(jq -r '(.result.canonical_deployment.latest_stage.name // "?") + "/" + (.result.canonical_deployment.latest_stage.status // "?")' project.json)
+            fi
+            echo "attempt $attempt: production=${live:-unknown} stage=${stage:-unknown}"
+            [ "$live" = "$EXPECTED_SHA" ] && break
+            sleep 10
+          done
+
           if [ "$live" != "$EXPECTED_SHA" ]; then
-            echo "::error::The production deployment is $live, not $EXPECTED_SHA. The deploy probably went to a preview environment."
+            echo "::error::Production is serving ${live:-nothing}, not $EXPECTED_SHA. The deploy most likely went to a preview environment — check that the deploy command passes --branch=main."
             exit 1
           fi
-          code=$(curl -s -o /dev/null -w '%{http_code}' https://2pz.larri.dev/)
-          echo "https://2pz.larri.dev -> $code"
-          [ "$code" = "200" ] || { echo "::error::Live site returned $code"; exit 1; }
-          echo "Live at https://2pz.larri.dev serving $live" >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$stage" != "deploy/success" ]; then
+            echo "::error::Production is $EXPECTED_SHA but its latest stage is $stage"
+            exit 1
+          fi
+
+          {
+            echo "### Deployed to production"
+            echo
+            echo "| | |"
+            echo "| --- | --- |"
+            echo "| commit | \`$EXPECTED_SHA\` |"
+            echo "| stage | $stage |"
+            echo "| live | https://2pz.larri.dev |"
+          } >> "$GITHUB_STEP_SUMMARY"
