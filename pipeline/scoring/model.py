@@ -214,18 +214,18 @@ def branch_label(strength: float, market: float, cannibalisation: float) -> tupl
     """
     if strength >= config.STRENGTH_HIGH and market >= config.MARKET_HIGH:
         return "PROTECT", (
-            f"strength {strength:.2f} ≥ {config.STRENGTH_HIGH} AND market "
-            f"{market:.2f} ≥ {config.MARKET_HIGH}"
+            f"strength {strength:.3f} ≥ {config.STRENGTH_HIGH} AND market "
+            f"{market:.3f} ≥ {config.MARKET_HIGH}"
         )
     if strength < config.STRENGTH_LOW:
-        return "SHRINK", f"strength {strength:.2f} < {config.STRENGTH_LOW}"
+        return "SHRINK", f"strength {strength:.3f} < {config.STRENGTH_LOW}"
     if market < config.MARKET_LOW and cannibalisation >= config.CANNIBALISATION_SHRINK_TRIGGER:
         return "SHRINK", (
-            f"market {market:.2f} < {config.MARKET_LOW} AND self-overlap "
+            f"market {market:.3f} < {config.MARKET_LOW} AND self-overlap "
             f"{cannibalisation:.0%} ≥ {config.CANNIBALISATION_SHRINK_TRIGGER:.0%}"
         )
     return "HOLD", (
-        f"strength {strength:.2f} and market {market:.2f} fall between the "
+        f"strength {strength:.3f} and market {market:.3f} fall between the "
         f"PROTECT and SHRINK thresholds"
     )
 
@@ -300,13 +300,13 @@ def zone_label(zone: Zone, score: float) -> tuple[ZoneLabel, str]:
     if zone.inside_own_catchment:
         if score >= config.OPPORTUNITY_WATCH:
             return "WATCH", (
-                f"attractive ({score:.2f}) but already inside "
+                f"attractive ({score:.3f}) but already inside "
                 f"{zone.nearest_branch_id}'s catchment — relocation or capacity, "
                 "not a new site"
             )
-        return "SKIP", f"already covered by {zone.nearest_branch_id} and score {score:.2f} is low"
+        return "SKIP", f"already covered by {zone.nearest_branch_id} and score {score:.3f} is low"
     if score >= config.OPPORTUNITY_GROW:
-        return "GROW", f"opportunity {score:.2f} ≥ {config.OPPORTUNITY_GROW} with a real gap"
+        return "GROW", f"opportunity {score:.3f} ≥ {config.OPPORTUNITY_GROW} with a real gap"
     if score >= config.OPPORTUNITY_WATCH:
-        return "WATCH", f"opportunity {score:.2f} ≥ {config.OPPORTUNITY_WATCH}"
-    return "SKIP", f"opportunity {score:.2f} < {config.OPPORTUNITY_WATCH}"
+        return "WATCH", f"opportunity {score:.3f} ≥ {config.OPPORTUNITY_WATCH}"
+    return "SKIP", f"opportunity {score:.3f} < {config.OPPORTUNITY_WATCH}"

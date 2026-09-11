@@ -202,7 +202,17 @@ identical every time, so nothing shifts under a live demo. And the cost is bound
 
 **Consequence:** notes go stale if the config or the data changes. Handled rather than ignored: each
 note is stamped with a hash of the payload it was generated from, and a note whose payload no longer
-matches is rendered as **stale** instead of being passed off as current.
+matches is rendered as **stale** instead of being passed off as current. This earned its keep
+almost immediately — raising the printed decision rule from two decimals to three changed every
+payload, and the next build reported *"101 committed notes attached, 101 STALE"* rather than
+quietly showing notes that described slightly different numbers.
+
+A second consequence I got wrong first time: attaching the notes was initially gated behind
+`--notes` alongside regeneration. That meant a plain `pipeline.run` wrote `null` notes and
+disagreed with the committed dataset, which is exactly what the CI reproducibility gate checks.
+Attaching is keyless and free and now happens on every build; `--notes` controls regeneration
+only. Pre-generated artefacts have to be reproduced by the default path, or they are not really
+part of the dataset.
 
 ---
 
@@ -224,6 +234,16 @@ honest test is whether the technique earns its place on this dataset, and it doe
 **Consequence:** the analyst can only answer what the tools expose. That is a feature — it is why
 the trace is shown. Questions outside the tools get "here is what is missing and what data would
 answer it" rather than a fluent guess, which is the behaviour the system prompt enforces.
+
+**What testing it live taught me.** Correct numbers are not the same as a correct explanation. Asked
+"which branches are most at risk?", the first version listed five branches and justified each with
+its market score — every figure real, and the reasoning wrong for four of them, which were labelled
+on weak *strength* while their market scores were healthy. A tool response that returns only scores
+invites the model to reverse-engineer a reason. The fix was to carry each row's `decision_rule`
+into `list_branches` so the rule that actually fired travels with the row, and to say so explicitly
+in the system prompt. The answer went from three tool-calling rounds and a plausible-sounding
+mistake to one round quoting the firing threshold per branch. Cheaper *and* correct, which is
+usually the sign that the tool contract was the problem rather than the model.
 
 ---
 

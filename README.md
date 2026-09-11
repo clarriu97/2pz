@@ -276,10 +276,22 @@ Two uses, both chosen because they do work a weighted sum cannot.
 `pipeline/ai/notes.py` feeds each branch's and zone's *contribution breakdown* to the model and gets
 back the sentence an analyst would say in a review meeting. The model is given only the scored
 record — the signals, weights and signed contributions — and is instructed to translate arithmetic
-into an argument, never to supply a fact. Notes are committed to `data/processed/`, so the AI layer
-works with **no key**, and nothing changes under us mid-demo. Each note is stamped with a hash of
-the payload it came from; a note whose payload has since changed is shown as **stale** rather than
-passed off as current.
+into an argument, never to supply a fact.
+
+**101 notes are committed**: one per branch, and one per actionable zone (`GROW` and `WATCH` — a
+note on each of 495 foregone `SKIP` cells would be a thousand pointless API calls). Because they
+are committed, the AI layer is visible with **no key at all**, and nothing shifts under a live
+demo. Attaching them is unconditional and free; `--notes` controls regeneration only.
+
+Every figure in them traces back to the record they were generated from — *"65% of its catchment
+with two nearby lounges"*, *"only 38 reviews"*, *"66% of metro peak"* — and where a branch carries
+a low-confidence caveat the note says so rather than presenting the number flat. No invented
+revenue, rent or staffing.
+
+Each note is stamped with a hash of the payload it came from, so a note whose payload has since
+changed is rendered **stale** rather than passed off as current. That is not decorative: raising
+the precision of the printed decision rule from two decimals to three changed every payload, and
+the next build reported *"101 committed notes attached, 101 STALE"* before they were regenerated.
 
 **2. Conversational analyst — live, tool-calling.**
 `web/functions/api/chat.js` runs a bounded tool-calling loop over the same static JSON:
@@ -287,6 +299,14 @@ passed off as current.
 `top_whitespace`. The system prompt forbids answering portfolio questions from memory, and **the
 trace of every tool call is returned with the answer and shown in the UI**, so you can check the
 analyst looked the numbers up rather than recalled them.
+
+Grounding is not only about the numbers being real. An early version answered *"which branches are
+most at risk?"* by quoting each branch's market score — every figure correct, but the stated
+*reason* wrong, because four of the five were labelled on weak **strength** while their market
+scores were perfectly healthy. The fix was to carry each row's `decision_rule` into
+`list_branches`, so the model reports the rule that actually fired instead of inferring a reason
+from whichever number looks low. It now answers the same question in one tool call and quotes the
+firing threshold for each branch.
 
 ### No RAG, no embeddings — on purpose
 

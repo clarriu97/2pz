@@ -269,3 +269,16 @@ class TestZoneLabel:
         label, rule = zone_label(make_zone(demand=0.0, inside=True), config.OPPORTUNITY_GROW + 0.1)
         assert label == "SKIP"
         assert "floor" in rule
+
+
+class TestRulePrecision:
+    def test_a_score_just_below_a_threshold_does_not_render_as_equal(self) -> None:
+        """At two decimals, 0.507 renders as "strength 0.51 < 0.51".
+
+        The comparison is right and the label is right, but a reviewer reading
+        it in a demo sees a bug. Three decimals is the cheapest fix.
+        """
+        _label, rule = branch_label(config.STRENGTH_LOW - 0.003, 0.5, 0.0)
+        printed = rule.split("<")[0].split()[-1]
+        assert float(printed) < config.STRENGTH_LOW
+        assert printed != f"{config.STRENGTH_LOW:.2f}"

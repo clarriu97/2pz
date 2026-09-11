@@ -16,7 +16,7 @@
     "geocode_precision": "area",
     "flags": [],
     "recommendation": "HOLD",
-    "decision_rule": "strength 0.63 and market 0.37 fall between the PROTECT and SHRINK thresholds",
+    "decision_rule": "strength 0.633 and market 0.371 fall between the PROTECT and SHRINK thresholds",
     "strength": {
       "axis": "strength",
       "score": 0.6331,
@@ -206,7 +206,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend holding Bedashing Beauty Lounge Mirdif 35 due to its strong local position, supported by high review volume and a guest rating of 4.6★, alongside positive recent momentum. However, market attractiveness is moderate, with significant competition density and 43% catchment overlap with our Al Warqa City Mall branch, limiting growth potential despite high confidence in location data.",
+      "text": "We recommend holding Bedashing Beauty Lounge Mirdif 35 due to its strong local position, supported by high review volume and a guest rating of 4.6 stars, alongside positive recent momentum. However, competitive density is high with 18 rivals nearby, and 43% catchment overlap with our Al Warqa City Mall branch limits growth potential. Confidence in location data is high.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -228,7 +228,7 @@
     "geocode_precision": "area",
     "flags": [],
     "recommendation": "HOLD",
-    "decision_rule": "strength 0.62 and market 0.26 fall between the PROTECT and SHRINK thresholds",
+    "decision_rule": "strength 0.618 and market 0.257 fall between the PROTECT and SHRINK thresholds",
     "strength": {
       "axis": "strength",
       "score": 0.6181,
@@ -418,7 +418,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend holding Bedashing Beauty Studio Zawaya Walk due to its strong position versus local rivals and solid guest ratings, which offset a recent 40% decline in momentum. The catchment shows moderate demand with minimal self-cannibalisation from one nearby Bedashing lounge. Confidence is high despite slight location imprecision, supporting a cautious approach without expansion or contraction.",
+      "text": "We recommend HOLD for Bedashing Beauty Studio Zawaya Walk, driven by its strong position versus local rivals and solid guest rating, which offset a recent 40% decline in momentum. The catchment shows moderate demand with minimal self-cannibalisation from one nearby lounge. Confidence is high despite location resolution at district level, which is acceptable given the large catchment radius.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -440,7 +440,7 @@
     "geocode_precision": "address",
     "flags": [],
     "recommendation": "HOLD",
-    "decision_rule": "strength 0.57 and market 0.40 fall between the PROTECT and SHRINK thresholds",
+    "decision_rule": "strength 0.568 and market 0.402 fall between the PROTECT and SHRINK thresholds",
     "strength": {
       "axis": "strength",
       "score": 0.5682,
@@ -621,7 +621,7 @@
       "caveats": []
     },
     "analyst_note": {
-      "text": "We recommend holding City Walk as its solid branch strength, driven by strong review volume and guest ratings, balances a moderately attractive market with high catchment demand but intense competition. The key trade-off is good local performance offset by a crowded catchment with 39 rivals, though no self-cannibalisation occurs. Confidence in this assessment is high.",
+      "text": "We recommend holding City Walk as its solid branch strength, driven by high review volume and guest ratings, balances a moderately attractive market with strong catchment demand but dense competition. The branch’s recent momentum dip is noted but does not outweigh its overall performance. Importantly, there is no self-cannibalisation, supporting its defensibility in a competitive area.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -643,7 +643,7 @@
     "geocode_precision": "area",
     "flags": [],
     "recommendation": "HOLD",
-    "decision_rule": "strength 0.68 and market 0.41 fall between the PROTECT and SHRINK thresholds",
+    "decision_rule": "strength 0.683 and market 0.412 fall between the PROTECT and SHRINK thresholds",
     "strength": {
       "axis": "strength",
       "score": 0.6829,
@@ -839,7 +839,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend holding Al Warqa City Mall as its strong local position and high guest rating drive solid branch strength, while competitive headroom and catchment demand support market attractiveness. However, over half its catchment overlaps with two nearby Bedashing lounges, limiting growth potential. Confidence is high despite minor location resolution uncertainty, making HOLD the prudent choice.",
+      "text": "We recommend HOLD for Al Warqa City Mall due to its strong local position, driven by a +0.31 star advantage over rivals and a high guest rating of 4.7 stars, balanced against moderate market attractiveness with 16 competitors and 56% catchment overlap with two nearby Bedashing lounges. Confidence is high despite location resolution at district level.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -861,7 +861,7 @@
     "geocode_precision": "area",
     "flags": [],
     "recommendation": "HOLD",
-    "decision_rule": "strength 0.58 and market 0.50 fall between the PROTECT and SHRINK thresholds",
+    "decision_rule": "strength 0.581 and market 0.498 fall between the PROTECT and SHRINK thresholds",
     "strength": {
       "axis": "strength",
       "score": 0.5806,
@@ -1051,7 +1051,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend holding Bedashing Nad Al Sheba due to its solid guest rating and strong position versus local rivals, supported by good review volume and recent momentum. The market is moderately attractive with high competitor density but reasonable catchment demand and minimal self-cannibalisation. Confidence is high, though location precision is district-level, which is acceptable given the large catchment radius.",
+      "text": "We recommend holding Bedashing Nad Al Sheba due to its solid guest ratings and strong position versus local rivals, supported by a healthy review volume and recent positive momentum. However, the market shows moderate attractiveness with high competitor density and only average catchment demand. The low self-cannibalisation risk further supports maintaining the branch as is. Confidence in data is high.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -1073,7 +1073,7 @@
     "geocode_precision": "area",
     "flags": [],
     "recommendation": "SHRINK",
-    "decision_rule": "strength 0.51 < 0.51",
+    "decision_rule": "strength 0.510 < 0.51",
     "strength": {
       "axis": "strength",
       "score": 0.5097,
@@ -1257,7 +1257,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend shrinking Bedashing Elegance Lounge Al Safa 2 despite strong guest ratings and positive momentum, as its overall strength just misses the 0.51 threshold. The main trade-off is a decent catchment demand of 61% metro peak but intense local competition with 49 rivals nearby. Confidence is medium due to limited reviews and imprecise location data.",
+      "text": "We recommend shrinking Bedashing Elegance Lounge Al Safa 2 due to its marginal branch strength of 0.510, driven mainly by a solid guest rating of 4.6★ and a positive position versus local rivals. However, the catchment demand is moderate at 61% of metro peak, and the confidence is medium because the rating is based on only 98 reviews, making quality and competitive-position signals noisy.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -1279,7 +1279,7 @@
     "geocode_precision": "area",
     "flags": [],
     "recommendation": "HOLD",
-    "decision_rule": "strength 0.67 and market 0.39 fall between the PROTECT and SHRINK thresholds",
+    "decision_rule": "strength 0.666 and market 0.392 fall between the PROTECT and SHRINK thresholds",
     "strength": {
       "axis": "strength",
       "score": 0.6663,
@@ -1469,7 +1469,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend holding Bedashing Beauty Suite Umm Suqeim due to its strong position versus local rivals and solid guest ratings, which contribute most to its strength score of 0.67. While the market attractiveness is moderate, driven by good catchment demand but high competitor density, the minimal self-cannibalisation supports maintaining current investment. Confidence is high despite slight location resolution uncertainty.",
+      "text": "We recommend holding Bedashing Beauty Suite Umm Suqeim due to its strong position versus local rivals and high guest rating, which contribute positively despite a recent momentum decline. The catchment demand is solid but tempered by intense competition with 40 rivals nearby. The minimal self-cannibalisation of 1% is negligible, and confidence is high given the precise catchment estimation.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -1491,7 +1491,7 @@
     "geocode_precision": "area",
     "flags": [],
     "recommendation": "SHRINK",
-    "decision_rule": "strength 0.45 < 0.51",
+    "decision_rule": "strength 0.449 < 0.51",
     "strength": {
       "axis": "strength",
       "score": 0.4491,
@@ -1641,7 +1641,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend shrinking Bedashing Glam Haven Muwaileh due to its overall branch strength falling below threshold, driven mainly by modest guest ratings and a weak recent momentum despite a strong competitive headroom signal. However, low confidence in review volume and competitor mapping suggests these positives may be overstated, so caution is warranted in interpreting the market attractiveness.",
+      "text": "We recommend shrinking Bedashing Glam Haven Muwaileh due to modest branch strength driven by decent guest ratings and local positioning, but recent momentum is declining. Although competitive headroom appears strong with few rivals nearby, this is likely overstated due to sparse competitor data, and the low review volume means quality signals are uncertain. The catchment has minimal self-cannibalisation, but overall confidence in these metrics is low.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -1663,7 +1663,7 @@
     "geocode_precision": "area",
     "flags": [],
     "recommendation": "HOLD",
-    "decision_rule": "strength 0.65 and market 0.47 fall between the PROTECT and SHRINK thresholds",
+    "decision_rule": "strength 0.653 and market 0.467 fall between the PROTECT and SHRINK thresholds",
     "strength": {
       "axis": "strength",
       "score": 0.6526,
@@ -1853,7 +1853,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend holding Bedashing Beauty Emporium Jumeirah Park due to its strong guest rating and superior position versus local rivals, which contribute positively to branch strength. However, market attractiveness is moderate, with high competitor density and some self-cannibalisation from a nearby Bedashing Wellness Lounge sharing 22% of the catchment. Confidence is high despite location resolution at district level.",
+      "text": "We recommend HOLD for Bedashing Beauty Emporium Jumeirah Park, driven by strong guest ratings and a solid position versus local rivals, balanced against moderate market attractiveness with high competitor density and 22% catchment overlap with our Palm Jumeirah lounge. Confidence is high despite location resolution at district level, which is immaterial at this catchment scale.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -1875,7 +1875,7 @@
     "geocode_precision": "area",
     "flags": [],
     "recommendation": "HOLD",
-    "decision_rule": "strength 0.65 and market 0.47 fall between the PROTECT and SHRINK thresholds",
+    "decision_rule": "strength 0.649 and market 0.466 fall between the PROTECT and SHRINK thresholds",
     "strength": {
       "axis": "strength",
       "score": 0.6491,
@@ -2072,7 +2072,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend holding Palm Jumeirah Wellness Lounge due to strong guest ratings and a positive position versus local rivals, which drive its solid branch strength of 0.65. However, market attractiveness is moderate, with catchment demand at 66% of metro peak and high competitor density limiting growth potential. Note the medium confidence level, as the rating is based on only 38 reviews and location data is approximate.",
+      "text": "We recommend holding Palm Jumeirah Wellness Lounge due to its strong guest rating and positive position versus local rivals, which drive its solid branch strength. However, market attractiveness is moderate with high competition density and 22% catchment overlap with another Bedashing lounge, limiting growth potential. Note the medium confidence level, as the rating is based on only 38 reviews and location data is approximate.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -2094,7 +2094,7 @@
     "geocode_precision": "manual",
     "flags": [],
     "recommendation": "PROTECT",
-    "decision_rule": "strength 0.74 ≥ 0.65 AND market 0.58 ≥ 0.47",
+    "decision_rule": "strength 0.740 ≥ 0.65 AND market 0.583 ≥ 0.47",
     "strength": {
       "axis": "strength",
       "score": 0.7398,
@@ -2277,7 +2277,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend protecting Bedashing Beauty Oasis Al Taif Mall due to its strong guest rating and clear lead over local rivals, supported by solid recent momentum. The market is attractive with low competitor density and no self-cannibalisation, enhancing defensibility. However, confidence is medium as catchment location was manually placed, so some geocoding uncertainty remains.",
+      "text": "We recommend protecting Bedashing Beauty Oasis Al Taif Mall due to its strong guest rating and superior position versus local rivals, which drive its high branch strength. The market is also attractive with low competitor density and solid catchment demand. However, confidence is medium as geocoding was manually adjusted, so catchment accuracy may be slightly off.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -2299,7 +2299,7 @@
     "geocode_precision": "area",
     "flags": [],
     "recommendation": "SHRINK",
-    "decision_rule": "market 0.36 < 0.4 AND self-overlap 61% ≥ 45%",
+    "decision_rule": "market 0.362 < 0.4 AND self-overlap 61% ≥ 45%",
     "strength": {
       "axis": "strength",
       "score": 0.6379,
@@ -2495,7 +2495,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend shrinking Bedashing Beauty Retreat Al Maqta due to limited market attractiveness, driven by high self-cannibalisation with 61% catchment overlap shared with two nearby lounges, despite strong local positioning and guest ratings. Competitive density is high with 15 rivals nearby, constraining growth potential. Confidence is high, with location accuracy sufficient for this suburban catchment.",
+      "text": "We recommend shrinking Bedashing Beauty Retreat Al Maqta due to its low market attractiveness, driven by a high self-overlap of 61% with two nearby lounges, despite strong local positioning and guest ratings. The catchment demand is moderate but insufficient to offset intense competition and significant cannibalisation. Confidence is high, with location accuracy adequate for this suburban radius.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -2517,7 +2517,7 @@
     "geocode_precision": "address",
     "flags": [],
     "recommendation": "HOLD",
-    "decision_rule": "strength 0.64 and market 0.51 fall between the PROTECT and SHRINK thresholds",
+    "decision_rule": "strength 0.643 and market 0.507 fall between the PROTECT and SHRINK thresholds",
     "strength": {
       "axis": "strength",
       "score": 0.6434,
@@ -2705,7 +2705,7 @@
       "caveats": []
     },
     "analyst_note": {
-      "text": "We recommend holding Bedashing Glamour Lounge Mohammed Bin Zayed City due to its strong position versus local rivals and solid review volume, which drive its branch strength score. The market shows moderate attractiveness with good catchment demand and competitive headroom, though it faces a trade-off with 36 competitors nearby. Self-cannibalisation is minimal at 4%, supporting a stable outlook.",
+      "text": "We recommend holding Bedashing Glamour Lounge Mohammed Bin Zayed City due to its strong local position, outperforming rivals by 0.24 stars and solid review volume, alongside a healthy guest rating of 4.6 stars. However, market attractiveness is moderate with 36 competitors nearby and only limited self-cannibalisation at 4%, supporting a cautious stance despite good recent momentum.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -2727,7 +2727,7 @@
     "geocode_precision": "area",
     "flags": [],
     "recommendation": "SHRINK",
-    "decision_rule": "market 0.27 < 0.4 AND self-overlap 65% ≥ 45%",
+    "decision_rule": "market 0.273 < 0.4 AND self-overlap 65% ≥ 45%",
     "strength": {
       "axis": "strength",
       "score": 0.712,
@@ -2923,7 +2923,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend shrinking the Bedashing Beautification Spot Ministries Complex due to high self-cannibalisation, sharing 65% of its catchment with two nearby lounges, despite strong guest ratings and competitive positioning. The market is dense with 17 rivals and only moderate demand, limiting growth potential. Confidence is high, with location accuracy sufficient for this radius.",
+      "text": "We recommend shrinking the Bedashing Beautification Spot Ministries Complex branch due to its low market attractiveness driven by intense local competition and a high 65% catchment overlap with two nearby lounges, notably the Al Maqta branch covering 54%. Despite strong guest ratings and momentum, the significant self-cannibalisation limits growth potential. Confidence in location data is high.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -2945,7 +2945,7 @@
     "geocode_precision": "address",
     "flags": [],
     "recommendation": "HOLD",
-    "decision_rule": "strength 0.57 and market 0.41 fall between the PROTECT and SHRINK thresholds",
+    "decision_rule": "strength 0.568 and market 0.413 fall between the PROTECT and SHRINK thresholds",
     "strength": {
       "axis": "strength",
       "score": 0.5678,
@@ -3086,7 +3086,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend holding Bedashing Cosmetics Lounge Shakhbout City due to its solid branch strength driven by strong review volume and guest ratings, alongside a favourable competitive headroom in the market. However, the catchment’s low demand and the likelihood that competitor data underrepresents true competition suggest cautious optimism. This balance supports maintaining current operations without expansion or contraction.",
+      "text": "We recommend holding Bedashing Cosmetics Lounge Shakhbout City due to its solid branch strength driven by strong review volume and guest ratings, alongside a modest competitive headroom with only two rivals nearby. However, the market attractiveness score is tempered by a likely optimistic headroom estimate, as competitor mapping may be incomplete, so caution is advised despite zero self-cannibalisation.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -3108,7 +3108,7 @@
     "geocode_precision": "address",
     "flags": [],
     "recommendation": "HOLD",
-    "decision_rule": "strength 0.59 and market 0.40 fall between the PROTECT and SHRINK thresholds",
+    "decision_rule": "strength 0.586 and market 0.401 fall between the PROTECT and SHRINK thresholds",
     "strength": {
       "axis": "strength",
       "score": 0.586,
@@ -3296,7 +3296,7 @@
       "caveats": []
     },
     "analyst_note": {
-      "text": "We recommend holding Khalifa City A due to its solid branch strength driven by high review volume and a slightly better guest rating than local rivals. However, market attractiveness is moderate, with strong competitive presence and 40% catchment overlap with our West Yas lounge, which limits growth potential. Confidence in these signals is high, supporting a cautious approach.",
+      "text": "We recommend holding Khalifa City A due to its strong local position, supported by high review volume and a guest rating of 4.5 stars, which offset a slight recent momentum decline. However, the market is moderately competitive with 17 rivals nearby and 40% catchment overlap with our West Yas lounge, limiting growth potential despite solid demand. Confidence in this assessment is high.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -3318,7 +3318,7 @@
     "geocode_precision": "area",
     "flags": [],
     "recommendation": "HOLD",
-    "decision_rule": "strength 0.72 and market 0.41 fall between the PROTECT and SHRINK thresholds",
+    "decision_rule": "strength 0.717 and market 0.411 fall between the PROTECT and SHRINK thresholds",
     "strength": {
       "axis": "strength",
       "score": 0.7166,
@@ -3508,7 +3508,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend holding Bedashing Beauty Hub Khaleej Al Arabi due to its strong branch strength driven by high review volume and guest rating, alongside a moderately attractive market with solid catchment demand and competitive headroom. However, 40% catchment overlap with our nearby Al Maqta branch limits growth potential, warranting caution despite high confidence in location data.",
+      "text": "We recommend holding Bedashing Beauty Hub Khaleej Al Arabi due to its strong guest rating and review volume, which drive a solid branch strength of 0.717. However, market attractiveness is moderate at 0.411, constrained by significant competition and 40% catchment overlap with our nearby Al Maqta lounge. Confidence is high, with location accuracy sufficient for this suburban catchment.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -3530,7 +3530,7 @@
     "geocode_precision": "area",
     "flags": [],
     "recommendation": "HOLD",
-    "decision_rule": "strength 0.57 and market 0.45 fall between the PROTECT and SHRINK thresholds",
+    "decision_rule": "strength 0.569 and market 0.454 fall between the PROTECT and SHRINK thresholds",
     "strength": {
       "axis": "strength",
       "score": 0.5688,
@@ -3699,7 +3699,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend holding Bedashing Grooming Lounge Al Falah Village 4 due to its strong local position and solid guest ratings, which contribute positively despite a recent 29% decline in momentum. The market shows high competitive headroom with six rivals nearby but no self-cannibalisation, supporting defensibility. Confidence is high, though location is district-centred, which is acceptable at this catchment scale.",
+      "text": "We recommend holding Bedashing Grooming Lounge Al Falah Village 4 due to its solid position versus local rivals and strong guest ratings, which offset a recent momentum decline. The market shows high competitive headroom with six rivals nearby but no self-cannibalisation, supporting defensibility. Location confidence is high despite district-level resolution, making this a stable asset to maintain.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -3721,7 +3721,7 @@
     "geocode_precision": "area",
     "flags": [],
     "recommendation": "HOLD",
-    "decision_rule": "strength 0.72 and market 0.30 fall between the PROTECT and SHRINK thresholds",
+    "decision_rule": "strength 0.718 and market 0.305 fall between the PROTECT and SHRINK thresholds",
     "strength": {
       "axis": "strength",
       "score": 0.7184,
@@ -3904,7 +3904,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend holding Bedashing Aesthetic Lounge Delma due to its strong guest rating and positive position versus local rivals, which contribute most to its solid branch strength of 0.72. The market shows moderate attractiveness with 68% catchment demand but intense competition from 114 rivals. Confidence is high, though location is approximated within the district, which is immaterial at this scale.",
+      "text": "We recommend HOLD for Bedashing Aesthetic Lounge Delma, Kim Tower, driven by strong guest ratings and positive momentum, with a branch strength score of 0.718. However, market attractiveness is moderate at 0.305 due to high competitor density, despite zero self-cannibalisation. Confidence is high, though location is resolved to district level, which is acceptable given the large catchment radius.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -3926,7 +3926,7 @@
     "geocode_precision": "area",
     "flags": [],
     "recommendation": "PROTECT",
-    "decision_rule": "strength 0.78 ≥ 0.65 AND market 0.48 ≥ 0.47",
+    "decision_rule": "strength 0.777 ≥ 0.65 AND market 0.483 ≥ 0.47",
     "strength": {
       "axis": "strength",
       "score": 0.7767,
@@ -4109,7 +4109,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend protecting Bedashing Beauty Center Al Ain due to its strong branch strength driven by excellent guest ratings and high review volume, alongside a favourable market with low self-cannibalisation and good competitive headroom. The main caveat is that location data is district-level, but this is unlikely to affect the suburban catchment analysis.",
+      "text": "We recommend protecting Bedashing Beauty Center Al Ain due to its strong branch strength driven by excellent guest ratings and high review volume, alongside a favourable competitive environment with low self-cannibalisation and substantial competitive headroom. The main caveat is that location data is resolved to the district level, though this is unlikely to affect the assessment given the large catchment radius.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -4131,7 +4131,7 @@
     "geocode_precision": "manual",
     "flags": [],
     "recommendation": "SHRINK",
-    "decision_rule": "strength 0.46 < 0.51",
+    "decision_rule": "strength 0.463 < 0.51",
     "strength": {
       "axis": "strength",
       "score": 0.4633,
@@ -4266,7 +4266,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend shrinking the Al Neem City Center branch due to its overall strength score below threshold, driven mainly by moderate guest ratings and review volume. While competitive headroom appears strong with only one rival nearby, this is likely an optimistic estimate due to incomplete competitor mapping. Additionally, geocoding uncertainty adds risk to catchment analysis, warranting caution despite decent momentum.",
+      "text": "We recommend shrinking the Al Neem City Center branch due to its overall strength score of 0.463, driven mainly by solid guest ratings and review volume. Despite a competitive headroom score suggesting low rivalry, this is likely optimistic given limited competitor data and uncertain catchment geocoding, which lowers confidence in the market attractiveness assessment.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -4288,7 +4288,7 @@
     "geocode_precision": "area",
     "flags": [],
     "recommendation": "SHRINK",
-    "decision_rule": "strength 0.50 < 0.51",
+    "decision_rule": "strength 0.497 < 0.51",
     "strength": {
       "axis": "strength",
       "score": 0.4972,
@@ -4478,7 +4478,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend shrinking Bedashing Beauty Spa Shahama due to its borderline branch strength of 0.497, driven mainly by solid guest ratings and a slight edge over local rivals. However, despite low self-cannibalisation and moderate market demand, intense competition with eight rivals nearby limits growth potential. Confidence is high, though location precision is approximate within the district.",
+      "text": "We recommend shrinking Bedashing Beauty Spa Shahama due to its overall branch strength of 0.497, just below the 0.51 threshold, primarily driven by strong guest ratings and competitive positioning. However, recent momentum is negative, and despite high competitive headroom with eight rivals nearby, catchment demand is low. Confidence is high, though location precision is approximate but immaterial at this scale.",
       "model": "gpt-4.1-mini",
       "stale": false
     }
@@ -4500,7 +4500,7 @@
     "geocode_precision": "area",
     "flags": [],
     "recommendation": "HOLD",
-    "decision_rule": "strength 0.53 and market 0.48 fall between the PROTECT and SHRINK thresholds",
+    "decision_rule": "strength 0.530 and market 0.475 fall between the PROTECT and SHRINK thresholds",
     "strength": {
       "axis": "strength",
       "score": 0.53,
@@ -4696,7 +4696,7 @@
       ]
     },
     "analyst_note": {
-      "text": "We recommend holding West Yas as its solid guest rating and strong review volume underpin a respectable branch strength, while the market shows high competitive headroom and moderate catchment demand. However, 18% self-cannibalisation with two nearby lounges slightly limits growth potential. Confidence is high despite location resolution to district level, which is negligible at this catchment scale.",
+      "text": "We recommend holding West Yas due to its solid guest rating and strong review volume, which together contribute positively to branch strength. The market shows high competitive headroom with 10 rivals nearby, but catchment demand is moderate and self-cannibalisation with two other lounges is limited at 18%. Confidence is high despite location resolution at district level.",
       "model": "gpt-4.1-mini",
       "stale": false
     }

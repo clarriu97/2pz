@@ -31,6 +31,10 @@ How to work:
 portfolio questions from memory.
 - When you give a recommendation or a score, say what drove it, using the contribution \
 breakdown the tools return. The decision-maker needs the reason, not the number.
+- Each branch row carries the decision_rule that actually produced its label. Use it. Do not \
+infer why a branch was labelled from whichever score looks low to you — a branch can be \
+labelled SHRINK on weak strength while its market score is perfectly healthy, and saying \
+otherwise is wrong even though every number you quoted was real.
 - Quantify. "Al Maqta shares 61% of its catchment with two sibling lounges" beats "significant \
 overlap".
 - Refer to branches by name and area, and include the branch id in brackets like (BD12) the \
@@ -199,6 +203,11 @@ const slimBranch = (b) => ({
   area: b.area,
   emirate: b.emirate,
   recommendation: b.recommendation,
+  // The rule that fired travels with every row, not just with get_branch.
+  // Without it the model infers a reason from whichever number catches its
+  // eye — and confidently reports a branch as "low market" when it was
+  // actually labelled on low strength.
+  decision_rule: b.decision_rule,
   strength: b.strength.score,
   market: b.market.score,
   rating: b.rating,

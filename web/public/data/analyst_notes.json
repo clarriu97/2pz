@@ -1,507 +1,507 @@
 {
   "branch:BD01": {
-    "note": "We recommend holding Bedashing Beauty Lounge Mirdif 35 due to its strong local position, supported by high review volume and a guest rating of 4.6★, alongside positive recent momentum. However, market attractiveness is moderate, with significant competition density and 43% catchment overlap with our Al Warqa City Mall branch, limiting growth potential despite high confidence in location data.",
-    "fingerprint": "352a159233639549",
+    "note": "We recommend holding Bedashing Beauty Lounge Mirdif 35 due to its strong local position, supported by high review volume and a guest rating of 4.6 stars, alongside positive recent momentum. However, competitive density is high with 18 rivals nearby, and 43% catchment overlap with our Al Warqa City Mall branch limits growth potential. Confidence in location data is high.",
+    "fingerprint": "f3632500de621ebb",
     "model": "gpt-4.1-mini"
   },
   "branch:BD02": {
-    "note": "We recommend holding Bedashing Beauty Studio Zawaya Walk due to its strong position versus local rivals and solid guest ratings, which offset a recent 40% decline in momentum. The catchment shows moderate demand with minimal self-cannibalisation from one nearby Bedashing lounge. Confidence is high despite slight location imprecision, supporting a cautious approach without expansion or contraction.",
-    "fingerprint": "1fb4ad9bb27b254f",
+    "note": "We recommend HOLD for Bedashing Beauty Studio Zawaya Walk, driven by its strong position versus local rivals and solid guest rating, which offset a recent 40% decline in momentum. The catchment shows moderate demand with minimal self-cannibalisation from one nearby lounge. Confidence is high despite location resolution at district level, which is acceptable given the large catchment radius.",
+    "fingerprint": "58fc8134197d8cb8",
     "model": "gpt-4.1-mini"
   },
   "branch:BD03": {
-    "note": "We recommend holding City Walk as its solid branch strength, driven by strong review volume and guest ratings, balances a moderately attractive market with high catchment demand but intense competition. The key trade-off is good local performance offset by a crowded catchment with 39 rivals, though no self-cannibalisation occurs. Confidence in this assessment is high.",
-    "fingerprint": "70b7f3921952d797",
+    "note": "We recommend holding City Walk as its solid branch strength, driven by high review volume and guest ratings, balances a moderately attractive market with strong catchment demand but dense competition. The branch’s recent momentum dip is noted but does not outweigh its overall performance. Importantly, there is no self-cannibalisation, supporting its defensibility in a competitive area.",
+    "fingerprint": "7563761ac3f431c4",
     "model": "gpt-4.1-mini"
   },
   "branch:BD04": {
-    "note": "We recommend holding Al Warqa City Mall as its strong local position and high guest rating drive solid branch strength, while competitive headroom and catchment demand support market attractiveness. However, over half its catchment overlaps with two nearby Bedashing lounges, limiting growth potential. Confidence is high despite minor location resolution uncertainty, making HOLD the prudent choice.",
-    "fingerprint": "08fd5229c7c3b652",
+    "note": "We recommend HOLD for Al Warqa City Mall due to its strong local position, driven by a +0.31 star advantage over rivals and a high guest rating of 4.7 stars, balanced against moderate market attractiveness with 16 competitors and 56% catchment overlap with two nearby Bedashing lounges. Confidence is high despite location resolution at district level.",
+    "fingerprint": "9119504bf8f19c17",
     "model": "gpt-4.1-mini"
   },
   "branch:BD05": {
-    "note": "We recommend holding Bedashing Nad Al Sheba due to its solid guest rating and strong position versus local rivals, supported by good review volume and recent momentum. The market is moderately attractive with high competitor density but reasonable catchment demand and minimal self-cannibalisation. Confidence is high, though location precision is district-level, which is acceptable given the large catchment radius.",
-    "fingerprint": "1976ab7cfa76d21f",
+    "note": "We recommend holding Bedashing Nad Al Sheba due to its solid guest ratings and strong position versus local rivals, supported by a healthy review volume and recent positive momentum. However, the market shows moderate attractiveness with high competitor density and only average catchment demand. The low self-cannibalisation risk further supports maintaining the branch as is. Confidence in data is high.",
+    "fingerprint": "9bfb9973889e6dbe",
     "model": "gpt-4.1-mini"
   },
   "branch:BD06": {
-    "note": "We recommend shrinking Bedashing Elegance Lounge Al Safa 2 despite strong guest ratings and positive momentum, as its overall strength just misses the 0.51 threshold. The main trade-off is a decent catchment demand of 61% metro peak but intense local competition with 49 rivals nearby. Confidence is medium due to limited reviews and imprecise location data.",
-    "fingerprint": "d7b20d4ec47816f2",
+    "note": "We recommend shrinking Bedashing Elegance Lounge Al Safa 2 due to its marginal branch strength of 0.510, driven mainly by a solid guest rating of 4.6★ and a positive position versus local rivals. However, the catchment demand is moderate at 61% of metro peak, and the confidence is medium because the rating is based on only 98 reviews, making quality and competitive-position signals noisy.",
+    "fingerprint": "a33c3f822339cddd",
     "model": "gpt-4.1-mini"
   },
   "branch:BD07": {
-    "note": "We recommend holding Bedashing Beauty Suite Umm Suqeim due to its strong position versus local rivals and solid guest ratings, which contribute most to its strength score of 0.67. While the market attractiveness is moderate, driven by good catchment demand but high competitor density, the minimal self-cannibalisation supports maintaining current investment. Confidence is high despite slight location resolution uncertainty.",
-    "fingerprint": "c21e82dcef9ce8b6",
+    "note": "We recommend holding Bedashing Beauty Suite Umm Suqeim due to its strong position versus local rivals and high guest rating, which contribute positively despite a recent momentum decline. The catchment demand is solid but tempered by intense competition with 40 rivals nearby. The minimal self-cannibalisation of 1% is negligible, and confidence is high given the precise catchment estimation.",
+    "fingerprint": "596e00f86eb403ea",
     "model": "gpt-4.1-mini"
   },
   "branch:BD08": {
-    "note": "We recommend shrinking Bedashing Glam Haven Muwaileh due to its overall branch strength falling below threshold, driven mainly by modest guest ratings and a weak recent momentum despite a strong competitive headroom signal. However, low confidence in review volume and competitor mapping suggests these positives may be overstated, so caution is warranted in interpreting the market attractiveness.",
-    "fingerprint": "040e0c4fe7512786",
+    "note": "We recommend shrinking Bedashing Glam Haven Muwaileh due to modest branch strength driven by decent guest ratings and local positioning, but recent momentum is declining. Although competitive headroom appears strong with few rivals nearby, this is likely overstated due to sparse competitor data, and the low review volume means quality signals are uncertain. The catchment has minimal self-cannibalisation, but overall confidence in these metrics is low.",
+    "fingerprint": "70f0d5aff9e75e46",
     "model": "gpt-4.1-mini"
   },
   "branch:BD09": {
-    "note": "We recommend holding Bedashing Beauty Emporium Jumeirah Park due to its strong guest rating and superior position versus local rivals, which contribute positively to branch strength. However, market attractiveness is moderate, with high competitor density and some self-cannibalisation from a nearby Bedashing Wellness Lounge sharing 22% of the catchment. Confidence is high despite location resolution at district level.",
-    "fingerprint": "468856277622eb13",
+    "note": "We recommend HOLD for Bedashing Beauty Emporium Jumeirah Park, driven by strong guest ratings and a solid position versus local rivals, balanced against moderate market attractiveness with high competitor density and 22% catchment overlap with our Palm Jumeirah lounge. Confidence is high despite location resolution at district level, which is immaterial at this catchment scale.",
+    "fingerprint": "f31ddf044130d064",
     "model": "gpt-4.1-mini"
   },
   "branch:BD10": {
-    "note": "We recommend holding Palm Jumeirah Wellness Lounge due to strong guest ratings and a positive position versus local rivals, which drive its solid branch strength of 0.65. However, market attractiveness is moderate, with catchment demand at 66% of metro peak and high competitor density limiting growth potential. Note the medium confidence level, as the rating is based on only 38 reviews and location data is approximate.",
-    "fingerprint": "c3991cb41740019f",
+    "note": "We recommend holding Palm Jumeirah Wellness Lounge due to its strong guest rating and positive position versus local rivals, which drive its solid branch strength. However, market attractiveness is moderate with high competition density and 22% catchment overlap with another Bedashing lounge, limiting growth potential. Note the medium confidence level, as the rating is based on only 38 reviews and location data is approximate.",
+    "fingerprint": "177cda05070202d5",
     "model": "gpt-4.1-mini"
   },
   "branch:BD11": {
-    "note": "We recommend protecting Bedashing Beauty Oasis Al Taif Mall due to its strong guest rating and clear lead over local rivals, supported by solid recent momentum. The market is attractive with low competitor density and no self-cannibalisation, enhancing defensibility. However, confidence is medium as catchment location was manually placed, so some geocoding uncertainty remains.",
-    "fingerprint": "32517eb529d71fb2",
+    "note": "We recommend protecting Bedashing Beauty Oasis Al Taif Mall due to its strong guest rating and superior position versus local rivals, which drive its high branch strength. The market is also attractive with low competitor density and solid catchment demand. However, confidence is medium as geocoding was manually adjusted, so catchment accuracy may be slightly off.",
+    "fingerprint": "68ebbb5237729448",
     "model": "gpt-4.1-mini"
   },
   "branch:BD12": {
-    "note": "We recommend shrinking Bedashing Beauty Retreat Al Maqta due to limited market attractiveness, driven by high self-cannibalisation with 61% catchment overlap shared with two nearby lounges, despite strong local positioning and guest ratings. Competitive density is high with 15 rivals nearby, constraining growth potential. Confidence is high, with location accuracy sufficient for this suburban catchment.",
-    "fingerprint": "4c5389650a8ec2e3",
+    "note": "We recommend shrinking Bedashing Beauty Retreat Al Maqta due to its low market attractiveness, driven by a high self-overlap of 61% with two nearby lounges, despite strong local positioning and guest ratings. The catchment demand is moderate but insufficient to offset intense competition and significant cannibalisation. Confidence is high, with location accuracy adequate for this suburban radius.",
+    "fingerprint": "f8a5dd68b9bfd00d",
     "model": "gpt-4.1-mini"
   },
   "branch:BD13": {
-    "note": "We recommend holding Bedashing Glamour Lounge Mohammed Bin Zayed City due to its strong position versus local rivals and solid review volume, which drive its branch strength score. The market shows moderate attractiveness with good catchment demand and competitive headroom, though it faces a trade-off with 36 competitors nearby. Self-cannibalisation is minimal at 4%, supporting a stable outlook.",
-    "fingerprint": "bf3967133c6967ff",
+    "note": "We recommend holding Bedashing Glamour Lounge Mohammed Bin Zayed City due to its strong local position, outperforming rivals by 0.24 stars and solid review volume, alongside a healthy guest rating of 4.6 stars. However, market attractiveness is moderate with 36 competitors nearby and only limited self-cannibalisation at 4%, supporting a cautious stance despite good recent momentum.",
+    "fingerprint": "f0164a84b5073638",
     "model": "gpt-4.1-mini"
   },
   "branch:BD14": {
-    "note": "We recommend shrinking the Bedashing Beautification Spot Ministries Complex due to high self-cannibalisation, sharing 65% of its catchment with two nearby lounges, despite strong guest ratings and competitive positioning. The market is dense with 17 rivals and only moderate demand, limiting growth potential. Confidence is high, with location accuracy sufficient for this radius.",
-    "fingerprint": "b081557d3a43f7df",
+    "note": "We recommend shrinking the Bedashing Beautification Spot Ministries Complex branch due to its low market attractiveness driven by intense local competition and a high 65% catchment overlap with two nearby lounges, notably the Al Maqta branch covering 54%. Despite strong guest ratings and momentum, the significant self-cannibalisation limits growth potential. Confidence in location data is high.",
+    "fingerprint": "d5abe0852ac401c1",
     "model": "gpt-4.1-mini"
   },
   "branch:BD15": {
-    "note": "We recommend holding Bedashing Cosmetics Lounge Shakhbout City due to its solid branch strength driven by strong review volume and guest ratings, alongside a favourable competitive headroom in the market. However, the catchment’s low demand and the likelihood that competitor data underrepresents true competition suggest cautious optimism. This balance supports maintaining current operations without expansion or contraction.",
-    "fingerprint": "877f66c9967dc889",
+    "note": "We recommend holding Bedashing Cosmetics Lounge Shakhbout City due to its solid branch strength driven by strong review volume and guest ratings, alongside a modest competitive headroom with only two rivals nearby. However, the market attractiveness score is tempered by a likely optimistic headroom estimate, as competitor mapping may be incomplete, so caution is advised despite zero self-cannibalisation.",
+    "fingerprint": "05e57c456598d3be",
     "model": "gpt-4.1-mini"
   },
   "branch:BD16": {
-    "note": "We recommend holding Khalifa City A due to its solid branch strength driven by high review volume and a slightly better guest rating than local rivals. However, market attractiveness is moderate, with strong competitive presence and 40% catchment overlap with our West Yas lounge, which limits growth potential. Confidence in these signals is high, supporting a cautious approach.",
-    "fingerprint": "cdfd9d36f321b1a1",
+    "note": "We recommend holding Khalifa City A due to its strong local position, supported by high review volume and a guest rating of 4.5 stars, which offset a slight recent momentum decline. However, the market is moderately competitive with 17 rivals nearby and 40% catchment overlap with our West Yas lounge, limiting growth potential despite solid demand. Confidence in this assessment is high.",
+    "fingerprint": "d44c8fabd66ac23d",
     "model": "gpt-4.1-mini"
   },
   "branch:BD17": {
-    "note": "We recommend holding Bedashing Beauty Hub Khaleej Al Arabi due to its strong branch strength driven by high review volume and guest rating, alongside a moderately attractive market with solid catchment demand and competitive headroom. However, 40% catchment overlap with our nearby Al Maqta branch limits growth potential, warranting caution despite high confidence in location data.",
-    "fingerprint": "525d8ee166200ce5",
+    "note": "We recommend holding Bedashing Beauty Hub Khaleej Al Arabi due to its strong guest rating and review volume, which drive a solid branch strength of 0.717. However, market attractiveness is moderate at 0.411, constrained by significant competition and 40% catchment overlap with our nearby Al Maqta lounge. Confidence is high, with location accuracy sufficient for this suburban catchment.",
+    "fingerprint": "28e81eb5f5702b6f",
     "model": "gpt-4.1-mini"
   },
   "branch:BD18": {
-    "note": "We recommend holding Bedashing Grooming Lounge Al Falah Village 4 due to its strong local position and solid guest ratings, which contribute positively despite a recent 29% decline in momentum. The market shows high competitive headroom with six rivals nearby but no self-cannibalisation, supporting defensibility. Confidence is high, though location is district-centred, which is acceptable at this catchment scale.",
-    "fingerprint": "95438873b4fc372d",
+    "note": "We recommend holding Bedashing Grooming Lounge Al Falah Village 4 due to its solid position versus local rivals and strong guest ratings, which offset a recent momentum decline. The market shows high competitive headroom with six rivals nearby but no self-cannibalisation, supporting defensibility. Location confidence is high despite district-level resolution, making this a stable asset to maintain.",
+    "fingerprint": "798c45a12d0aac1a",
     "model": "gpt-4.1-mini"
   },
   "branch:BD19": {
-    "note": "We recommend holding Bedashing Aesthetic Lounge Delma due to its strong guest rating and positive position versus local rivals, which contribute most to its solid branch strength of 0.72. The market shows moderate attractiveness with 68% catchment demand but intense competition from 114 rivals. Confidence is high, though location is approximated within the district, which is immaterial at this scale.",
-    "fingerprint": "c4c8f26f1de269c0",
+    "note": "We recommend HOLD for Bedashing Aesthetic Lounge Delma, Kim Tower, driven by strong guest ratings and positive momentum, with a branch strength score of 0.718. However, market attractiveness is moderate at 0.305 due to high competitor density, despite zero self-cannibalisation. Confidence is high, though location is resolved to district level, which is acceptable given the large catchment radius.",
+    "fingerprint": "21e1598cc88aca57",
     "model": "gpt-4.1-mini"
   },
   "branch:BD20": {
-    "note": "We recommend protecting Bedashing Beauty Center Al Ain due to its strong branch strength driven by excellent guest ratings and high review volume, alongside a favourable market with low self-cannibalisation and good competitive headroom. The main caveat is that location data is district-level, but this is unlikely to affect the suburban catchment analysis.",
-    "fingerprint": "bb2ef79ca1e58e7f",
+    "note": "We recommend protecting Bedashing Beauty Center Al Ain due to its strong branch strength driven by excellent guest ratings and high review volume, alongside a favourable competitive environment with low self-cannibalisation and substantial competitive headroom. The main caveat is that location data is resolved to the district level, though this is unlikely to affect the assessment given the large catchment radius.",
+    "fingerprint": "f84658d2dc85941d",
     "model": "gpt-4.1-mini"
   },
   "branch:BD21": {
-    "note": "We recommend shrinking the Al Neem City Center branch due to its overall strength score below threshold, driven mainly by moderate guest ratings and review volume. While competitive headroom appears strong with only one rival nearby, this is likely an optimistic estimate due to incomplete competitor mapping. Additionally, geocoding uncertainty adds risk to catchment analysis, warranting caution despite decent momentum.",
-    "fingerprint": "56a9f72a276d14ad",
+    "note": "We recommend shrinking the Al Neem City Center branch due to its overall strength score of 0.463, driven mainly by solid guest ratings and review volume. Despite a competitive headroom score suggesting low rivalry, this is likely optimistic given limited competitor data and uncertain catchment geocoding, which lowers confidence in the market attractiveness assessment.",
+    "fingerprint": "af4841a42908c283",
     "model": "gpt-4.1-mini"
   },
   "branch:BD22": {
-    "note": "We recommend shrinking Bedashing Beauty Spa Shahama due to its borderline branch strength of 0.497, driven mainly by solid guest ratings and a slight edge over local rivals. However, despite low self-cannibalisation and moderate market demand, intense competition with eight rivals nearby limits growth potential. Confidence is high, though location precision is approximate within the district.",
-    "fingerprint": "4af7eac16a487fbc",
+    "note": "We recommend shrinking Bedashing Beauty Spa Shahama due to its overall branch strength of 0.497, just below the 0.51 threshold, primarily driven by strong guest ratings and competitive positioning. However, recent momentum is negative, and despite high competitive headroom with eight rivals nearby, catchment demand is low. Confidence is high, though location precision is approximate but immaterial at this scale.",
+    "fingerprint": "17440a0ffdcbe717",
     "model": "gpt-4.1-mini"
   },
   "branch:BD23": {
-    "note": "We recommend holding West Yas as its solid guest rating and strong review volume underpin a respectable branch strength, while the market shows high competitive headroom and moderate catchment demand. However, 18% self-cannibalisation with two nearby lounges slightly limits growth potential. Confidence is high despite location resolution to district level, which is negligible at this catchment scale.",
-    "fingerprint": "2272148818115d4a",
+    "note": "We recommend holding West Yas due to its solid guest rating and strong review volume, which together contribute positively to branch strength. The market shows high competitive headroom with 10 rivals nearby, but catchment demand is moderate and self-cannibalisation with two other lounges is limited at 18%. Confidence is high despite location resolution at district level.",
+    "fingerprint": "d4edd86c0544f37a",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1200ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a1200ffffff in Dubai due to a strong opportunity score driven by a significant coverage gap of 12.3 km to the nearest lounge and moderate zone demand representing 40% of metro peak, based on built-form proxy data rather than census figures. Competitive saturation is negligible, but the demand estimate's proxy nature warrants caution.",
-    "fingerprint": "cbb222a20af0374d",
+    "note": "We recommend WATCH for candidate zone 8743a1200ffffff in Dubai due to a strong opportunity score driven primarily by a significant coverage gap of 12.3 km to the nearest Bedashing lounge and moderate zone demand at 40% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than direct population data. Competitive saturation is negligible, supporting potential but warranting cautious monitoring.",
+    "fingerprint": "9483e945e3bdcf56",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1202ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a1202ffffff in Dubai due to a strong coverage gap of 14.4 km to the nearest lounge, contributing +0.35 to opportunity, and moderate zone demand at 29% of metro peak, adding +0.13. Demand is based on a built-form proxy from OpenStreetMap, not census data, so this should be treated cautiously despite zero competitive saturation.",
-    "fingerprint": "60a1aeb38446a090",
+    "note": "This Dubai candidate zone is rated WATCH due to a strong coverage gap of 14.4 km to the nearest Bedashing lounge, contributing +0.35 to the opportunity score. Demand is moderate at 29% of metro peak but is based on built-form data from OpenStreetMap, not census figures, which lowers confidence. Competitive saturation is negligible, so the main trade-off is potential demand versus data reliability.",
+    "fingerprint": "426e440feefb120b",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1203ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a1203ffffff in Dubai due to a strong opportunity score driven by a significant coverage gap of 14.4 km to the nearest Bedashing lounge and moderate zone demand at 46% of metro peak, though this demand is based on a built-form proxy from OpenStreetMap rather than census data. Competitive saturation is negligible, supporting potential interest.",
-    "fingerprint": "8fade56c54354e8e",
+    "note": "We recommend WATCH for candidate zone 8743a1203ffffff in Dubai due to a strong opportunity score driven by a significant coverage gap of 14.4 km to the nearest lounge and moderate zone demand at 46% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than census data. Competitive saturation is negligible, supporting potential interest.",
+    "fingerprint": "58bd565bcde51d93",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1204ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a1204ffffff in Dubai due to a strong opportunity score driven by a significant coverage gap of 10.3 km to the nearest lounge and moderate zone demand at 42% of metro peak, though this demand is based on a built-form proxy rather than actual population data. Competitive saturation is negligible, but the demand signal's nature warrants cautious interpretation.",
-    "fingerprint": "cdbeea144a7b4b26",
+    "note": "We recommend WATCH for candidate zone 8743a1204ffffff in Dubai, driven primarily by a significant coverage gap of 10.3 km to the nearest lounge, which adds +0.35 to the opportunity score, and moderate zone demand at 42% of metro peak, contributing +0.19. However, the demand figure is a built-form proxy from OpenStreetMap rather than census data, so confidence in this signal is moderate.",
+    "fingerprint": "b423539a761b9f62",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1205ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a1205ffffff in Dubai due to a strong opportunity driven by a significant coverage gap of 10.2 km to the nearest lounge and moderate zone demand at 59% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than census data. Competitive saturation is negligible, supporting potential interest.",
-    "fingerprint": "1131305a347e7a11",
+    "note": "We recommend WATCH for candidate zone 8743a1205ffffff in Dubai due to a strong opportunity score driven by a significant coverage gap of 10.2 km to the nearest lounge and moderate zone demand at 59% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than census data. Competitive saturation is negligible, supporting potential interest.",
+    "fingerprint": "83ecccf0a1423058",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1220ffffff": {
-    "note": "We recommend growing in candidate zone 8743a1220ffffff due to a significant coverage gap of 6.3 km to the nearest lounge and strong zone demand at 61% of metro peak, driven mainly by built-form proxies rather than census data. Competitive saturation is negligible, supporting expansion despite the reliance on simulated demand figures.",
-    "fingerprint": "0d99d9ad3f2891e4",
+    "note": "We recommend growing in candidate zone 8743a1220ffffff due to a significant coverage gap of 6.3 km to the nearest lounge, which strongly supports expansion, and a high zone demand proxy at 61% of metro peak, though this is based on built-form data rather than actual population. Competitive saturation is negligible, making this a clear opportunity despite the demand estimate's indirect nature.",
+    "fingerprint": "fa3cf8a6aba65c33",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1221ffffff": {
-    "note": "We recommend watching candidate zone 8743a1221ffffff in Dubai due to a strong opportunity score driven primarily by a significant coverage gap of 6.1 km to the nearest Bedashing lounge and moderate zone demand representing 34% of metro peak, though this demand is based on a built-form proxy rather than actual population data. Competitive saturation is negligible, supporting potential future interest.",
-    "fingerprint": "af10722c6fbc622f",
+    "note": "This Dubai candidate zone is rated WATCH due to a strong coverage gap of 6.1 km to the nearest Bedashing lounge, which adds +0.35 to the opportunity score, and moderate zone demand at 34% of metro peak, contributing +0.15; however, demand is based on a built-form proxy from OpenStreetMap rather than census data, so confidence is limited. Competitive saturation is negligible.",
+    "fingerprint": "9ffe150bef7a5211",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1222ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a1222ffffff in Dubai due to a strong opportunity score driven by a significant coverage gap of 8.6 km to the nearest lounge and moderate zone demand at 49% of metro peak, though this demand is based on built-form proxy data rather than population. Competitive saturation is negligible, but the demand signal's nature warrants cautious interpretation.",
-    "fingerprint": "f8dddfecc28c2b93",
+    "note": "We recommend WATCH for candidate zone 8743a1222ffffff in Dubai due to a strong opportunity score driven by a significant coverage gap of 8.6 km to the nearest lounge and moderate zone demand at 49% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than direct population data. Competitive saturation is negligible, supporting potential interest.",
+    "fingerprint": "726ff77d00476291",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1223ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a1223ffffff in Dubai, driven primarily by a significant coverage gap of 8.1 km to the nearest Bedashing lounge, which adds +0.35 to the opportunity score. The zone also shows moderate demand at 41% of metro peak, though this is based on a built-form proxy rather than actual population data. Competitive saturation is negligible, posing no downside risk.",
-    "fingerprint": "364170667acb2691",
+    "note": "We recommend watching candidate zone 8743a1223ffffff in Dubai due to a strong opportunity score driven primarily by a significant coverage gap of 8.1 km to the nearest Bedashing lounge, contributing +0.35, and moderate zone demand at 41% of metro peak, adding +0.18; however, this demand is based on a built-form proxy from OpenStreetMap rather than census data, which should be considered.",
+    "fingerprint": "51b5aac019e127cc",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1224ffffff": {
-    "note": "We recommend growing in candidate zone 8743a1224ffffff due to a strong opportunity score driven primarily by a significant 5.1 km coverage gap to the nearest lounge and substantial zone demand at 69% of metro peak, based on built-form proxies rather than census data. Competitive saturation is low at 18%, supporting expansion despite the simulated nature of demand figures.",
-    "fingerprint": "9e3616078b16689c",
+    "note": "We recommend growing in candidate zone 8743a1224ffffff due to a strong opportunity score driven primarily by a significant 5.1 km coverage gap to the nearest Bedashing lounge and high zone demand at 69% of metro peak, though this demand is based on a built-form proxy rather than census data. Competitive saturation is low at 18%, supporting expansion.",
+    "fingerprint": "63abf239b240f621",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1228ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a1228ffffff due to a strong coverage gap of 9.0 km to the nearest lounge, which contributes +0.35 to opportunity, and moderate zone demand at 31% of metro peak, adding +0.14; however, this demand is based on a built-form proxy from OpenStreetMap rather than census data, so confidence is limited. Competitive saturation is negligible.",
-    "fingerprint": "ea50d24bb770c3be",
+    "note": "We recommend WATCH for candidate zone 8743a1228ffffff in Dubai, driven primarily by a strong coverage gap of 9.0 km to the nearest Bedashing lounge, contributing +0.35, and moderate zone demand at 31% of metro peak, adding +0.14. However, the demand is a built-form proxy from OpenStreetMap rather than census data, so this insight should be treated cautiously.",
+    "fingerprint": "e5fa8bbf1ddac717",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1229ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a1229ffffff in Dubai, driven by a strong opportunity score of 0.48, mainly due to moderate zone demand at 61% of metro peak and a significant coverage gap of 9.5 km to the nearest Bedashing lounge. However, the demand figure is a built-form proxy from OpenStreetMap, not census data, so confidence is moderate.",
-    "fingerprint": "afba348824124cec",
+    "note": "We recommend WATCH for candidate zone 8743a1229ffffff in Dubai, driven primarily by moderate zone demand at 61% of metro peak and a significant 9.5 km coverage gap to the nearest Bedashing lounge. However, the demand figure is a built-form proxy from OpenStreetMap rather than census data, which introduces some uncertainty in the opportunity assessment.",
+    "fingerprint": "56765f46652b6c35",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a122affffff": {
-    "note": "We recommend WATCH for candidate zone 8743a122affffff in Dubai, driven primarily by a significant coverage gap of 10.6 km to the nearest lounge, which strongly boosts opportunity. The moderate zone demand, based on a built-form proxy rather than census data, also supports potential. However, the absence of competitive saturation and reliance on simulated demand data warrant cautious monitoring.",
-    "fingerprint": "25ccd26b33d6a582",
+    "note": "This Dubai candidate zone is rated WATCH due to a strong coverage gap of 10.6 km to the nearest Bedashing lounge, contributing +0.35, and moderate zone demand at 40% of metro peak, adding +0.18; however, demand is based on a built-form proxy from OpenStreetMap, not census data, which lowers confidence. Competitive saturation is negligible, making this a cautious opportunity to monitor.",
+    "fingerprint": "3ea4f44935a56551",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a122dffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a122dffffff in Dubai due to a strong coverage gap of 7.8 km to the nearest lounge, which significantly boosts opportunity, partially offset by moderate zone demand at 22% of metro peak derived from built-form proxy data rather than population. Competitive saturation is negligible, but the demand signal’s proxy nature warrants cautious interpretation.",
-    "fingerprint": "caf09cc0061f30fc",
+    "note": "We recommend WATCH for candidate zone 8743a122dffffff in Dubai, driven primarily by a significant coverage gap of 7.8 km to the nearest lounge, which adds +0.35 to the opportunity score. Although zone demand contributes +0.10, it is based on a built-form proxy rather than actual population data, so confidence is limited. Competitive saturation is negligible, making this a cautious watch rather than a strong lead.",
+    "fingerprint": "3ffbac9541db3762",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a122effffff": {
-    "note": "We recommend WATCH for candidate zone 8743a122effffff in Dubai due to a strong opportunity score driven primarily by a significant coverage gap of 8.3 km to the nearest Bedashing lounge and a moderate zone demand representing 42% of metro peak, though this demand is based on built-form proxy data from OpenStreetMap rather than actual population figures. Competitive saturation is negligible, supporting potential interest.",
-    "fingerprint": "e44175db7d472d3f",
+    "note": "We recommend WATCH for candidate zone 8743a122effffff in Dubai due to a strong coverage gap of 8.3 km to the nearest lounge, contributing +0.35, and moderate zone demand at 42% of metro peak, adding +0.19. However, the demand is a built-form proxy from OpenStreetMap, not census data, so confidence in this signal is limited. Competitive saturation is negligible.",
+    "fingerprint": "f5a9fe8520a12a12",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a12e0ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a12e0ffffff in Dubai, driven by a strong coverage gap of 17.9 km to the nearest Bedashing lounge, adding +0.35 to the score, and moderate zone demand at 33% of metro peak, contributing +0.15. However, demand is based on a built-form proxy, not population data, so confidence in this signal is limited.",
-    "fingerprint": "c6a15b8ede793e57",
+    "note": "We recommend watching candidate zone 8743a12e0ffffff in Dubai due to a strong coverage gap of 17.9 km to the nearest lounge, which adds significant opportunity, and moderate zone demand representing 33% of metro peak, though this is based on a built-form proxy rather than actual population data. Competitive saturation is negligible, but the demand signal’s nature warrants cautious interpretation.",
+    "fingerprint": "75eb1b14e4ad1209",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a12e1ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a12e1ffffff in Dubai due to a strong opportunity score driven by a significant coverage gap of 17 km to the nearest Bedashing lounge and moderate zone demand representing 39% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than census data. Competitive saturation is negligible, supporting cautious monitoring.",
-    "fingerprint": "f30d7681e9834ecd",
+    "note": "We recommend watching candidate zone 8743a12e1ffffff in Dubai due to a strong opportunity score driven primarily by a significant coverage gap of 17 km to the nearest lounge and moderate zone demand at 39% of metro peak, though this demand is based on a built-form proxy rather than actual population data. Competitive saturation is negligible, but the demand signal’s proxy nature warrants caution.",
+    "fingerprint": "cd4540adf01a0b1c",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a12e4ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a12e4ffffff in Dubai, driven by a strong coverage gap of 16.7 km to the nearest lounge, contributing +0.35, and moderate zone demand at 38% of metro peak, adding +0.17. However, the demand is based on a built-form proxy from OpenStreetMap, not actual population data, which is a key caveat. Competitive saturation is negligible.",
-    "fingerprint": "a32478da987b8220",
+    "note": "We recommend WATCH for candidate zone 8743a12e4ffffff in Dubai due to a strong opportunity driven by a significant coverage gap of 16.7 km to the nearest Bedashing lounge and moderate zone demand at 38% of metro peak, though this demand is based on a built-form proxy rather than actual population data. Competitive saturation is negligible, supporting cautious monitoring.",
+    "fingerprint": "8ecb68f6514cdc0f",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a12e5ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a12e5ffffff in Dubai, driven primarily by a significant coverage gap of 15.6 km to the nearest Bedashing lounge, adding +0.35 to the opportunity score, and moderate zone demand at 36% of metro peak, contributing +0.16. However, the demand figure is a built-form proxy from OpenStreetMap, not census data, so confidence in this signal is limited.",
-    "fingerprint": "35206b52f3cdf479",
+    "note": "We recommend WATCH for candidate zone 8743a12e5ffffff due to a strong coverage gap of 15.6 km to the nearest lounge, contributing +0.35, and moderate zone demand at 36% of metro peak, adding +0.16; however, demand is based on a built-form proxy from OpenStreetMap, not actual population data, which limits confidence in this signal. Competitive saturation is negligible.",
+    "fingerprint": "f5abae062639e916",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1341ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a1341ffffff in Dubai due to a strong opportunity score driven primarily by a significant coverage gap of 5.0 km to the nearest Bedashing lounge and moderate zone demand representing 41% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than direct population data. Competitive saturation is negligible, supporting potential interest.",
-    "fingerprint": "7682b625d1f916cb",
+    "note": "We recommend WATCH for candidate zone 8743a1341ffffff in Dubai due to a strong coverage gap of 5.0 km to the nearest Bedashing lounge, contributing +0.35, and moderate zone demand at 41% of metro peak, adding +0.19; however, this demand is a built-form proxy from OpenStreetMap, not census data, so confidence in actual customer potential is limited.",
+    "fingerprint": "b60852a2f0d0b775",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1342ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a1342ffffff in Dubai, driven by a significant coverage gap of 4.6 km to the nearest Bedashing lounge and moderate zone demand representing 47% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than direct population data. Competitive saturation is negligible, but the demand estimate's indirect nature warrants caution.",
-    "fingerprint": "0570124241d80968",
+    "note": "We recommend WATCH for candidate zone 8743a1342ffffff in Dubai due to a strong opportunity score driven primarily by a significant coverage gap of 4.6 km to the nearest Bedashing lounge and moderate zone demand representing 47% of metro peak, though this demand is based on a built-form proxy rather than actual population data. Competitive saturation is negligible, but the reliance on simulated demand data warrants caution.",
+    "fingerprint": "f64a19cad91213d4",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1343ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a1343ffffff in Dubai, driven primarily by a significant coverage gap of 5.6 km to the nearest Bedashing lounge, which adds +0.35 to the opportunity score. Demand, estimated from built-form data rather than population, contributes moderately at +0.12, while competitive saturation is negligible. The main caveat is that demand is a proxy, not direct customer data.",
-    "fingerprint": "6dcdadbf225bb559",
+    "note": "We recommend WATCH for candidate zone 8743a1343ffffff in Dubai, driven primarily by a significant coverage gap of 5.6 km to the nearest lounge, adding +0.35 to the opportunity score. Although zone demand contributes positively (+0.116), it is based on a built-form proxy from OpenStreetMap rather than actual population data, which lowers confidence. Competitive saturation is negligible, so the main trade-off is strong local opportunity but uncertain demand accuracy.",
+    "fingerprint": "3dae8a756f60535e",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a134cffffff": {
-    "note": "We recommend watching candidate zone 8743a134cffffff in Dubai due to a strong coverage gap of 4.9 km to the nearest Bedashing lounge, contributing +0.33 to opportunity, and moderate zone demand at 36% of metro peak, adding +0.16; however, this demand is a built-form proxy from OpenStreetMap rather than census data, which limits confidence in the estimate. Competitive saturation is minimal.",
-    "fingerprint": "48dbd87ed8dd2f0e",
+    "note": "We recommend WATCH for candidate zone 8743a134cffffff in Dubai due to a strong coverage gap of 4.9 km to the nearest Bedashing lounge, which significantly boosts opportunity. Moderate zone demand, based on built-form proxy data rather than population, also supports potential. Competitive saturation is minimal, but the demand signal’s proxy nature warrants cautious interpretation.",
+    "fingerprint": "0d3d4ee18982151d",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1370ffffff": {
-    "note": "We recommend watching candidate zone 8743a1370ffffff in Dubai due to its moderate opportunity score driven primarily by strong zone demand, which is a built-form proxy rather than actual population data, and a significant coverage gap of 3.7 km to the nearest Bedashing lounge. Competitive saturation is low, but the demand signal's proxy nature warrants cautious interpretation.",
-    "fingerprint": "c659606e4b327793",
+    "note": "This Dubai candidate zone is rated WATCH due to a strong opportunity score driven primarily by high zone demand, estimated at 73% of metro peak using built-form data rather than census figures, and a significant coverage gap with the nearest Bedashing lounge 3.7 km away. Competitive saturation is low, but the demand proxy’s nature means caution is warranted before committing.",
+    "fingerprint": "eb033a4e9519f20e",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1388ffffff": {
-    "note": "We recommend watching candidate zone 8743a1388ffffff in Dubai due to its strong opportunity score driven primarily by a significant coverage gap of 12.9 km to the nearest Bedashing lounge, contributing +0.35, and moderate zone demand at 23% of metro peak, adding +0.11. However, the demand figure is a built-form proxy from OpenStreetMap, not census data, which should be considered when interpreting this potential.",
-    "fingerprint": "ae02af5199c563ca",
+    "note": "We recommend WATCH for candidate zone 8743a1388ffffff in Dubai due to a strong coverage gap of 12.9 km to the nearest Bedashing lounge, contributing +0.35, and moderate zone demand at 23% of metro peak, adding +0.11. However, this demand is based on a built-form proxy from OpenStreetMap, not actual population data, which lowers confidence in the estimate.",
+    "fingerprint": "ef3fde6c70d79b1b",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1389ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a1389ffffff in Dubai, driven primarily by a significant coverage gap of 12.8 km to the nearest Bedashing lounge, which strongly supports expansion potential. However, the moderate zone demand, based on a built-form proxy rather than census data, adds some uncertainty. Competitive saturation is negligible, making this a promising but cautious opportunity.",
-    "fingerprint": "0a6c4cb09073561d",
+    "note": "We recommend WATCH for candidate zone 8743a1389ffffff in Dubai due to a strong coverage gap of 12.8 km to the nearest Bedashing lounge, contributing +0.35, and moderate zone demand at 25% of metro peak, adding +0.11; however, this demand is based on a built-form proxy from OpenStreetMap, not actual population data, which limits confidence in the opportunity.",
+    "fingerprint": "253a9b6de347022d",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1392ffffff": {
-    "note": "We recommend watching candidate zone 8743a1392ffffff in Dubai due to a strong opportunity score driven primarily by a significant coverage gap of 21.1 km to the nearest lounge and moderate zone demand at 42% of metro peak, though this demand is based on a built-form proxy rather than actual population data. Competitive saturation is negligible, supporting potential interest but warranting further validation.",
-    "fingerprint": "c669ed044516c926",
+    "note": "We recommend WATCH for this Dubai candidate zone due to a strong opportunity score driven primarily by a significant coverage gap of 21.1 km to the nearest Bedashing lounge, which adds +0.35, and moderate zone demand at 42% of metro peak contributing +0.19. However, the demand figure is a built-form proxy from OpenStreetMap, not census data, so it should be treated with caution.",
+    "fingerprint": "7fee501209eaea79",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a1ac8ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a1ac8ffffff in Dubai due to a strong coverage gap of 10.1 km to the nearest Bedashing lounge, contributing +0.35 to opportunity, and moderate zone demand at 24% of metro peak, adding +0.108. However, the demand is a built-form proxy from OpenStreetMap, not census data, so confidence in this signal is limited.",
-    "fingerprint": "1fbb4b3423f90b42",
+    "note": "We recommend watching candidate zone 8743a1ac8 in Dubai due to a strong coverage gap, with the nearest Bedashing lounge over 10 km away, contributing +0.35 to the opportunity score. Demand, estimated from built-form data rather than census figures, adds +0.11, while competitive saturation is negligible. This suggests potential, but the demand proxy’s limitations warrant caution.",
+    "fingerprint": "9c9ddf5e543e25d7",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc10ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743acc10ffffff in Dubai, driven primarily by a significant coverage gap of 8.2 km to the nearest Bedashing lounge, which strongly supports expansion. The moderate zone demand, based on a built-form proxy rather than census data, adds some potential but is less influential. Competitive saturation is negligible, so the main caveat is reliance on simulated demand data.",
-    "fingerprint": "45d7b26e5925abaf",
+    "note": "We recommend WATCH for candidate zone 8743acc10ffffff in Dubai due to a strong coverage gap of 8.2 km to the nearest Bedashing lounge, which significantly boosts opportunity. Although zone demand is moderate at 27% of metro peak, this is based on a built-form proxy rather than direct population data, so confidence is limited. Competitive saturation is negligible, supporting potential but warranting caution.",
+    "fingerprint": "90b5f47376f5f6b5",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc11ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743acc11ffffff in Sharjah due to a strong opportunity score driven primarily by 74% of metro peak demand, based on built-form proxy data rather than census figures, and a significant 6.2 km coverage gap to the nearest Bedashing lounge. Competitive saturation is negligible, supporting potential, but demand data is modelled and should be treated cautiously.",
-    "fingerprint": "cfdd748e811a3516",
+    "note": "We recommend WATCH for candidate zone 8743acc11ffffff in Sharjah, driven primarily by strong local demand indicated by built-form proxies at 74% of metro peak and a significant coverage gap of 6.2 km to the nearest Bedashing lounge. However, competitive saturation is negligible, and the demand signal is based on OpenStreetMap data, which may not fully capture actual population.",
+    "fingerprint": "9e2dd3b0bcd90ad9",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc12ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743acc12ffffff in Sharjah due to a strong opportunity score driven primarily by a significant coverage gap of 8.5 km to the nearest Bedashing lounge and moderate zone demand representing 34% of metro peak, though this demand is based on a built-form proxy rather than actual population data. Competitive saturation is negligible, supporting potential growth.",
-    "fingerprint": "8b2cf0fb0baf14e8",
+    "note": "We recommend WATCH for candidate zone 8743acc12ffffff in Sharjah, driven primarily by a significant coverage gap of 8.5 km to the nearest Bedashing lounge, which strongly supports expansion potential. The moderate zone demand, based on a built-form proxy rather than census data, adds some opportunity, while the absence of competitive saturation is neutral. This suggests cautious monitoring before committing.",
+    "fingerprint": "aeda264a6a29b3e0",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc13ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743acc13ffffff in Sharjah, driven by strong local demand at 81% of metro peak, though this is a built-form proxy from OpenStreetMap rather than census data, and a significant coverage gap of 6.3 km to the nearest Bedashing lounge. Competitive saturation is negligible, but the reliance on simulated demand data warrants caution.",
-    "fingerprint": "6582b32449531aaa",
+    "note": "We recommend WATCH for candidate zone 8743acc13ffffff in Sharjah, driven primarily by strong zone demand at 81% of metro peak, though this is a built-form proxy from OpenStreetMap rather than census data, and a significant coverage gap of 6.3 km to the nearest Bedashing lounge. Competitive saturation is negligible, but the demand estimate's nature warrants caution.",
+    "fingerprint": "04431707f24eec79",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc16ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743acc16ffffff in Dubai, driven primarily by a strong coverage gap of 10.3 km to the nearest Bedashing lounge, which adds +0.35 to the opportunity score. Demand, based on a built-form proxy rather than census data, contributes moderately at +0.11, while competitive saturation is negligible. This suggests potential but requires cautious monitoring.",
-    "fingerprint": "02c04d4fbdac9b83",
+    "note": "We recommend WATCH for candidate zone 8743acc16ffffff in Dubai, driven primarily by a significant coverage gap of 10.3 km to the nearest lounge, which strongly supports expansion potential. Moderate zone demand, based on a built-form proxy rather than census data, adds some opportunity, while zero competitive saturation poses no immediate threat. The demand signal’s proxy nature is a key caveat.",
+    "fingerprint": "de69a5824252be7f",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acca0ffffff": {
-    "note": "We recommend growing in candidate zone 8743acca0ffffff due to a strong opportunity score driven primarily by high zone demand, which is based on built-form data rather than census figures, and a significant coverage gap of 10.1 km to the nearest Bedashing lounge. Competitive saturation is negligible, supporting expansion despite the simulated nature of the demand proxy.",
-    "fingerprint": "4cd99973012051a9",
+    "note": "We recommend growing in candidate zone 8743acca0ffffff due to strong local demand, driven by a high built-form proxy at 89% of metro peak, and a significant coverage gap with the nearest lounge 10.1 km away. Competitive saturation is negligible. Note that demand is based on OpenStreetMap data, not census figures, so this is a proxy rather than direct population measurement.",
+    "fingerprint": "e65535f648035bb5",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acca1ffffff": {
-    "note": "We recommend growing in candidate zone 8743acca1ffffff in Sharjah due to a strong opportunity score driven primarily by a significant 9.3 km coverage gap to the nearest Bedashing lounge and a healthy zone demand representing 65% of metro peak, though this demand is based on built-form data from OpenStreetMap rather than census figures. Competitive saturation is negligible, supporting expansion.",
-    "fingerprint": "fcf2bb62cbf80b70",
+    "note": "We recommend growing in candidate zone 8743acca1ffffff in Sharjah due to a strong opportunity score driven primarily by a significant coverage gap of 9.3 km to the nearest Bedashing lounge and robust zone demand at 65% of the metro peak, though this demand is based on a built-form proxy rather than census data. Competitive saturation is negligible, supporting expansion.",
+    "fingerprint": "51fb00492cb3e23e",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acca2ffffff": {
-    "note": "We recommend growing in candidate zone 8743acca2ffffff due to strong demand indicated by built-form proxies, contributing +0.365, and a significant coverage gap of 8.7 km to the nearest Bedashing lounge, adding +0.350. Competitive saturation is negligible. Note that demand is based on OpenStreetMap data, not census figures, so this is a proxy rather than direct population measurement.",
-    "fingerprint": "cbaa6cf7ffcda74f",
+    "note": "We recommend growing in candidate zone 8743acca2ffffff due to a strong opportunity driven by high local demand, estimated at 81% of the metro peak using built-form proxies rather than census data, and a significant 8.7 km coverage gap to the nearest Bedashing lounge. Competitive saturation is negligible, making this a promising expansion despite reliance on simulated demand figures.",
+    "fingerprint": "45481ee5c7bee282",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acca3ffffff": {
-    "note": "We recommend watching candidate zone 8743acca3ffffff in Sharjah due to a strong coverage gap of 7.7 km to the nearest Bedashing lounge, which significantly boosts opportunity, alongside moderate zone demand representing 34% of metro peak. However, this demand is based on a built-form proxy from OpenStreetMap rather than census data, so confidence in this signal is limited.",
-    "fingerprint": "1d45bb69d2ab957a",
+    "note": "We recommend watching candidate zone 8743acca3ffffff in Sharjah due to a strong coverage gap of 7.7 km to the nearest Bedashing lounge, which significantly boosts opportunity. The moderate zone demand, based on built-form proxy rather than census data, also supports potential. However, there is no competitive saturation, so the main trade-off is balancing untapped demand against the uncertainty of proxy-based demand estimates.",
+    "fingerprint": "597ac5a2aeec7469",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acca4ffffff": {
-    "note": "We recommend growing in candidate zone 8743acca4ffffff due to strong opportunity driven by high local demand, estimated at 85% of metro peak based on built-form data, and a significant 9.7 km coverage gap to the nearest Bedashing lounge. Competitive saturation is negligible, but note the demand figure is a proxy from OpenStreetMap, not census data.",
-    "fingerprint": "7d746ce4db72e21d",
+    "note": "We recommend growing in candidate zone 8743acca4ffffff due to a strong opportunity score driven primarily by a high demand proxy from built-form data, representing 85% of metro peak, and a significant 9.7 km coverage gap to the nearest Bedashing lounge at City Walk. Competitive saturation is negligible, but note the demand figure is a simulated proxy, not census-based.",
+    "fingerprint": "1a69a7546b18e6a0",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acca5ffffff": {
-    "note": "We recommend watching candidate zone 8743acca5ffffff in Dubai due to its strong opportunity score driven by a significant coverage gap of 10.7 km to the nearest Bedashing lounge and moderate zone demand at 53% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than census data. Competitive saturation is negligible, supporting potential interest.",
-    "fingerprint": "c6dcb8268cc6261d",
+    "note": "We recommend WATCH for candidate zone 8743acca5ffffff in Dubai due to a strong opportunity score driven by a significant coverage gap of 10.7 km to the nearest Bedashing lounge and moderate zone demand at 53% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than census data. Competitive saturation is negligible, supporting cautious monitoring.",
+    "fingerprint": "0511331c49b95a40",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acca6ffffff": {
-    "note": "We recommend growing in candidate zone 8743acca6ffffff due to strong demand indicated by 87% of metro peak activity, a built-form proxy from OpenStreetMap, and a significant 8.2 km coverage gap to the nearest Bedashing lounge. Competitive saturation is negligible, making this a clear opportunity despite the demand signal being a simulated proxy rather than direct population data.",
-    "fingerprint": "da6887bcd835e0f6",
+    "note": "We recommend growing in candidate zone 8743acca6ffffff due to strong demand indicated by built-form proxies and a significant 8.2 km coverage gap to the nearest Bedashing lounge, City Walk. The absence of competitive saturation further supports expansion. However, note that demand is based on OpenStreetMap data, which is a proxy rather than direct population figures.",
+    "fingerprint": "95a45f181ec01de7",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acca8ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743acca8 in Sharjah, driven by a strong opportunity score of 0.54, mainly from high zone demand at 74% of metro peak and a significant coverage gap of 6.4 km to the nearest Bedashing lounge. However, the demand figure is based on built-form data from OpenStreetMap, not census population, so it should be treated as a proxy rather than precise footfall.",
-    "fingerprint": "ef6026dd5e298b50",
+    "note": "We recommend WATCH for this Sharjah zone due to a strong opportunity score driven by 74% of metro peak demand, based on built-form data rather than census figures, and a significant 6.4 km coverage gap to the nearest Bedashing lounge. Competitive saturation is negligible, but the reliance on simulated demand data warrants cautious monitoring.",
+    "fingerprint": "79891cae7cae94a8",
     "model": "gpt-4.1-mini"
   },
   "zone:8743accacffffff": {
-    "note": "We recommend growing in candidate zone 8743accacffffff in Sharjah due to strong demand indicated by built-form proxies, contributing +0.404, and a significant 7.1 km coverage gap to the nearest Bedashing lounge, adding +0.270. Competitive saturation is negligible. Note that demand is based on OpenStreetMap data, not census figures, which may affect accuracy.",
-    "fingerprint": "5cebe926cdff1f1a",
+    "note": "We recommend growing in candidate zone 8743accacffffff in Sharjah, driven primarily by strong local demand at 90% of metro peak, albeit based on a built-form proxy rather than census data, and a significant 7.1 km coverage gap to the nearest Bedashing lounge. Competitive saturation is negligible, supporting expansion despite the simulated demand measure.",
+    "fingerprint": "ffd08f6ed1b4d5dd",
     "model": "gpt-4.1-mini"
   },
   "zone:8743accaeffffff": {
-    "note": "We recommend WATCH for candidate zone 8743accaeffffff in Sharjah due to a strong opportunity score driven by 72% of metro peak demand, based on built-form proxy data rather than census figures, and a significant 7.3 km coverage gap to the nearest Bedashing lounge. Competitive saturation is negligible, but the demand estimate's proxy nature warrants caution.",
-    "fingerprint": "e2aeabc71c7056cc",
+    "note": "We recommend watching candidate zone 8743accaeffffff in Sharjah due to its strong opportunity score driven by 72% of metro peak demand, based on built-form proxy data rather than census figures, and a significant 7.3 km coverage gap to the nearest Bedashing lounge. Competitive saturation is negligible, but the demand estimate's reliance on proxy data warrants caution.",
+    "fingerprint": "c92944b618d08a67",
     "model": "gpt-4.1-mini"
   },
   "zone:8743accb0ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743accb0ffffff in Dubai due to a strong coverage gap of 6.7 km to the nearest Bedashing lounge, contributing +0.35, and moderate zone demand at 52% of metro peak, adding +0.24. Demand is based on built-form proxy data, not census, which is a key caveat. Competitive saturation is negligible.",
-    "fingerprint": "fb44622f141aa714",
+    "note": "We recommend watching candidate zone 8743accb0ffffff in Dubai due to a strong opportunity score driven by a significant coverage gap of 6.7 km to the nearest Bedashing lounge and moderate zone demand at 52% of metro peak, based on built-form data rather than population. Competitive saturation is negligible, but demand is a proxy and should be treated cautiously.",
+    "fingerprint": "8861f710a9ec154c",
     "model": "gpt-4.1-mini"
   },
   "zone:8743accb1ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743accb1ffffff in Dubai due to a strong opportunity score driven by a significant coverage gap of 7.8 km to the nearest Bedashing lounge and moderate zone demand at 52% of metro peak. However, the demand figure is a built-form proxy from OpenStreetMap, not census data, so confidence in this signal is limited.",
-    "fingerprint": "0c81f0fc8f1c311f",
+    "note": "We recommend watching candidate zone 8743accb1ffffff in Dubai due to a strong opportunity score driven by a significant coverage gap of 7.8 km to the nearest Bedashing lounge and moderate zone demand at 52% of metro peak, though this demand is based on a built-form proxy rather than direct population data. Competitive saturation is negligible, supporting potential interest without immediate rivalry.",
+    "fingerprint": "51076a94cd041bf4",
     "model": "gpt-4.1-mini"
   },
   "zone:8743accb4ffffff": {
-    "note": "We recommend growing in candidate zone 8743accb4ffffff due to strong opportunity driven by high local demand, indicated by 78% of metro peak activity, and a significant 4.9 km coverage gap to the nearest Bedashing lounge. The low competitive saturation further supports this. Note that demand is based on built-form proxy data, not census figures, which may affect precision.",
-    "fingerprint": "8b21f2a9fff4010b",
+    "note": "We recommend growing in candidate zone 8743accb4ffffff due to a strong opportunity score driven by high local demand, estimated from built-form data rather than census figures, and a significant 4.9 km coverage gap to the nearest Bedashing lounge. Competitive saturation is minimal, making this a promising expansion despite the demand proxy’s lower confidence.",
+    "fingerprint": "19f7f54a791ea574",
     "model": "gpt-4.1-mini"
   },
   "zone:8743accb5ffffff": {
-    "note": "We recommend growing in candidate zone 8743accb5ffffff due to a strong opportunity score driven primarily by a significant 7.1 km coverage gap to the nearest lounge and a healthy zone demand at 65% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than census data. Competitive saturation is negligible, supporting expansion.",
-    "fingerprint": "11701318be2be95b",
+    "note": "We recommend growing in candidate zone 8743accb5ffffff due to a strong opportunity driven primarily by a significant coverage gap of 7.1 km to the nearest Bedashing lounge and a high zone demand proxy at 65% of metro peak, based on built-form data rather than census figures. Competitive saturation is negligible, supporting expansion despite the simulated nature of demand data.",
+    "fingerprint": "e48f4e3cbb50dbea",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acd8bffffff": {
-    "note": "We recommend WATCH for candidate zone 8743acd8bffffff in Dubai due to a strong coverage gap of 11.5 km to the nearest Bedashing lounge, contributing +0.35, and moderate zone demand at 30% of metro peak, adding +0.135. However, the demand is based on a built-form proxy, not actual population data, which limits confidence in this opportunity.",
-    "fingerprint": "81644d9529a493a8",
+    "note": "We recommend watching candidate zone 8743acd8b in Dubai due to a strong coverage gap of 11.5 km to the nearest Bedashing lounge, contributing +0.35 to opportunity, and moderate zone demand at 30% of metro peak, adding +0.135; however, this demand is a built-form proxy from OpenStreetMap rather than actual population data, so confidence is limited. Competitive saturation is negligible.",
+    "fingerprint": "3f4bc8472cd73562",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acd98ffffff": {
-    "note": "We recommend growing in candidate zone 8743acd98ffffff due to a strong opportunity score driven primarily by a significant coverage gap of 5.7 km to the nearest lounge and substantial zone demand at 67% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than direct population data. Competitive saturation is negligible, supporting expansion.",
-    "fingerprint": "4300cac256bb1ad4",
+    "note": "We recommend growing in candidate zone 8743acd98ffffff due to a strong opportunity score of 0.653, primarily driven by a significant 5.7 km coverage gap to the nearest lounge and a high zone demand proxy at 67% of metro peak, based on built-form data rather than census figures. Competitive saturation is negligible, supporting expansion despite the demand signal being a simulated proxy.",
+    "fingerprint": "bc10ffefa21cb572",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acd99ffffff": {
-    "note": "We recommend growing in candidate zone 8743acd99ffffff due to a strong opportunity score driven primarily by high zone demand, estimated at 84% of the metro peak using built-form proxies rather than census data, and a significant 7.6 km coverage gap to the nearest Bedashing lounge. Competitive saturation is negligible, supporting expansion despite the demand figure being a proxy rather than direct population data.",
-    "fingerprint": "7b4602e5099b735e",
+    "note": "We recommend growing in candidate zone 8743acd99ffffff due to strong demand indicated by built-form proxies and a significant 7.6 km coverage gap to the nearest Bedashing lounge, City Walk. Competitive saturation is negligible, supporting expansion. However, note that demand is based on OpenStreetMap data, not census figures, which may affect precision.",
+    "fingerprint": "da3a8b86d06fe4cb",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acd9bffffff": {
-    "note": "We recommend growing in candidate zone 8743acd9bffffff due to strong local demand, driven primarily by a high zone demand proxy from built-form data at 86% of metro peak and a significant 6 km coverage gap to the nearest Bedashing lounge. Competitive saturation is negligible, but note the demand figure is a built-form proxy, not actual population data.",
-    "fingerprint": "9159247f0e428768",
+    "note": "We recommend growing in candidate zone 8743acd9bffffff due to strong opportunity driven by high local demand—86% of metro peak, based on built-form proxy from OpenStreetMap—and a significant 6 km coverage gap to the nearest Bedashing lounge. Competitive saturation is negligible. Note the demand figure is a proxy, so actual footfall may vary.",
+    "fingerprint": "796ebde93fcb28b6",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a0220ffffff": {
-    "note": "We recommend watching candidate zone 8743a0220ffffff in Abu Dhabi due to a strong coverage gap of 5.1 km to the nearest Bedashing lounge, which significantly boosts opportunity. Although zone demand is moderate at 35% of metro peak, this is based on built-form data rather than population, so should be treated cautiously. Competitive saturation is low, supporting potential interest.",
-    "fingerprint": "fa8ea3d44f860066",
+    "note": "We recommend WATCH for candidate zone 8743a0220ffffff in Abu Dhabi due to a strong coverage gap of 5.1 km to the nearest lounge, which significantly boosts opportunity, alongside moderate zone demand representing 35% of metro peak, though this is based on a built-form proxy rather than actual population data. Competitive saturation is low, but the demand estimate's nature is a key caveat.",
+    "fingerprint": "ba35e9bd2e777105",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a0226ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a0226ffffff in Abu Dhabi due to a strong opportunity driven by a significant coverage gap of 6.4 km to the nearest Bedashing lounge and moderate zone demand at 51% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than census data. Competitive saturation is negligible, supporting potential interest.",
-    "fingerprint": "dadfffbe1aa902f7",
+    "note": "We recommend WATCH for candidate zone 8743a0226ffffff in Abu Dhabi, driven primarily by a significant coverage gap of 6.4 km to the nearest Bedashing lounge, contributing +0.35, and moderate zone demand at 51% of metro peak, adding +0.23. However, the demand is based on a built-form proxy from OpenStreetMap rather than actual population data, which is a key caveat.",
+    "fingerprint": "3c952492d1d1152d",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a0228ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a0228ffffff in Abu Dhabi, driven by moderate demand indicated by built-form proxies and a significant coverage gap of 4.1 km to the nearest Bedashing lounge, suggesting potential for expansion. However, competitive saturation is low, and the demand figure is based on OpenStreetMap data, which is a proxy rather than direct population metrics, so confidence is moderate.",
-    "fingerprint": "9958bf83068c27f0",
+    "note": "We recommend WATCH for candidate zone 8743a0228ffffff in Abu Dhabi, driven by strong local demand indicated by built-form proxies rather than census data, and a significant 4.1 km coverage gap to the nearest Bedashing lounge. Competitive saturation is low, but the demand signal’s reliance on mapped features rather than population data warrants cautious monitoring.",
+    "fingerprint": "10d30093b25c59e8",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a0229ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a0229ffffff in Abu Dhabi, driven primarily by a significant coverage gap of 6.1 km to the nearest Bedashing lounge, contributing +0.35 to the opportunity score. The moderate zone demand, based on a built-form proxy rather than census data, adds +0.12, while zero competitive saturation has negligible impact. The demand estimate's proxy nature is a key caveat.",
-    "fingerprint": "b3539aa6ce370be1",
+    "note": "We recommend WATCH for candidate zone 8743a0229ffffff in Abu Dhabi due to a strong coverage gap of 6.1 km to the nearest Bedashing lounge, contributing +0.35 to the opportunity score. Demand is moderate at 27% of metro peak but is based on built-form proxy data, not census figures, which lowers confidence. Competitive saturation is negligible, so the main trade-off is moderate demand against a clear coverage gap.",
+    "fingerprint": "f577e4f5c60abce4",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a022cffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a022cffffff in Abu Dhabi due to strong opportunity driven by high local demand, estimated from built-form data rather than census, and a significant coverage gap of 4.9 km to the nearest Bedashing lounge. However, this is tempered by full competitive saturation, indicating a trade-off between unmet local demand and intense competition.",
-    "fingerprint": "8a999af7ec7636a1",
+    "note": "We recommend WATCH for candidate zone 8743a022cffffff in Abu Dhabi due to strong opportunity driven by high local demand, estimated at 78% of metro peak from built-form data, and a significant 4.9 km coverage gap to the nearest Bedashing lounge. However, competitive saturation is at 100% of the grid ceiling, which limits upside despite these positives.",
+    "fingerprint": "095e9091cf3d6003",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a0235ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a0235ffffff in Abu Dhabi, driven primarily by a significant coverage gap of 6.0 km to the nearest Bedashing lounge, contributing +0.35 to the opportunity score, and moderate zone demand at 49% of metro peak, adding +0.22. However, the demand figure is a built-form proxy from OpenStreetMap, not actual population data, which should be considered when interpreting this potential.",
-    "fingerprint": "569ce58aca55b896",
+    "note": "We recommend WATCH for candidate zone 8743a0235ffffff in Abu Dhabi due to a strong opportunity score driven primarily by a significant coverage gap of 6.0 km to the nearest Bedashing lounge, contributing +0.35, and a moderate zone demand proxy from built-form data at 49% of metro peak, adding +0.22. Competitive saturation is negligible. Note the demand figure is based on OpenStreetMap data, not census, which may affect accuracy.",
+    "fingerprint": "b2e9927c62f6c4d1",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a0270ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a0270ffffff in Abu Dhabi, driven primarily by a significant coverage gap of 9.1 km to the nearest Bedashing lounge, which strongly supports expansion potential. The moderate zone demand, based on a built-form proxy rather than census data, adds some opportunity, while the absence of competitive saturation is neutral. This suggests cautious monitoring rather than immediate action.",
-    "fingerprint": "4013722ee0794fbf",
+    "note": "We recommend WATCH for candidate zone 8743a0270ffffff in Abu Dhabi, driven primarily by a significant coverage gap of 9.1 km to the nearest Bedashing lounge, which adds +0.35 to the opportunity score. The moderate zone demand, based on a built-form proxy rather than census data, contributes +0.12, while competitive saturation is negligible. This suggests potential but requires cautious monitoring.",
+    "fingerprint": "db1bcc6ae3898bd9",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a0274ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a0274ffffff in Abu Dhabi, driven primarily by a significant coverage gap of 8.2 km to the nearest Bedashing lounge and moderate zone demand representing 51% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than census data. Competitive saturation is negligible, presenting a clear opportunity but with some uncertainty due to the demand measure.",
-    "fingerprint": "942f1f003f697305",
+    "note": "We recommend WATCH for candidate zone 8743a0274ffffff in Abu Dhabi, driven by a strong coverage gap of 8.2 km to the nearest Bedashing lounge and moderate zone demand at 51% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than census data. Competitive saturation is negligible, but the reliance on simulated demand data warrants caution.",
+    "fingerprint": "6ecb543c30f6ed72",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a0353ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a0353ffffff in Abu Dhabi, driven primarily by a significant coverage gap of 7.2 km to the nearest Bedashing lounge, which adds +0.35 to the opportunity score. Demand, estimated from built-form data rather than census figures, contributes +0.13, while competitive saturation is negligible. The demand proxy's nature is a key caveat.",
-    "fingerprint": "a8042da7a88241af",
+    "note": "We recommend WATCH for candidate zone 8743a0353ffffff in Abu Dhabi, driven primarily by a strong coverage gap of 7.2 km to the nearest Bedashing lounge and moderate zone demand representing 29% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than direct population data. Competitive saturation is negligible, supporting potential opportunity but warranting cautious monitoring.",
+    "fingerprint": "55c7c4734a9efb81",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a035affffff": {
-    "note": "We recommend WATCH for candidate zone 8743a035affffff in Abu Dhabi, driven primarily by a significant coverage gap of 7.9 km to the nearest Bedashing lounge, which strongly supports expansion. Moderate zone demand, based on a built-form proxy rather than census data, adds some potential, while zero competitive saturation is neutral. The demand estimate's reliance on OpenStreetMap data is a key caveat.",
-    "fingerprint": "574334877af0250f",
+    "note": "We recommend WATCH for candidate zone 8743a035affffff in Abu Dhabi, driven primarily by a significant coverage gap of 7.9 km to the nearest Bedashing lounge, contributing +0.35 to the opportunity score. Moderate zone demand, based on a built-form proxy rather than census data, adds +0.18, while competitive saturation is negligible. The demand signal's proxy nature is a key caveat.",
+    "fingerprint": "3eb78a1f448ffdc1",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a035bffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a035bffffff in Abu Dhabi, driven primarily by a significant coverage gap of 9.8 km to the nearest Bedashing lounge, which strongly boosts opportunity. Moderate zone demand, estimated from built-form data rather than census figures, adds some potential, while zero competitive saturation is neutral. The demand proxy’s indirect nature is a key caveat.",
-    "fingerprint": "95b17cb939ee74a5",
+    "note": "We recommend WATCH for candidate zone 8743a035bffffff in Abu Dhabi due to a strong coverage gap of 9.8 km to the nearest Bedashing lounge, contributing +0.35 to the opportunity score. Demand is moderate at 32% of metro peak but based on built-form proxy data, not census figures, which limits confidence. Competitive saturation is negligible, so the main trade-off is good local potential versus uncertain demand accuracy.",
+    "fingerprint": "c1be06b3638112e1",
     "model": "gpt-4.1-mini"
   },
   "zone:8743a3976ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743a3976ffffff in Abu Dhabi, driven primarily by a significant coverage gap of 7.6 km to the nearest Bedashing lounge and moderate zone demand representing 31% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than direct population data. Competitive saturation is negligible, supporting potential opportunity despite data limitations.",
-    "fingerprint": "715c9eca8fbcb618",
+    "note": "We recommend WATCH for candidate zone 8743a3976ffffff in Abu Dhabi, driven primarily by a significant coverage gap of 7.6 km to the nearest Bedashing lounge, which strongly supports expansion, and moderate zone demand at 31% of metro peak, though this is based on a built-form proxy rather than actual population data. Competitive saturation is negligible, presenting no immediate threat.",
+    "fingerprint": "33a4442dee07f8ba",
     "model": "gpt-4.1-mini"
   },
   "zone:8743ac1b4ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743ac1b4ffffff in Sharjah due to a strong opportunity score driven primarily by a significant coverage gap of 13.1 km to the nearest Bedashing lounge and moderate zone demand representing 42% of the metro peak. However, the demand figure is a built-form proxy from OpenStreetMap rather than census data, so confidence in this signal is limited.",
-    "fingerprint": "606ef6214e02d966",
+    "note": "We recommend WATCH for candidate zone 8743ac1b4ffffff in Sharjah due to a strong coverage gap of 13.1 km to the nearest lounge, contributing +0.35, and moderate zone demand at 42% of metro peak, adding +0.19. However, demand is based on a built-form proxy from OpenStreetMap, not census data, so confidence in this signal is limited.",
+    "fingerprint": "170c9157d56a9d7d",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc03ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743acc03ffffff in Sharjah, driven primarily by strong zone demand at 71% of metro peak, a built-form proxy from OpenStreetMap, and a significant coverage gap of 6.0 km to the nearest Bedashing lounge. Competitive saturation is low, but the demand estimate is based on simulated data, which warrants caution.",
-    "fingerprint": "21146427f8c2594a",
+    "note": "We recommend WATCH for this Sharjah zone due to a strong opportunity score driven by high zone demand, which is a built-form proxy from OpenStreetMap, and a significant coverage gap of 6 km to the nearest Bedashing lounge. Competitive saturation is low, but the demand signal is simulated, so caution is advised in interpreting this potential.",
+    "fingerprint": "e66c8237001f4fd0",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc09ffffff": {
-    "note": "We recommend growing in candidate zone 8743acc09ffffff in Sharjah, driven primarily by strong zone demand—80% of metro peak based on built-form proxy data—and a significant 7.5 km coverage gap to the nearest Bedashing lounge. Competitive saturation is negligible, supporting expansion. Note that demand is estimated from mapped features, not census data, so this carries some uncertainty.",
-    "fingerprint": "849f5622c497ac20",
+    "note": "We recommend growing in candidate zone 8743acc09ffffff in Sharjah, driven primarily by strong zone demand, estimated at 80% of the metro peak using built-form proxies rather than census data, and a significant 7.5 km coverage gap to the nearest Bedashing lounge. Competitive saturation is negligible, making this a clear opportunity despite reliance on simulated demand figures.",
+    "fingerprint": "8332f2dc722f7610",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc50ffffff": {
-    "note": "We recommend growing in Sharjah zone 8743acc50ffffff, driven primarily by a significant 9.2 km coverage gap to the nearest Bedashing lounge and strong zone demand at 61% of metro peak, though this demand is based on a built-form proxy rather than census data. Competitive saturation is negligible, making this a clear opportunity despite the simulated demand signal.",
-    "fingerprint": "9320dbd12d5ad794",
+    "note": "We recommend growing in candidate zone 8743acc50ffffff in Sharjah due to a significant coverage gap of 9.2 km to the nearest Bedashing lounge and strong zone demand at 61% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than census data. Competitive saturation is negligible, supporting expansion despite some uncertainty in demand accuracy.",
+    "fingerprint": "62f9b2087a05996e",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc51ffffff": {
-    "note": "We recommend watching candidate zone 8743acc51ffffff in Sharjah due to a strong coverage gap of 11.4 km to the nearest Bedashing lounge, which significantly boosts opportunity. The zone’s demand, based on built-form proxy rather than census data, also supports potential. However, competitive saturation is negligible, so the main trade-off is relying on simulated demand rather than confirmed footfall.",
-    "fingerprint": "7ff58e7b68f939d6",
+    "note": "We recommend WATCH for candidate zone 8743acc51 in Sharjah, driven by a strong coverage gap of 11.4 km to the nearest Bedashing lounge and moderate zone demand at 46% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than census data. Competitive saturation is negligible, but the demand signal’s nature warrants cautious interpretation.",
+    "fingerprint": "54851ba1f63b5fb7",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc52ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743acc52ffffff in Sharjah due to a strong coverage gap of 7.7 km to the nearest Bedashing lounge, contributing +0.32, and moderate zone demand at 39% of metro peak, adding +0.18; however, this demand is a built-form proxy from OpenStreetMap, not census data, so confidence in actual customer potential is limited.",
-    "fingerprint": "29a0f13951c67f5a",
+    "note": "We recommend WATCH for candidate zone 8743acc52ffffff in Sharjah, driven primarily by a significant coverage gap of 7.7 km to the nearest Bedashing lounge and moderate zone demand representing 39% of metro peak, though this demand is a built-form proxy from OpenStreetMap rather than census data. Competitive saturation is negligible, presenting potential but requiring cautious monitoring.",
+    "fingerprint": "6be0a30ccada63ee",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc53ffffff": {
-    "note": "We recommend growing in candidate zone 8743acc53ffffff in Sharjah, driven primarily by a significant coverage gap of 9.9 km to the nearest Bedashing lounge and a strong zone demand proxy from built-form data at 62% of metro peak. Competitive saturation is negligible, but note that demand is based on OpenStreetMap proxies, not census data, which may affect accuracy.",
-    "fingerprint": "1998b2608732a7fb",
+    "note": "We recommend growing in candidate zone 8743acc53ffffff in Sharjah, driven primarily by a significant coverage gap of 9.9 km to the nearest Bedashing lounge and strong zone demand representing 62% of the metro peak, though this demand is based on a built-form proxy rather than census data. Competitive saturation is negligible, making this a promising expansion despite the simulated demand signal.",
+    "fingerprint": "a22319f2ee3e37bc",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc54ffffff": {
-    "note": "We recommend watching candidate zone 8743acc54ffffff in Sharjah due to a strong coverage gap of 9.2 km to the nearest Bedashing lounge, which significantly boosts opportunity. The 39% metro peak demand, based on built-form proxy data rather than census figures, also supports potential. Competitive saturation is negligible, but the demand signal's proxy nature warrants cautious interpretation.",
-    "fingerprint": "c2910644b9621012",
+    "note": "We recommend WATCH for candidate zone 8743acc54 in Sharjah due to a strong opportunity score driven by a significant coverage gap of 9.2 km to the nearest Bedashing lounge and moderate zone demand at 39% of metro peak, though this demand is based on a built-form proxy rather than actual population data. Competitive saturation is negligible, supporting potential interest.",
+    "fingerprint": "962c1b9e34f21da8",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc55ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743acc55ffffff in Sharjah, driven primarily by a strong coverage gap of 11.1 km to the nearest lounge, which adds +0.35 to the opportunity score. Demand is moderate at 25% of metro peak but is based on a built-form proxy, not actual population data, which is a key caveat. Competitive saturation is negligible.",
-    "fingerprint": "2bd60193ac362d4e",
+    "note": "We recommend WATCH for candidate zone 8743acc55ffffff in Sharjah, driven primarily by a strong coverage gap of 11.1 km to the nearest Bedashing lounge, which adds +0.35 to the opportunity score. The moderate zone demand, based on a built-form proxy rather than census data, contributes +0.11, while competitive saturation is negligible. This suggests potential but requires cautious monitoring.",
+    "fingerprint": "ca73101cfc6ff42d",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc56ffffff": {
-    "note": "We recommend growing in candidate zone 8743acc56ffffff in Sharjah, driven primarily by strong local demand indicated by built-form proxies and a significant 7.2 km coverage gap to the nearest Bedashing lounge, Zawaya Walk. Competitive saturation is negligible, supporting expansion. Note that demand is based on OpenStreetMap data, which is a proxy rather than direct population figures.",
-    "fingerprint": "d3613f50c83b9ca4",
+    "note": "We recommend growing in candidate zone 8743acc56ffffff due to strong demand indicated by built-form proxies, contributing +0.358, and a significant 7.2 km coverage gap to the nearest Bedashing lounge, adding +0.280. Competitive saturation is negligible. Note that demand is based on OpenStreetMap features, not census data, so this signal is a proxy rather than direct population measurement.",
+    "fingerprint": "b4a561e38349e5ba",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc5affffff": {
-    "note": "We recommend WATCH for candidate zone 8743acc5affffff in Sharjah, driven primarily by a significant coverage gap of 12.7 km to the nearest Bedashing lounge, which strongly supports expansion. Demand is moderate at 25% of metro peak but is based on built-form proxy data, not actual population, so should be treated cautiously. Competitive saturation is negligible, presenting no immediate threat.",
-    "fingerprint": "5b1ea83c6ddfc6c6",
+    "note": "We recommend watching candidate zone 8743acc5affffff in Sharjah due to its strong opportunity score driven primarily by a significant coverage gap of 12.7 km to the nearest Bedashing lounge and moderate zone demand representing 25% of metro peak, though this demand is based on a built-form proxy rather than actual population data. Competitive saturation is negligible, but the demand estimate's nature warrants caution.",
+    "fingerprint": "9fe24fd691b22a24",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc5cffffff": {
-    "note": "We recommend watching candidate zone 8743acc5cffffff in Sharjah due to a strong opportunity score driven primarily by a significant coverage gap of 13.5 km to the nearest Bedashing lounge and moderate zone demand representing 35% of metro peak, though this demand is based on a built-form proxy rather than direct population data. Competitive saturation is negligible, supporting potential interest without immediate rivalry.",
-    "fingerprint": "598ee80a17696db2",
+    "note": "We recommend WATCH for candidate zone 8743acc5cffffff in Sharjah due to a strong coverage gap of 13.5 km to the nearest lounge, which adds +0.35 to the opportunity score, and moderate zone demand at 35% of metro peak, contributing +0.16. However, demand is based on a built-form proxy from OpenStreetMap, so confidence is limited. Competitive saturation is negligible.",
+    "fingerprint": "6116b40d11cc62a4",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc5effffff": {
-    "note": "We recommend WATCH for candidate zone 8743acc5effffff in Sharjah, driven primarily by a strong coverage gap of 12.2 km to the nearest Bedashing lounge, adding +0.35 to the score, and moderate zone demand at 52% of metro peak, contributing +0.23. However, the demand is a built-form proxy from OpenStreetMap, not census data, which introduces some uncertainty. Competitive saturation is negligible.",
-    "fingerprint": "88c287f7b0254bba",
+    "note": "We recommend WATCH for candidate zone 8743acc5effffff in Sharjah due to a strong opportunity score driven by a significant coverage gap of 12.2 km to the nearest Bedashing lounge and moderate zone demand at 52% of metro peak. However, the demand figure is a built-form proxy from OpenStreetMap, not census data, which may affect accuracy. Competitive saturation is negligible.",
+    "fingerprint": "f6a6c8832b4b5565",
     "model": "gpt-4.1-mini"
   },
   "zone:8743acc72ffffff": {
-    "note": "We recommend WATCH for candidate zone 8743acc72ffffff in Sharjah due to a strong opportunity score driven primarily by a significant coverage gap of 9.8 km to the nearest Bedashing lounge and moderate zone demand at 49% of metro peak, though this demand is based on a built-form proxy rather than direct population data. Competitive saturation is negligible, supporting potential interest.",
-    "fingerprint": "5c323592c3b7c6fc",
+    "note": "We recommend WATCH for candidate zone 8743acc72ffffff in Sharjah due to a strong opportunity score driven primarily by a significant coverage gap of 9.8 km to the nearest Bedashing lounge and moderate zone demand at 49% of metro peak, though this demand is based on a built-form proxy rather than actual population data. Competitive saturation is negligible, presenting a clear catchment but with some uncertainty in demand accuracy.",
+    "fingerprint": "33ee97fab41fb491",
     "model": "gpt-4.1-mini"
   },
   "zone:8743accecffffff": {
-    "note": "We recommend WATCH for candidate zone 8743accecffffff in Sharjah due to a strong coverage gap of 8.8 km to the nearest Bedashing lounge, which drives the opportunity score positively. However, the moderate zone demand is based on a built-form proxy rather than direct population data, so this should be treated cautiously. There is no competitive saturation in this area.",
-    "fingerprint": "f64ceac1a14136fe",
+    "note": "We recommend WATCH for candidate zone 8743accecffffff in Sharjah due to a strong coverage gap of 8.8 km to the nearest Bedashing lounge, which significantly boosts opportunity. However, the zone demand is a moderate 25% of metro peak, based on built-form proxy data rather than population, so this should be treated cautiously. Competitive saturation is negligible, supporting potential interest.",
+    "fingerprint": "b7de231e49ee3ec3",
     "model": "gpt-4.1-mini"
   }
 }

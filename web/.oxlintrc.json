@@ -13,5 +13,5 @@
   "rules": {
     "react/react-in-jsx-scope": "off"
   },
-  "ignorePatterns": ["dist", "coverage", "public/data"]
+  "ignorePatterns": ["dist", "coverage", ".wrangler", "public/data"]
 }

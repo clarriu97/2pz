@@ -1,4 +1,6 @@
+# Build output and generated artefacts — not ours to format.
 dist
 coverage
+.wrangler
 public/data
 package-lock.json

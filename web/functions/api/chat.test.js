@@ -594,3 +594,21 @@ describe("onRequestPost tool-calling loop", () => {
     expect(sent[0].model).toBe("gpt-4.1");
   });
 });
+
+describe("grounding the stated reason", () => {
+  it("list_branches carries the rule that fired, not only the scores", () => {
+    // Without this the model picks a plausible-looking number and explains the
+    // label with it — reporting a branch as "low market" when it was actually
+    // labelled on weak strength. Every figure real, the reason wrong.
+    const r = runTool("list_branches", { limit: 23 }, data);
+    for (const b of r.branches) {
+      expect(typeof b.decision_rule).toBe("string");
+      expect(b.decision_rule.length).toBeGreaterThan(10);
+    }
+  });
+
+  it("the system prompt forbids inferring the reason from the scores", () => {
+    expect(SYSTEM).toMatch(/decision_rule/);
+    expect(SYSTEM).toMatch(/infer why a branch was labelled/);
+  });
+});
