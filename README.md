@@ -1,8 +1,6 @@
 # Bedashing Network Intelligence
 
 [![CI](https://github.com/clarriu97/2pz/actions/workflows/ci.yml/badge.svg)](https://github.com/clarriu97/2pz/actions/workflows/ci.yml)
-![pipeline coverage](https://img.shields.io/badge/pipeline%20coverage-98%25-brightgreen)
-![web coverage](https://img.shields.io/badge/web%20coverage-98%25-brightgreen)
 
 **AI-enabled geospatial decision support for retail network right-sizing.**
 
@@ -22,10 +20,8 @@ data the map renders.
 
 ## Run it
 
-**Live: [2pz.larri.dev](https://2pz.larri.dev)** — or
-[bedashing-network-intelligence.pages.dev](https://bedashing-network-intelligence.pages.dev) if the
-custom domain has not propagated. The conversational analyst is live there; everything else works
-offline too.
+**Live: [2pz.larri.dev](https://2pz.larri.dev)** — the conversational analyst is live there;
+everything else works offline too.
 
 The product is static. All scoring happens offline in a Python pipeline whose output is committed,
 so **no API key is needed to see the whole thing**:
@@ -63,33 +59,7 @@ offline and reproduces the committed dataset byte for byte. CI asserts exactly t
 
 ---
 
-## Tests, linting and CI
-
-Every push and pull request runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml), which
-fails on any formatting, linting, typechecking, test or **coverage** regression. Three independent
-jobs:
-
-| Job | What it runs | Gate |
-|---|---|---|
-| **pipeline** | `ruff format --check` · `ruff check` · `pytest` | **313 tests**, coverage must stay **≥ 95%** (`--cov-fail-under` in [`pyproject.toml`](pyproject.toml)) |
-| **web** | `prettier --check` · `oxlint` · `tsc` · `vitest run --coverage` · `vite build` | **204 tests**, coverage must stay **≥ 85%** lines / **80%** branches (thresholds in [`web/vite.config.ts`](web/vite.config.ts)) |
-| **dataset** | `pipeline.run --offline` then `git diff` | the committed dataset must be reproducible **byte for byte** with no network |
-
-Current coverage — **97.82%** lines on the pipeline, **97.83%** statements on the web app. Both
-jobs write a coverage table into the GitHub Actions **run summary** and upload the full report as
-an artifact, so the numbers are visible on every run rather than only in a badge.
-
-Run the same gates locally:
-
-```bash
-uv sync && uv run ruff format --check . && uv run ruff check . && uv run pytest
-```
-
-```bash
-cd web && npm ci && npm run check
-```
-
-### Deployment
+## Deployment
 
 `main` deploys itself. A push runs CI; if **every** job passes, `deploy.yml` fires on the
 `workflow_run` event and publishes to Cloudflare Pages. `workflow_run.conclusion` is `success` only
@@ -118,51 +88,6 @@ Two details that were bugs before they were features:
 deploy time. `OPENAI_API_KEY` is **not** a GitHub secret — the analyst endpoint reads it at request
 time from the Cloudflare Pages environment, so it never enters the build, the bundle or this
 repository.
-
-### What the tests actually assert
-
-They are not shape tests. Each one guards a claim the product makes to a reviewer:
-
-- **The explainability invariant.** `AxisScore` refuses to exist if its signed contributions do not
-  sum to its score. That is the whole basis of the "why" panel, so it is enforced by a validator
-  rather than trusted — and there is a test that the validator rejects a score the breakdown cannot
-  explain.
-- **Signal direction.** Better ratings, more reviews and a stronger local position must each *raise*
-  the strength score; saturation and self-overlap must *lower* the market score. If a sign ever
-  flipped, every explanation in the product would still add up correctly while being a lie.
-- **Threshold boundaries.** `PROTECT` at exactly `STRENGTH_HIGH`, `HOLD` one epsilon below. An
-  off-by-one there silently reclassifies a lease.
-- **The union-not-sum guarantee.** Four lounges stacked on the same spot must produce a
-  cannibalisation share ≤ 1.0, and strictly less than the naive sum of their pairwise overlaps.
-- **The demand floor.** Empty desert scores beautifully on "coverage gap"; a test pins that it can
-  never surface as an opportunity.
-- **Grounding.** The note payload is asserted to contain no field the model could hallucinate
-  revenue or rent from, and the chat tools are asserted to return the contribution breakdown with
-  every score.
-- **Reproducibility.** A full pipeline run with the network stubbed produces byte-identical output
-  twice, and CI proves the committed dataset is what the committed code produces.
-
-Four real bugs were found by writing these, each of which would have shipped silently: unclosed
-H3 GeoJSON rings (invalid GeoJSON that some renderers drop), a percentile index that floored to
-zero and collapsed the saturation signal to a constant 0.5 for every branch, non-unique Overpass
-cluster keys that discarded a whole cluster's competitors, and an extract reader that lost every
-way sharing a first node with another — which is most adjacent buildings.
-
-### Tooling
-
-| Concern | Python | Web |
-|---|---|---|
-| Formatting | `ruff format` | `prettier` |
-| Linting | `ruff check` (E, W, F, I, UP, B, C4, SIM, RUF) | `oxlint` (correctness, suspicious, perf + react/typescript/unicorn) |
-| Types | Pydantic models validate at every boundary | `tsc --noEmit`, strict |
-| Tests | `pytest` + `pytest-cov` | `vitest` + `@testing-library/react` + `@vitest/coverage-v8` |
-| Dev deps | `[dependency-groups] dev` in `pyproject.toml` | `devDependencies` in `web/package.json` |
-
-All data modelling goes through **Pydantic** ([`pipeline/models.py`](pipeline/models.py)) rather
-than dicts or dataclasses. These shapes are a contract between the Python pipeline, the React app
-and the chat endpoint's tools; `extra="forbid"` means a renamed field fails inside the pipeline
-where the traceback points at the cause, instead of surfacing as `undefined` in a map layer or as
-a confidently wrong answer from the analyst.
 
 ---
 
@@ -365,42 +290,25 @@ share"* at all. Choosing not to reach for embeddings is the judgement call, not 
 
 ## Where to trust this, and where to be careful
 
-This section is the honest one. It is also rendered in the **How** tab, because a reviewer reads
-what is on screen.
-
 **Trust the geometry.** Overlap areas, distances, competitor counts and coverage gaps are computed
-from real coordinates and real OSM features. They are as good as their inputs and the arithmetic is
-not in doubt.
+from real coordinates and real OSM features. The arithmetic is not in doubt.
 
 **Question the weights.** The numbers that turn geometry into a label are a stated management
-judgement, not an estimate from data. That is precisely why they sit in one editable file and why
-the UI shows the rule that fired. Disagreeing with a label should be a conversation about weights,
-which is a conversation a portfolio team can actually have.
+judgement, not an estimate from data. That is why they sit in one editable file and why the UI
+prints the rule that fired — disagreeing with a label becomes a conversation about weights.
 
-**Specific limitations:**
+The five limitations that matter, in order:
 
-- **Catchments are radii, not drive times.** A 10-minute isochrone is the faithful version. The UAE's
-  grade-separated grid makes the gap smaller than it would be in a European city, but a lounge
-  behind a creek or a single bridge is over-credited. This is the first upgrade I would make, via
-  OpenRouteService or OSRM.
-- **Competitor ratings are simulated.** OSM gives real rival *locations* but no ratings, so
-  `competitive_position` ("we rate +0.2★ above the local mean") rests on a drawn distribution. The
-  rival **count** is real; the rating comparison is illustrative. Swapping in Google Places
-  ratings is a change to one module, `pipeline/sourcing/competitors.py`.
-- **Demand is a built-form proxy, not a census.** Residential, retail and premium-venue density from
-  OSM. I chose this over a population raster deliberately: a labour accommodation block and a villa
-  district have similar population density and wildly different spend on a premium blow-dry, so
-  population alone would actively mislead here. The cost is that it under-reads brand-new districts
-  OSM has not mapped and over-reads tourist strips. Cells with no mapped features are flagged
-  `no_osm_features` so "unknown" is not read as "low".
-- **Momentum and chair utilisation are simulated.** They are in the model to show where an
-  operational feed attaches, not to drive a decision today. Both are flagged `synthetic` in the UI.
-- **Sparse-review branches are flagged, not silently scored.** Palm Jumeirah has 38 reviews; its
-  4.9★ is statistically thin, and the branch carries a low-confidence caveat saying so.
-- **A hex is a search area, not a site.** ~5 km² says which neighbourhood to look in, not where to
-  sign a lease.
-- **Ratings are a quality signal, not a profit signal.** A lounge can be adored and unprofitable.
-  Without revenue data, no model here can tell you that, and I would not pretend otherwise.
+| | |
+|---|---|
+| **Catchments are radii, not drive times** | A 10-minute isochrone is the faithful version. The UAE's grade-separated grid narrows the gap, but a lounge behind a creek is over-credited. First upgrade I would make. |
+| **Competitor ratings are simulated** | OSM has real rival *locations* but no ratings, so "we rate +0.2★ above the local mean" rests on a drawn distribution. The rival **count** is real. |
+| **Demand is a built-form proxy** | Residential, retail and premium-venue density from OSM — not census or income. Chosen over a population raster deliberately: a labour camp and a villa district have similar population and wildly different spend on a premium blow-dry. |
+| **Momentum and chair utilisation are simulated** | They show where an operational feed attaches, not what to decide today. Both flagged `synthetic` in the UI. |
+| **No revenue data at all** | Review volume is the scale proxy. This is the single highest-value addition the chain could make, and it is one CSV column. |
+
+Sparse-review branches carry an explicit low-confidence flag rather than being silently scored, and
+a hex is a ~5 km² search area — it says which neighbourhood to look in, not where to sign.
 
 ---
 
@@ -430,27 +338,6 @@ asks for, built in by default rather than bolted on.
 keeps the OpenAI key off the browser. Zero ops for a case study. Production on AWS would be
 S3 + CloudFront for the site, Lambda behind API Gateway for the endpoint, and R2/D1 or
 S3 + DynamoDB once the dataset outgrew a JSON file. That is a deployment target, not a redesign.
-
-**Repository layout**
-
-```
-pipeline/
-  config.py          every weight, threshold, radius — the single tuning surface
-  models.py          Pydantic contracts for every record that crosses a boundary
-  sourcing/          branches, geocoding, Overpass client, competitors, demand proxy
-  geo/               catchments + overlap, saturation, H3 whitespace grid
-  scoring/model.py   the decision model and its signed contributions
-  ai/                prompt design + offline note generation
-  run.py             orchestrates end to end, writes data/processed/
-tests/               pytest suite — invariants, geometry, scoring, AI grounding, end to end
-data/raw/            committed source caches — re-runs need no network
-data/processed/      what the product reads
-web/
-  src/               React + MapLibre app, with colocated *.test.tsx
-  functions/api/     the analyst endpoint and its tool tests
-.github/workflows/   ci.yml (every commit) and deploy.yml (main, after CI passes)
-docs/decisions.md    the trade-off log
-```
 
 ---
 
