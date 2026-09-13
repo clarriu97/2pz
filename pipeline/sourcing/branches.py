@@ -51,14 +51,19 @@ AREA_CONTEXT: dict[str, str] = {
 }
 
 
-def _synthesise_operational(branch_id: str, review_count: int) -> tuple[float, float]:
+def _synthesise_operational(branch_id: str) -> tuple[float, float]:
     """Simulate momentum and chair utilisation.
 
-    Momentum is the share of reviews landing in the last 90 days versus the
-    branch's own historical rate, rescaled to [0, 1] where 0.5 means "flat".
-    It is correlated with review volume on purpose: busy lounges genuinely
-    accumulate reviews faster, so a purely uniform draw would produce a signal
-    that contradicts the real data next to it.
+    Momentum stands for the share of reviews landing in the last 90 days
+    versus the branch's own historical rate, rescaled to [0, 1] where 0.5
+    means "flat". Both values are drawn from the branch id alone, so they are
+    deterministic and independent of every real signal.
+
+    That independence is deliberate. Correlating the draw with review volume
+    would look more realistic, but review volume is already in the model with
+    a weight of 0.25 -- a momentum that tracked it would be double-counting
+    the same information under two names, which is worse than a clearly
+    arbitrary value that is labelled `synthetic` in the UI.
     """
     base = 0.5 + 0.12 * (seeded_unit(branch_id, "scale") - 0.5)
     drift = seeded_normal(branch_id, "momentum", mean=0.0, sd=0.16)
@@ -110,7 +115,7 @@ def load_branches(*, refresh: bool = False) -> list[Branch]:
                     flags.append("coarse_geocode")
 
             context = AREA_CONTEXT.get(area, config.DEFAULT_CATCHMENT_CONTEXT)
-            momentum, util = _synthesise_operational(bid, int(row["google_reviews"]))
+            momentum, util = _synthesise_operational(bid)
             branches.append(
                 Branch(
                     branch_id=bid,

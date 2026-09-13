@@ -42,25 +42,25 @@ class TestAreaContext:
 
 class TestSynthesiseOperational:
     def test_is_deterministic(self) -> None:
-        assert branches_mod._synthesise_operational(
-            "BD01", 400
-        ) == branches_mod._synthesise_operational("BD01", 400)
+        assert branches_mod._synthesise_operational("BD01") == branches_mod._synthesise_operational(
+            "BD01"
+        )
 
     def test_differs_between_branches(self) -> None:
-        assert branches_mod._synthesise_operational(
-            "BD01", 400
-        ) != branches_mod._synthesise_operational("BD02", 400)
+        assert branches_mod._synthesise_operational("BD01") != branches_mod._synthesise_operational(
+            "BD02"
+        )
 
     def test_values_stay_inside_their_declared_bounds(self) -> None:
         for i in range(1, 60):
-            momentum, util = branches_mod._synthesise_operational(f"BD{i:02d}", 100 * i)
+            momentum, util = branches_mod._synthesise_operational(f"BD{i:02d}")
             assert 0.0 <= momentum <= 1.0
             assert 0.15 <= util <= 0.98
 
     def test_momentum_centres_on_flat(self) -> None:
         # 0.5 means "no change versus the branch's own history"; a biased
         # centre would tilt the whole portfolio's strength score.
-        values = [branches_mod._synthesise_operational(f"BD{i:02d}", 300)[0] for i in range(1, 40)]
+        values = [branches_mod._synthesise_operational(f"BD{i:02d}")[0] for i in range(1, 40)]
         assert sum(values) / len(values) == pytest.approx(0.5, abs=0.08)
 
 
