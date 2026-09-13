@@ -7,8 +7,10 @@ import { DetailPanel } from "./components/DetailPanel";
 import { Ranking, TopZones } from "./components/Ranking";
 import { Analyst } from "./components/Analyst";
 import { HowItWorks } from "./components/HowItWorks";
+import { Tour, hasSeenTour } from "./components/Tour";
 
-type Tab = "detail" | "compare" | "growth" | "about";
+/** Exported for the first-run tour, which walks through these by name. */
+export type Tab = "detail" | "compare" | "growth" | "about";
 
 const TABS: Array<{ key: Tab; label: string }> = [
   { key: "detail", label: "Why" },
@@ -23,6 +25,9 @@ export default function App() {
   const [selection, setSelection] = useState<Selection>(null);
   const [tab, setTab] = useState<Tab>("detail");
   const [analystOpen, setAnalystOpen] = useState(false);
+  // Read once, on mount: whether the tour has been seen is not something that
+  // changes under us, and re-reading it would restart the tour mid-visit.
+  const [tourOpen, setTourOpen] = useState(() => !hasSeenTour());
   const [layers, setLayers] = useState<LayerState>({
     branches: true,
     catchments: true,
@@ -93,6 +98,8 @@ export default function App() {
         </div>
       </header>
 
+      {tourOpen && <Tour onClose={() => setTourOpen(false)} onTab={setTab} />}
+
       <div className={`app-body${analystOpen ? " app-body-analyst" : ""}`}>
         <div className="map-wrap">
           <MapView data={data} layers={layers} selection={selection} onSelect={select} />
@@ -135,7 +142,7 @@ export default function App() {
             )}
             {tab === "compare" && <Ranking data={data} selection={selection} onSelect={select} />}
             {tab === "growth" && <TopZones data={data} onSelect={select} />}
-            {tab === "about" && <HowItWorks data={data} />}
+            {tab === "about" && <HowItWorks data={data} onReplayTour={() => setTourOpen(true)} />}
           </div>
         </div>
       </div>

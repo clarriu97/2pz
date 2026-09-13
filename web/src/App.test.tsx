@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { dataset } from "./test/fixtures";
+import { forgetTour, rememberTour } from "./components/Tour";
 
 /** MapLibre draws to a WebGL canvas that jsdom cannot provide, so the map is
  *  replaced with a stub that records the props it was given. That is the right
@@ -55,10 +56,14 @@ function stubData(ok = true) {
 
 beforeEach(() => {
   mapProps.length = 0;
+  // Every test below is about a returning visitor; the first-run tour has its
+  // own tests, and an overlay over the whole app would be measuring it here.
+  rememberTour();
 });
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  forgetTour();
 });
 
 describe("App loading", () => {
@@ -170,6 +175,32 @@ describe("App selection", () => {
     await waitFor(() => expect(screen.getByTestId("map")).toBeInTheDocument());
     await userEvent.click(screen.getByText("simulate branch click"));
     await waitFor(() => expect(mapProps.at(-1)!.selection).toEqual({ kind: "branch", id: "BD02" }));
+  });
+});
+
+describe("App first run", () => {
+  it("runs the tour for a first-time visitor", async () => {
+    forgetTour();
+    stubData();
+    render(<App />);
+    await waitFor(() => expect(screen.getByTestId("map")).toBeInTheDocument());
+    expect(screen.getByRole("dialog", { name: "Quick tour" })).toBeInTheDocument();
+  });
+
+  it("does not run it again once it has been seen", async () => {
+    stubData();
+    render(<App />);
+    await waitFor(() => expect(screen.getByTestId("map")).toBeInTheDocument());
+    expect(screen.queryByRole("dialog", { name: "Quick tour" })).not.toBeInTheDocument();
+  });
+
+  it("can be replayed from the How tab, which is its only way back", async () => {
+    stubData();
+    render(<App />);
+    await waitFor(() => expect(screen.getByTestId("map")).toBeInTheDocument());
+    await userEvent.click(screen.getByRole("tab", { name: "How" }));
+    await userEvent.click(screen.getByRole("button", { name: "Replay the tour" }));
+    expect(screen.getByRole("dialog", { name: "Quick tour" })).toBeInTheDocument();
   });
 });
 

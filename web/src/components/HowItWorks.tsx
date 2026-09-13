@@ -30,7 +30,7 @@ function Weights({ title, weights }: { title: string; weights: Record<string, nu
   );
 }
 
-export function HowItWorks({ data }: { data: Dataset }) {
+export function HowItWorks({ data, onReplayTour }: { data: Dataset; onReplayTour: () => void }) {
   const mc = data.modelCard;
   const provByTier = { real: [] as string[], derived: [] as string[], synthetic: [] as string[] };
   for (const [field, meta] of Object.entries(mc.provenance)) {
@@ -42,6 +42,11 @@ export function HowItWorks({ data }: { data: Dataset }) {
       <div className="section">
         <div className="section-head">
           <h3>Who this is for</h3>
+          {/* The tour is remembered in localStorage, so without this it would
+              be unreachable for anyone who has already dismissed it. */}
+          <button type="button" className="link-button" onClick={onReplayTour}>
+            Replay the tour
+          </button>
         </div>
         <p className="hint">
           The <strong>Head of Retail Portfolio</strong> at Bedashing — the person who allocates

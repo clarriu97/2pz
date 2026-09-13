@@ -673,10 +673,13 @@ a {
 }
 
 @media (max-width: 1160px) {
-  /* The panel owns the bottom 45% of the stacked layout, so the launcher rides
-     above it instead of on top of it. */
+  /* Stacked, the bottom-left of the map row is already taken by the layer and
+     legend cards, so the launcher moves to the free corner. */
   .analyst-launcher {
-    bottom: calc(45% + 42px);
+    top: 12px;
+    right: 12px;
+    left: auto;
+    bottom: auto;
   }
 }
 
@@ -950,4 +953,109 @@ a {
 }
 .maplibregl-ctrl-attrib a {
   color: var(--text-faint) !important;
+}
+
+/* ------------------------------------------------------------------- tour */
+/* The first-run walkthrough. One dimming layer with a hole punched in it by an
+   outsized box-shadow, so whatever is being explained stays visible and in
+   place — the reader is looking at the product, not at a picture of it. */
+.tour {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+
+.tour-hole {
+  position: absolute;
+  border-radius: var(--radius);
+  box-shadow:
+    0 0 0 9999px rgb(4 7 11 / 0.74),
+    0 0 0 1px var(--accent-dim) inset;
+  pointer-events: none;
+  transition:
+    top 0.18s,
+    left 0.18s,
+    width 0.18s,
+    height 0.18s;
+}
+
+/* No highlight to anchor to (a target that is not on screen in this layout):
+   the overlay still dims, so the card never floats over an undimmed page. */
+.tour:not(:has(.tour-hole))::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(4 7 11 / 0.74);
+}
+
+.tour-card {
+  position: absolute;
+  width: 320px;
+  max-width: calc(100vw - 24px);
+  padding: 14px 15px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 0.5);
+}
+
+.tour-step {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  margin-bottom: 6px;
+}
+.tour-card h3 {
+  margin: 0 0 6px;
+  font-size: 14.5px;
+  font-weight: 600;
+}
+.tour-card p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+.tour-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 13px;
+}
+.tour-skip {
+  background: none;
+  border: none;
+  padding: 7px 2px;
+  color: var(--text-faint);
+  font-size: 12.5px;
+}
+.tour-skip:hover {
+  color: var(--text-dim);
+}
+.tour-next {
+  margin-left: auto;
+  padding: 7px 14px;
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #0d1117;
+  font-weight: 600;
+  font-size: 12.5px;
+}
+
+/* A button that reads as a link, for actions that sit inside prose or beside a
+   section heading. */
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent);
+  font-size: 11.5px;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+.link-button:hover {
+  color: var(--text);
 }

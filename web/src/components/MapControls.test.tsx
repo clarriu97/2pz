@@ -6,6 +6,8 @@ import { HowItWorks } from "./HowItWorks";
 import { dataset } from "../test/fixtures";
 import type { LayerState } from "../types";
 
+const noop = () => {};
+
 const data = dataset();
 
 const allOn: LayerState = {
@@ -90,24 +92,24 @@ describe("Legend", () => {
 
 describe("HowItWorks", () => {
   it("names the decision-maker specifically, not 'leadership'", () => {
-    render(<HowItWorks data={data} />);
+    render(<HowItWorks data={data} onReplayTour={noop} />);
     expect(screen.getByText("Head of Retail Portfolio")).toBeInTheDocument();
     expect(screen.getByText(/signs a lease, funds a refit/)).toBeInTheDocument();
   });
 
   it("states the decisions the tool supports", () => {
-    render(<HowItWorks data={data} />);
+    render(<HowItWorks data={data} onReplayTour={noop} />);
     expect(screen.getByText(/PROTECT · HOLD · SHRINK per lounge/)).toBeInTheDocument();
     expect(screen.getByText(/GROW · WATCH · SKIP per candidate zone/)).toBeInTheDocument();
   });
 
   it("admits which signals are proxies for private data", () => {
-    render(<HowItWorks data={data} />);
+    render(<HowItWorks data={data} onReplayTour={noop} />);
     expect(screen.getByText(/revenue per chair, booking density/)).toBeInTheDocument();
   });
 
   it("groups every field by provenance tier", () => {
-    const { container } = render(<HowItWorks data={data} />);
+    const { container } = render(<HowItWorks data={data} onReplayTour={noop} />);
     expect(container.querySelector(".prov-real")).toBeTruthy();
     expect(container.querySelector(".prov-derived")).toBeTruthy();
     expect(container.querySelector(".prov-synthetic")).toBeTruthy();
@@ -116,7 +118,7 @@ describe("HowItWorks", () => {
 
   it("renders the live weights from the model card, not a hand-written copy", () => {
     // If these were duplicated in the UI they would drift from the pipeline.
-    render(<HowItWorks data={data} />);
+    render(<HowItWorks data={data} onReplayTour={noop} />);
     expect(screen.getByText("rating_norm")).toBeInTheDocument();
     // Both negative weights (cannibalisation and saturation) render as -0.20.
     expect(screen.getAllByText("-0.20")).toHaveLength(2);
@@ -124,24 +126,24 @@ describe("HowItWorks", () => {
   });
 
   it("explains why the model is not machine learning", () => {
-    render(<HowItWorks data={data} />);
+    render(<HowItWorks data={data} onReplayTour={noop} />);
     expect(screen.getByText(/A committee has to defend a lease decision/)).toBeInTheDocument();
   });
 
   it("points at the single file that holds every tunable", () => {
-    render(<HowItWorks data={data} />);
+    render(<HowItWorks data={data} onReplayTour={noop} />);
     expect(screen.getByText("pipeline/config.py")).toBeInTheDocument();
   });
 
   it("carries the trust caveats in the product, not only the README", () => {
-    render(<HowItWorks data={data} />);
+    render(<HowItWorks data={data} onReplayTour={noop} />);
     expect(screen.getByText(/Catchments are radii, not drive times\./)).toBeInTheDocument();
     expect(screen.getByText(/Competitor ratings are simulated\./)).toBeInTheDocument();
     expect(screen.getByText(/Trust the geometry, question the weights\./)).toBeInTheDocument();
   });
 
   it("reports the seed and the content fingerprint", () => {
-    render(<HowItWorks data={data} />);
+    render(<HowItWorks data={data} onReplayTour={noop} />);
     expect(screen.getByText("20260910")).toBeInTheDocument();
     expect(screen.getByText("89ab39341d83260b")).toBeInTheDocument();
   });
@@ -149,12 +151,12 @@ describe("HowItWorks", () => {
   it("explains why there is no build timestamp", () => {
     // A clock reading would make the dataset differ on every run while
     // telling a reviewer nothing they could check.
-    render(<HowItWorks data={data} />);
+    render(<HowItWorks data={data} onReplayTour={noop} />);
     expect(screen.getByText(/deliberately no build timestamp/)).toBeInTheDocument();
   });
 
   it("shows the catchment radii per urban context", () => {
-    render(<HowItWorks data={data} />);
+    render(<HowItWorks data={data} onReplayTour={noop} />);
     expect(screen.getByText("2.5 km")).toBeInTheDocument();
     expect(screen.getByText("6.0 km")).toBeInTheDocument();
   });

@@ -72,7 +72,7 @@ jobs:
 | Job | What it runs | Gate |
 |---|---|---|
 | **pipeline** | `ruff format --check` · `ruff check` · `pytest` | **313 tests**, coverage must stay **≥ 95%** (`--cov-fail-under` in [`pyproject.toml`](pyproject.toml)) |
-| **web** | `prettier --check` · `oxlint` · `tsc` · `vitest run --coverage` · `vite build` | **193 tests**, coverage must stay **≥ 85%** lines / **80%** branches (thresholds in [`web/vite.config.ts`](web/vite.config.ts)) |
+| **web** | `prettier --check` · `oxlint` · `tsc` · `vitest run --coverage` · `vite build` | **204 tests**, coverage must stay **≥ 85%** lines / **80%** branches (thresholds in [`web/vite.config.ts`](web/vite.config.ts)) |
 | **dataset** | `pipeline.run --offline` then `git diff` | the committed dataset must be reproducible **byte for byte** with no network |
 
 Current coverage — **97.82%** lines on the pipeline, **97.83%** statements on the web app. Both
@@ -191,6 +191,10 @@ opening it adds a third column between the map and the panel: the map gives up w
 you were reading stays exactly where it was. Whatever is selected is offered as context — removable in
 one click, because it is a convenience for "why this one?", not a filter on the conversation — and
 every answer shows the tool calls that produced it.
+
+A five-step tour runs on the first visit — the map and its layers, the four tabs, the analyst —
+dimming the page around whatever it is describing. It is remembered in `localStorage`, so it appears
+once per browser, and **Replay the tour** in the How tab brings it back.
 
 **Start here:** open **How** and read the framing, then turn on *Self-overlap*, click the largest
 red wedge in Abu Dhabi, and follow it into the two branches it belongs to. That path shows the
