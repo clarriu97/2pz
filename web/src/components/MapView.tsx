@@ -271,7 +271,7 @@ export function MapView({ data, layers, selection, onSelect }: Props) {
         minzoom: 9,
         layout: {
           "text-field": ["get", "area"],
-          "text-size": 11,
+          "text-size": 12.5,
           "text-offset": [0, 1.5],
           "text-anchor": "top",
         },

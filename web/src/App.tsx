@@ -58,8 +58,8 @@ export default function App() {
       <div className="loading">
         <div style={{ maxWidth: 460, padding: 24 }}>
           <p style={{ color: "var(--shrink)" }}>Could not load the dataset.</p>
-          <p style={{ fontSize: 12 }}>{error}</p>
-          <p style={{ fontSize: 12 }}>
+          <p style={{ fontSize: 13.5 }}>{error}</p>
+          <p style={{ fontSize: 13.5 }}>
             The app reads static files from <code>web/public/data/</code>. Generate them with{" "}
             <code>uv run python -m pipeline.run</code> from the repository root.
           </p>
