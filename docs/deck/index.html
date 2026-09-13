@@ -6,12 +6,12 @@
 <title>Bedashing Network Intelligence — case presentation</title>
 <style>
 :root{
-  --bg:#0d1117; --surface:#151b23; --surface-2:#1c242e; --surface-3:#252f3b;
+  --bg:#0d1117; --surface:#151b23; --surface-2:#1c242e;
   --border:#2a3441; --border-strong:#3a4654;
   --text:#e6edf3; --dim:#9aa7b4; --faint:#6b7785;
   --accent:#d4a05a; --accent-dim:#8a6a3c;
   --protect:#3fb98a; --hold:#d9a838; --shrink:#e05c5c;
-  --grow:#4a9ede; --watch:#a07cd4; --skip:#5b6672;
+  --grow:#4a9ede; --watch:#a07cd4;
   --up:#3fb98a; --down:#e05c5c;
   --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,monospace;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;
@@ -20,107 +20,108 @@
 html,body{margin:0;height:100%;background:#000;color:var(--text);font-family:var(--sans);
   -webkit-font-smoothing:antialiased;overflow:hidden}
 
-/* The stage is a fixed 1280x720 canvas scaled to the viewport, so every slide
-   is laid out once and looks identical on a laptop, a projector and a PDF. */
 #stage{position:fixed;inset:0;background:#000}
 /* Centred by translate rather than by flex/grid: the canvas is wider than the
    viewport before it is scaled, and an overflowing item cannot be centred. */
 #canvas{width:1280px;height:720px;position:absolute;left:50%;top:50%;
   transform-origin:center center;background:var(--bg);overflow:hidden}
 
-.slide{position:absolute;inset:0;padding:58px 76px;display:none;flex-direction:column}
+.slide{position:absolute;inset:0;padding:62px 80px;display:none;flex-direction:column}
 .slide.on{display:flex}
+.slide.center{justify-content:center}
 
-h1{font-size:60px;line-height:1.05;margin:0 0 18px;font-weight:600;letter-spacing:-.02em}
-h2{font-size:38px;line-height:1.15;margin:0 0 6px;font-weight:600;letter-spacing:-.015em}
-.kicker{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);
-  font-weight:600;margin:0 0 22px}
-.sub{font-size:20px;color:var(--dim);line-height:1.45;margin:0 0 30px;max-width:1000px}
-p{font-size:20px;line-height:1.5;color:var(--dim);margin:0 0 16px}
-strong{color:var(--text);font-weight:600}
+h1{font-size:62px;line-height:1.05;margin:0 0 20px;font-weight:600;letter-spacing:-.022em}
+h2{font-size:46px;line-height:1.1;margin:0 0 10px;font-weight:600;letter-spacing:-.018em}
+.kicker{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);
+  font-weight:600;margin:0 0 26px}
+.lede{font-size:27px;line-height:1.38;color:var(--dim);margin:0;max-width:1010px}
+.lede strong{color:var(--text);font-weight:600}
 em{color:var(--accent);font-style:normal}
-.big{font-size:30px;line-height:1.35;color:var(--text)}
-.lede{font-size:26px;line-height:1.4;color:var(--text);max-width:1020px}
-code,.mono{font-family:var(--mono)}
-.small{font-size:15px;color:var(--faint);line-height:1.5}
 .mt{margin-top:auto}
+.mono{font-family:var(--mono)}
+.foot{font-size:16px;color:var(--faint);margin-top:26px}
+
 ul{margin:0;padding:0;list-style:none}
-li{font-size:20px;line-height:1.45;color:var(--dim);margin-bottom:14px;padding-left:26px;position:relative}
-li::before{content:"";position:absolute;left:4px;top:11px;width:7px;height:7px;border-radius:50%;
-  background:var(--accent-dim)}
-li strong{color:var(--text)}
+li{font-size:25px;line-height:1.35;color:var(--text);margin-bottom:20px;padding-left:30px;
+  position:relative}
+li::before{content:"";position:absolute;left:4px;top:13px;width:8px;height:8px;border-radius:50%;
+  background:var(--accent)}
+li span{color:var(--dim);font-size:21px}
 
-.cols{display:grid;gap:34px;grid-template-columns:1fr 1fr;align-content:start}
-.cols3{display:grid;gap:22px;grid-template-columns:repeat(3,1fr)}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:22px 24px}
-.card h3{margin:0 0 10px;font-size:17px;color:var(--accent);font-weight:600;letter-spacing:.02em}
-.card p,.card li{font-size:16.5px;line-height:1.45;margin-bottom:9px}
-.card li{padding-left:20px}.card li::before{top:9px;width:5px;height:5px}
-
-table{width:100%;border-collapse:collapse;font-size:17px}
-th{text-align:left;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
-  font-weight:600;padding:0 14px 10px 0;border-bottom:1px solid var(--border)}
-td{padding:13px 14px 13px 0;border-bottom:1px solid var(--border);color:var(--dim);vertical-align:top;
-  line-height:1.4}
-td strong{color:var(--text)}
-tr:last-child td{border-bottom:none}
-
-.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12.5px;font-weight:700;
+.pill{display:inline-block;padding:7px 20px;border-radius:30px;font-size:20px;font-weight:700;
   letter-spacing:.06em;font-family:var(--mono)}
 .p-protect{background:rgba(63,185,138,.16);color:var(--protect)}
 .p-hold{background:rgba(217,168,56,.16);color:var(--hold)}
 .p-shrink{background:rgba(224,92,92,.16);color:var(--shrink)}
 .p-grow{background:rgba(74,158,222,.16);color:var(--grow)}
-.p-real{background:rgba(63,185,138,.14);color:var(--protect)}
-.p-derived{background:rgba(74,158,222,.14);color:var(--grow)}
-.p-synth{background:rgba(160,124,212,.16);color:var(--watch)}
 
-.quote{border-left:3px solid var(--accent);padding:4px 0 4px 24px;font-size:23px;line-height:1.45;
-  color:var(--text)}
-.quote .src{display:block;margin-top:12px;font-size:15px;color:var(--faint)}
+.tier{display:inline-block;padding:4px 13px;border-radius:20px;font-size:15px;font-weight:700;
+  font-family:var(--mono);letter-spacing:.04em}
+.t-real{background:rgba(63,185,138,.16);color:var(--protect)}
+.t-derived{background:rgba(74,158,222,.16);color:var(--grow)}
+.t-synth{background:rgba(160,124,212,.18);color:var(--watch)}
 
-.stat{display:flex;gap:44px;margin:26px 0 30px}
+.stat{display:flex;gap:58px}
 .stat div{display:flex;flex-direction:column}
-.stat .n{font-size:54px;font-weight:600;line-height:1;letter-spacing:-.02em;font-family:var(--mono)}
-.stat .l{font-size:14px;color:var(--faint);margin-top:9px;letter-spacing:.04em}
+.stat .n{font-size:76px;font-weight:600;line-height:1;letter-spacing:-.03em;font-family:var(--mono)}
+.stat .l{font-size:15px;color:var(--faint);margin-top:12px;letter-spacing:.06em;
+  text-transform:uppercase}
+.stat.sm .n{font-size:52px}
 
-/* The arithmetic blocks: the visual spine of the whole deck. */
+.fig{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;margin-top:4px}
+.fig svg{max-width:100%;max-height:100%;height:auto}
+
+.cols{display:grid;gap:30px;grid-template-columns:1fr 1fr;align-content:start}
+.cols3{display:grid;gap:22px;grid-template-columns:repeat(3,1fr);align-content:start}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:24px 26px}
+.card h3{margin:0 0 12px;font-size:19px;color:var(--accent);font-weight:600}
+.card p{font-size:19px;line-height:1.4;color:var(--dim);margin:0 0 10px}
+.card p:last-child{margin-bottom:0}
+.card strong{color:var(--text)}
+
+table{width:100%;border-collapse:collapse;font-size:21px}
+th{text-align:left;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);
+  font-weight:600;padding:0 18px 12px 0;border-bottom:1px solid var(--border)}
+td{padding:17px 18px 17px 0;border-bottom:1px solid var(--border);color:var(--dim);
+  vertical-align:middle;line-height:1.3}
+td strong{color:var(--text);font-weight:600}
+tr:last-child td{border-bottom:none}
+
+/* The arithmetic: the visual spine of the deck. */
 .calc{font-family:var(--mono);background:var(--surface);border:1px solid var(--border);
-  border-radius:8px;padding:26px 30px;font-size:20px;line-height:2.05;color:var(--dim)}
-.calc .row{display:grid;grid-template-columns:1fr auto auto auto;gap:18px;align-items:baseline}
+  border-radius:9px;padding:30px 34px;font-size:24px;line-height:2.1;color:var(--dim)}
+.calc .row{display:grid;grid-template-columns:1fr auto auto;gap:26px;align-items:baseline}
 .calc .lbl{color:var(--text)}
-.calc .raw{color:var(--faint);font-size:17px}
 .calc .op{color:var(--faint)}
-.calc .res{color:var(--text);text-align:right;min-width:96px}
+.calc .res{color:var(--text);text-align:right;min-width:110px}
 .calc .res.up{color:var(--up)}.calc .res.down{color:var(--down)}
-.calc .total{border-top:1px solid var(--border-strong);margin-top:12px;padding-top:12px}
-.calc .total .lbl{color:var(--accent)}
-.calc .total .res{color:var(--accent);font-size:24px;font-weight:600}
-.rule{font-family:var(--mono);font-size:23px;background:rgba(224,92,92,.09);
-  border:1px solid rgba(224,92,92,.32);border-radius:8px;padding:20px 26px;color:var(--text);
-  line-height:1.5}
+.calc .total{border-top:1px solid var(--border-strong);margin-top:14px;padding-top:14px}
+.calc .total .lbl,.calc .total .res{color:var(--accent);font-weight:600}
+.rule{font-family:var(--mono);font-size:26px;background:rgba(224,92,92,.09);
+  border:1px solid rgba(224,92,92,.34);border-radius:9px;padding:24px 30px;color:var(--text);
+  line-height:1.45}
 .rule .t{color:var(--shrink);font-weight:700}
 
-pre{font-family:var(--mono);font-size:16.5px;line-height:1.65;background:var(--surface);
-  border:1px solid var(--border);border-radius:8px;padding:22px 26px;color:var(--dim);margin:0;
+pre{font-family:var(--mono);font-size:19px;line-height:1.65;background:var(--surface);
+  border:1px solid var(--border);border-radius:9px;padding:26px 30px;color:var(--dim);margin:0;
   overflow:hidden;white-space:pre}
 pre .k{color:var(--accent)}pre .g{color:var(--protect)}pre .r{color:var(--shrink)}
+pre.sm{font-size:15.5px;line-height:1.7}
 
 .step{opacity:0;transform:translateY(6px);transition:opacity .28s ease,transform .28s ease}
 .step.show{opacity:1;transform:none}
 
-.demo{background:linear-gradient(135deg,rgba(212,160,90,.13),rgba(212,160,90,.03));
-  border:1px solid var(--accent-dim)}
+.demo{background:linear-gradient(135deg,rgba(212,160,90,.14),rgba(212,160,90,.03));
+  border-left:4px solid var(--accent)}
 
-/* Chrome */
 #bar{position:fixed;left:0;bottom:0;height:2px;background:var(--accent);z-index:20;transition:width .2s}
 #num{position:fixed;right:16px;bottom:12px;font-family:var(--mono);font-size:12px;color:#4a5563;z-index:20}
-#notes{position:fixed;left:0;right:0;bottom:0;max-height:42vh;overflow:auto;background:#080b0f;
-  border-top:1px solid var(--border-strong);padding:18px 26px 26px;display:none;z-index:30}
+#notes{position:fixed;left:0;right:0;bottom:0;max-height:44vh;overflow:auto;background:#080b0f;
+  border-top:1px solid var(--border-strong);padding:18px 28px 26px;display:none;z-index:30}
 #notes.on{display:block}
-#notes h4{margin:0 0 10px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
-#notes p{font-size:15.5px;line-height:1.55;color:var(--dim);margin:0 0 10px;max-width:1100px}
-#notes strong{color:var(--text)}
+#notes h4{margin:0 0 12px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+#notes p{font-size:17px;line-height:1.6;color:var(--text);margin:0 0 12px;max-width:1120px}
+#notes .aside{color:var(--faint);font-size:15px;font-style:italic}
 #help{position:fixed;left:16px;bottom:10px;font-size:11.5px;color:#39424e;z-index:20;font-family:var(--mono)}
 
 /* Print lays every slide out as its own page, so Cmd+P gives a clean PDF. */
@@ -140,556 +141,532 @@ pre .k{color:var(--accent)}pre .g{color:var(--protect)}pre .r{color:var(--shrink
 <div id="stage"><div id="canvas"></div></div>
 <div id="bar"></div><div id="num"></div>
 <div id="help">← → navigate · N notes · F fullscreen</div>
-<div id="notes"><h4>Speaker notes</h4><div id="notes-body"></div></div>
+<div id="notes"><h4>What to say</h4><div id="notes-body"></div></div>
 
 <template id="slides">
 
-<!--S-->
-<section class="slide" data-notes="
-<p><strong>Open by naming the decision, not the technology.</strong> Do not say React, Python or OpenAI in the first two minutes. The brief says this is not primarily a coding test.</p>
-<p>'Bedashing has 23 lounges across the UAE. Somebody has to decide, each year, which ones to protect, which to leave alone, which to let go, and where the next one should be. I built the tool that makes that call defensible. It is live — you can open it while I talk.'</p>">
-  <p class="kicker">AI Associate · Take-home case study</p>
-  <h1>Which branches do we<br/>protect, hold, or shrink?</h1>
-  <p class="lede">An AI-enabled geospatial decision-support tool for Bedashing Beauty Lounge —
-  23 lounges, one portfolio, and a lease decision that has to survive a committee.</p>
+<!--S 1-->
+<section class="slide center" data-notes="
+<p>Bedashing is a beauty salon chain in the UAE. They have twenty-three shops.</p>
+<p>Every year someone has to decide: which shops do we keep, which do we grow, and which do we close.</p>
+<p>I built a tool that makes that decision — and explains it. It is online right now. You can open it while I talk.</p>
+<p class='aside'>Do not say React, Python or OpenAI yet. The brief says this is not a coding test.</p>">
+  <p class="kicker">AI Associate · Case study</p>
+  <h1>Which shops do we<br/>protect, hold, or shrink?</h1>
+  <p class="lede">Bedashing Beauty Lounge · 23 lounges · UAE</p>
   <div class="mt">
-    <p class="small" style="font-size:18px;color:var(--accent);font-family:var(--mono)">2pz.larri.dev</p>
-    <p class="small" style="margin-top:8px">Carlos Larriu · source: github.com/clarriu97/2pz</p>
+    <p class="mono" style="font-size:22px;color:var(--accent)">2pz.larri.dev</p>
+    <p class="foot" style="margin-top:10px">Carlos Larriu</p>
   </div>
 </section>
 
-<!--S-->
-<section class="slide" data-notes="
-<p>This is Requirement A of the brief, and it is worth being unusually specific. The brief says 'leadership'. I picked <strong>one person</strong>, because a tool built for 'leadership' is built for nobody.</p>
-<p>If they push back: 'The title is my assumption — what matters is the shape of the role. It is whoever owns the P&amp;L of the estate. If at Bedashing that is the COO or the CEO, nothing in the tool changes.'</p>">
-  <p class="kicker">Who this is for</p>
-  <h2>One decision-maker, three decisions</h2>
-  <p class="sub">The <strong>Head of Retail Portfolio</strong> — the one role that signs a lease,
-  funds a refit, or lets a site go. Not "leadership" in general.</p>
-  <table style="margin-top:6px">
-    <tr><td style="width:52%"><strong>Which lounges are earning their footprint?</strong></td>
-        <td><span class="pill p-protect">PROTECT</span> <span class="pill p-hold">HOLD</span>
-            <span class="pill p-shrink">SHRINK</span></td></tr>
-    <tr><td><strong>Where are we paying rent twice for the same customer?</strong></td>
-        <td>self-overlap between our own catchments</td></tr>
-    <tr><td><strong>Where is there demand we do not reach?</strong></td>
-        <td><span class="pill p-grow">GROW</span> · WATCH · SKIP per zone</td></tr>
-  </table>
-  <p class="small mt" style="font-size:17px;color:var(--dim)">Everything that follows exists to make
-  one of those three calls, and to make it survive the question <em>"why?"</em></p>
-</section>
-
-<!--S-->
-<section class="slide" data-notes="
-<p><strong>Lead with the answer.</strong> Consulting habit: the finding goes on slide three, not slide twenty.</p>
-<p>Say the number, then pause. 'Ministry Area is the fifth strongest branch out of twenty-three. And the tool says shrink it.' Let that land before you explain — the contradiction is what makes them lean in.</p>
-<p>Then: 'Not because it is underperforming. Because two of our own lounges already cover sixty-five per cent of its trade area. We are paying rent twice for the same customer.'</p>">
-  <p class="kicker">The finding</p>
-  <h2>Our biggest competitor in Abu Dhabi is us</h2>
-  <div class="stat">
-    <div><span class="n" style="color:var(--protect)">2</span><span class="l">PROTECT</span></div>
-    <div><span class="n" style="color:var(--hold)">15</span><span class="l">HOLD</span></div>
-    <div><span class="n" style="color:var(--shrink)">6</span><span class="l">SHRINK</span></div>
-    <div><span class="n" style="color:var(--grow)">17</span><span class="l">GROW zones of 573</span></div>
+<!--S 2-->
+<section class="slide center" data-notes="
+<p>The tool is for one person. The Head of Retail Portfolio. This is the person who signs the rent contract.</p>
+<p>The brief said 'leadership'. But a tool for everybody is a tool for nobody. So I picked one person.</p>
+<p>This person makes three decisions. Protect, hold or shrink each shop. And where to open the next one.</p>
+<p class='aside'>If they ask about the job title: 'That title is my assumption. What matters is the role — whoever owns the profit and loss of the shops. If at Bedashing that is the COO, nothing in the tool changes.'</p>">
+  <p class="kicker">Who it is for</p>
+  <h2>One person. Three decisions.</h2>
+  <p class="lede" style="margin-top:18px">Head of Retail Portfolio — the person who signs the lease.</p>
+  <div style="margin-top:46px;display:flex;gap:16px;flex-wrap:wrap">
+    <span class="pill p-protect">PROTECT</span>
+    <span class="pill p-hold">HOLD</span>
+    <span class="pill p-shrink">SHRINK</span>
+    <span style="color:var(--faint);font-size:22px;align-self:center;margin:0 10px">·</span>
+    <span class="pill p-grow">GROW</span>
   </div>
-  <div class="quote"><strong>Ministry Area shares 65% of its trade area with two of our own
-  lounges. Al Maqta shares 61%.</strong> Both are <em>above the portfolio median</em> on branch
-  strength — Ministry Area is the fifth strongest of 23. Both are flagged SHRINK purely because our
-  own network already covers their ground.
-  <span class="src">That is a consolidation decision, not a performance problem.</span></div>
 </section>
 
-<!--S-->
-<section class="slide" data-notes="
-<p>This slide justifies the entire model in one picture. A single 'branch health score' would rank Ministry Area fifth and you would never look at it again.</p>
-<p>'The question is not <em>how good is this branch</em>. It is <em>how good is this branch</em> and <em>is this ground worth holding</em>. Those are different questions and they need different axes — a good branch on contested ground is the most expensive mistake in a retail estate, because it looks healthy right up until you realise you own its competitor.'</p>">
-  <p class="kicker">Why two axes</p>
-  <h2>A single score would have hidden the finding</h2>
-  <div class="cols" style="margin-top:12px;flex:0">
-    <div class="card">
-      <h3>X · Branch strength</h3>
-      <p>How well does this lounge perform <strong>as a business</strong>?<br/>
-      Rating, scale, momentum, position against local rivals.</p>
-      <p style="color:var(--faint);font-size:15px">Ministry Area: <strong>0.71</strong> — 5th of 23.</p>
-    </div>
-    <div class="card">
-      <h3>Y · Market attractiveness &amp; defensibility</h3>
-      <p>Is <strong>the ground</strong> worth holding?<br/>
-      Demand in the catchment, room against competitors, and how much of it we already cover ourselves.</p>
-      <p style="color:var(--faint);font-size:15px">Ministry Area: <strong>0.27</strong> — bottom of the portfolio.</p>
-    </div>
+<!--S 3-->
+<section class="slide center" data-steps="2" data-notes="
+<p>This is what the tool found. Two shops to protect. Fifteen to hold. Six to shrink.</p>
+<p>Now look at one of them. Ministry Area, in Abu Dhabi.</p>
+<p>Sixty-five per cent of its area is already covered by two of our own shops.</p>
+<p><strong>And Ministry Area is not a weak shop. It is the fifth best out of twenty-three.</strong></p>
+<p>So the problem is not the shop. The problem is that we are paying rent twice for the same customer.</p>
+<p class='aside'>Say the number, then stop for two seconds. The contradiction is what makes them listen.</p>">
+  <p class="kicker">What it found</p>
+  <div class="stat step" data-step="1">
+    <div><span class="n" style="color:var(--protect)">2</span><span class="l">Protect</span></div>
+    <div><span class="n" style="color:var(--hold)">15</span><span class="l">Hold</span></div>
+    <div><span class="n" style="color:var(--shrink)">6</span><span class="l">Shrink</span></div>
   </div>
-  <p class="big" style="margin-top:26px">Strong branch. Contested ground. <em>Only a two-axis model
-  can say both at once</em> — and only that distinction turns "close it" into "consolidate it".</p>
+  <h2 class="step" data-step="2" style="margin-top:54px;font-size:40px">Ministry Area shares
+    <em>65%</em> of its area<br/>with two of our own shops.</h2>
+  <p class="lede step" data-step="2" style="margin-top:18px">It is the <strong>5th strongest of
+    23</strong>. Good shop. Wrong place.</p>
 </section>
 
-<!--S-->
+<!--S 4-->
 <section class="slide" data-notes="
-<p>Do not read the weights aloud. Point at them and say the two things that matter:</p>
-<p><strong>One:</strong> every score is a weighted sum. That is a deliberate choice against machine learning, and it is the next slide.</p>
-<p><strong>Two:</strong> all of these numbers live in one file, config.py. Disagreeing with the model is a four-number change, not a rewrite. That is what makes it a tool a portfolio team can own rather than a black box they have to trust.</p>">
-  <p class="kicker">The model</p>
-  <h2>Two axes, seven signals, three rules</h2>
-  <div class="cols" style="gap:26px;flex:0">
-    <div class="calc" style="font-size:18px;line-height:1.95">
-      <div style="color:var(--accent);font-size:14px;letter-spacing:.1em;margin-bottom:10px">X · BRANCH STRENGTH</div>
-      <div class="row"><span class="lbl">Guest rating</span><span></span><span></span><span class="res up">+0.30</span></div>
-      <div class="row"><span class="lbl">Review volume (log)</span><span></span><span></span><span class="res up">+0.25</span></div>
-      <div class="row"><span class="lbl">Position vs local rivals</span><span></span><span></span><span class="res up">+0.25</span></div>
-      <div class="row"><span class="lbl">Recent momentum</span><span></span><span></span><span class="res up">+0.20</span></div>
-    </div>
-    <div class="calc" style="font-size:18px;line-height:1.95">
-      <div style="color:var(--accent);font-size:14px;letter-spacing:.1em;margin-bottom:10px">Y · MARKET &amp; DEFENSIBILITY</div>
-      <div class="row"><span class="lbl">Catchment demand</span><span></span><span></span><span class="res up">+0.45</span></div>
-      <div class="row"><span class="lbl">Competitive headroom</span><span></span><span></span><span class="res up">+0.35</span></div>
-      <div class="row"><span class="lbl">Self-cannibalisation</span><span></span><span></span><span class="res down">−0.20</span></div>
-    </div>
-  </div>
-  <pre style="margin-top:24px;font-size:18px"><span class="g">PROTECT</span>   strength ≥ 0.65 <span class="k">AND</span> market ≥ 0.47
-<span class="r">SHRINK</span>    strength &lt; 0.51 <span class="k">OR</span> (market &lt; 0.40 <span class="k">AND</span> self-overlap ≥ 45%)
-HOLD      everything else</pre>
-  <p class="small" style="margin-top:16px;font-size:16px">Every number on this slide lives in one
-  file, <code>pipeline/config.py</code>. Changing the portfolio's risk appetite is a four-number edit.</p>
+<p>This is Abu Dhabi. Every circle is the area one shop serves.</p>
+<p>The red parts are where our own circles cover the same ground.</p>
+<p>Look at these two. Khalifa City and West Yas. They share twenty square kilometres.</p>
+<p><strong>But it is not equal.</strong> Khalifa City loses forty per cent of its area. West Yas loses only eighteen.</p>
+<p>So if we have to choose one, we already know which one.</p>
+<p class='aside'>This is the slide that makes 'overlap' feel real. Do not rush it.</p>">
+  <p class="kicker">We already cover our own ground</p>
+  <div class="fig"><!--FIG:overlap-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+<rect width="900" height="520" fill="#0d1117"/>
+<path d="M413.9,352.8L413.7,348.4L413.0,344.1L412.0,339.8L410.5,335.7L408.6,331.7L406.4,327.9L403.8,324.4L400.9,321.1L397.6,318.2L394.1,315.6L390.4,313.3L386.4,311.4L382.3,309.9L378.1,308.9L373.7,308.2L369.4,308.0L365.0,308.2L360.7,308.9L356.5,309.9L352.3,311.4L348.4,313.3L344.7,315.6L341.1,318.2L337.9,321.1L335.0,324.4L332.4,327.9L330.1,331.7L328.3,335.7L326.8,339.8L325.7,344.1L325.1,348.4L324.9,352.8L325.1,357.2L325.7,361.5L326.8,365.8L328.3,369.9L330.1,373.9L332.4,377.7L335.0,381.2L337.9,384.5L341.1,387.4L344.7,390.0L348.4,392.3L352.3,394.2L356.5,395.7L360.7,396.7L365.0,397.4L369.4,397.6L373.7,397.4L378.1,396.7L382.3,395.7L386.4,394.2L390.4,392.3L394.1,390.0L397.6,387.4L400.9,384.5L403.8,381.2L406.4,377.7L408.6,373.9L410.5,369.9L412.0,365.8L413.0,361.5L413.7,357.2L413.9,352.8Z" fill="#e05c5c" fill-opacity=".05" stroke="#e05c5c" stroke-opacity=".45" stroke-dasharray="5 4" stroke-width="1.3"/>
+<path d="M477.6,429.2L477.4,424.8L476.7,420.5L475.7,416.2L474.2,412.1L472.3,408.1L470.1,404.3L467.5,400.8L464.6,397.5L461.3,394.6L457.8,392.0L454.1,389.7L450.1,387.8L446.0,386.4L441.8,385.3L437.5,384.6L433.1,384.4L428.7,384.6L424.4,385.3L420.2,386.4L416.1,387.8L412.1,389.7L408.4,392.0L404.9,394.6L401.6,397.5L398.7,400.8L396.1,404.3L393.9,408.1L392.0,412.1L390.5,416.2L389.5,420.5L388.8,424.8L388.6,429.2L388.8,433.6L389.5,437.9L390.5,442.2L392.0,446.4L393.9,450.3L396.1,454.1L398.7,457.6L401.6,460.9L404.9,463.8L408.4,466.5L412.1,468.7L416.1,470.6L420.2,472.1L424.4,473.1L428.7,473.8L433.1,474.0L437.5,473.8L441.8,473.1L446.0,472.1L450.1,470.6L454.1,468.7L457.8,466.5L461.3,463.8L464.6,460.9L467.5,457.6L470.1,454.1L472.3,450.3L474.2,446.4L475.7,442.2L476.7,437.9L477.4,433.6L477.6,429.2Z" fill="#d9a838" fill-opacity=".05" stroke="#d9a838" stroke-opacity=".45" stroke-dasharray="5 4" stroke-width="1.3"/>
+<path d="M413.9,389.1L413.8,386.3L413.4,383.6L412.7,380.9L411.8,378.4L410.6,375.9L409.2,373.5L407.6,371.3L405.8,369.3L403.8,367.4L401.6,365.8L399.2,364.4L396.8,363.2L394.2,362.3L391.5,361.6L388.8,361.2L386.1,361.1L383.4,361.2L380.7,361.6L378.0,362.3L375.5,363.2L373.0,364.4L370.7,365.8L368.5,367.4L366.4,369.3L364.6,371.3L363.0,373.5L361.6,375.9L360.4,378.4L359.5,380.9L358.8,383.6L358.4,386.3L358.3,389.1L358.4,391.8L358.8,394.5L359.5,397.2L360.4,399.8L361.6,402.3L363.0,404.6L364.6,406.8L366.4,408.9L368.5,410.7L370.7,412.3L373.0,413.8L375.5,414.9L378.0,415.9L380.7,416.5L383.4,416.9L386.1,417.1L388.8,416.9L391.5,416.5L394.2,415.9L396.8,414.9L399.2,413.8L401.6,412.3L403.8,410.7L405.8,408.9L407.6,406.8L409.2,404.6L410.6,402.3L411.8,399.8L412.7,397.2L413.4,394.5L413.8,391.8L413.9,389.1Z" fill="#e05c5c" fill-opacity=".05" stroke="#e05c5c" stroke-opacity=".45" stroke-dasharray="5 4" stroke-width="1.3"/>
+<path d="M583.6,397.1L583.4,392.7L582.7,388.3L581.7,384.1L580.2,379.9L578.3,375.9L576.1,372.2L573.5,368.6L570.5,365.4L567.3,362.4L563.8,359.8L560.0,357.6L556.1,355.7L552.0,354.2L547.7,353.1L543.4,352.5L539.1,352.3L534.7,352.5L530.4,353.1L526.1,354.2L522.0,355.7L518.1,357.6L514.3,359.8L510.8,362.4L507.6,365.4L504.7,368.6L502.1,372.2L499.8,375.9L497.9,379.9L496.5,384.1L495.4,388.3L494.8,392.7L494.6,397.1L494.8,401.5L495.4,405.8L496.5,410.1L497.9,414.2L499.8,418.2L502.1,421.9L504.7,425.5L507.6,428.7L510.8,431.7L514.3,434.3L518.1,436.6L522.0,438.4L526.1,439.9L530.4,441.0L534.7,441.6L539.1,441.9L543.4,441.6L547.7,441.0L552.0,439.9L556.1,438.4L560.0,436.6L563.8,434.3L567.3,431.7L570.5,428.7L573.5,425.5L576.1,421.9L578.3,418.2L580.2,414.2L581.7,410.1L582.7,405.8L583.4,401.5L583.6,397.1Z" fill="#d9a838" fill-opacity=".05" stroke="#d9a838" stroke-opacity=".45" stroke-dasharray="5 4" stroke-width="1.3"/>
+<path d="M527.6,306.2L527.4,301.8L526.7,297.5L525.6,293.2L524.2,289.1L522.3,285.1L520.1,281.3L517.5,277.8L514.5,274.6L511.3,271.6L507.8,269.0L504.0,266.7L500.1,264.8L496.0,263.4L491.7,262.3L487.4,261.6L483.0,261.4L478.7,261.6L474.3,262.3L470.1,263.4L466.0,264.8L462.0,266.7L458.3,269.0L454.8,271.6L451.5,274.6L448.6,277.8L446.0,281.3L443.8,285.1L441.9,289.1L440.4,293.2L439.4,297.5L438.7,301.8L438.5,306.2L438.7,310.6L439.4,315.0L440.4,319.2L441.9,323.4L443.8,327.3L446.0,331.1L448.6,334.6L451.5,337.9L454.8,340.8L458.3,343.5L462.0,345.7L466.0,347.6L470.1,349.1L474.3,350.1L478.7,350.8L483.0,351.0L487.4,350.8L491.7,350.1L496.0,349.1L500.1,347.6L504.0,345.7L507.8,343.5L511.3,340.8L514.5,337.9L517.5,334.6L520.1,331.1L522.3,327.3L524.2,323.4L525.6,319.2L526.7,315.0L527.4,310.6L527.6,306.2Z" fill="#d9a838" fill-opacity=".05" stroke="#d9a838" stroke-opacity=".45" stroke-dasharray="5 4" stroke-width="1.3"/>
+<path d="M371.7,339.7L371.5,335.3L370.8,331.0L369.8,326.7L368.3,322.6L366.4,318.6L364.2,314.9L361.6,311.3L358.6,308.1L355.4,305.1L351.9,302.5L348.1,300.2L344.2,298.4L340.1,296.9L335.8,295.8L331.5,295.2L327.2,295.0L322.8,295.2L318.5,295.8L314.2,296.9L310.1,298.4L306.2,300.2L302.4,302.5L298.9,305.1L295.7,308.1L292.7,311.3L290.1,314.9L287.9,318.6L286.0,322.6L284.5,326.7L283.5,331.0L282.8,335.3L282.6,339.7L282.8,344.1L283.5,348.5L284.5,352.7L286.0,356.9L287.9,360.9L290.1,364.6L292.7,368.2L295.7,371.4L298.9,374.4L302.4,377.0L306.2,379.2L310.1,381.1L314.2,382.6L318.5,383.7L322.8,384.3L327.2,384.5L331.5,384.3L335.8,383.7L340.1,382.6L344.2,381.1L348.1,379.2L351.9,377.0L355.4,374.4L358.6,371.4L361.6,368.2L364.2,364.6L366.4,360.9L368.3,356.9L369.8,352.7L370.8,348.5L371.5,344.1L371.7,339.7Z" fill="#d9a838" fill-opacity=".05" stroke="#d9a838" stroke-opacity=".45" stroke-dasharray="5 4" stroke-width="1.3"/>
+<path d="M680.8,309.2L680.5,302.6L679.5,296.1L677.9,289.7L675.7,283.5L672.9,277.6L669.5,271.9L665.6,266.6L661.2,261.7L656.4,257.3L651.1,253.4L645.5,250.0L639.6,247.2L633.4,244.9L627.0,243.3L620.6,242.4L614.0,242.0L607.5,242.4L601.0,243.3L594.6,244.9L588.4,247.2L582.5,250.0L576.9,253.4L571.6,257.3L566.8,261.7L562.4,266.6L558.5,271.9L555.1,277.6L552.3,283.5L550.1,289.7L548.5,296.1L547.5,302.6L547.2,309.2L547.5,315.8L548.5,322.3L550.1,328.7L552.3,334.9L555.1,340.9L558.5,346.5L562.4,351.8L566.8,356.7L571.6,361.2L576.9,365.1L582.5,368.5L588.4,371.3L594.6,373.5L601.0,375.1L607.5,376.1L614.0,376.4L620.6,376.1L627.0,375.1L633.4,373.5L639.6,371.3L645.5,368.5L651.1,365.1L656.4,361.2L661.2,356.7L665.6,351.8L669.5,346.5L672.9,340.9L675.7,334.9L677.9,328.7L679.5,322.3L680.5,315.8L680.8,309.2Z" fill="#d9a838" fill-opacity=".05" stroke="#d9a838" stroke-opacity=".45" stroke-dasharray="5 4" stroke-width="1.3"/>
+<path d="M274.9,275.3L274.7,272.6L274.3,269.8L273.7,267.2L272.8,264.6L271.6,262.1L270.2,259.8L268.6,257.5L266.7,255.5L264.7,253.7L262.5,252.0L260.2,250.6L257.7,249.4L255.1,248.5L252.5,247.9L249.8,247.4L247.0,247.3L244.3,247.4L241.6,247.9L239.0,248.5L236.4,249.4L233.9,250.6L231.6,252.0L229.4,253.7L227.4,255.5L225.5,257.5L223.9,259.8L222.5,262.1L221.3,264.6L220.4,267.2L219.7,269.8L219.3,272.6L219.2,275.3L219.3,278.0L219.7,280.8L220.4,283.4L221.3,286.0L222.5,288.5L223.9,290.9L225.5,293.1L227.4,295.1L229.4,296.9L231.6,298.6L233.9,300.0L236.4,301.2L239.0,302.1L241.6,302.8L244.3,303.2L247.0,303.3L249.8,303.2L252.5,302.8L255.1,302.1L257.7,301.2L260.2,300.0L262.5,298.6L264.7,296.9L266.7,295.1L268.6,293.1L270.2,290.9L271.6,288.5L272.8,286.0L273.7,283.4L274.3,280.8L274.7,278.0L274.9,275.3Z" fill="#d9a838" fill-opacity=".05" stroke="#d9a838" stroke-opacity=".45" stroke-dasharray="5 4" stroke-width="1.3"/>
+<path d="M650.7,171.2L650.4,164.6L649.4,158.1L647.8,151.7L645.6,145.5L642.8,139.5L639.4,133.9L635.5,128.6L631.1,123.7L626.2,119.2L621.0,115.3L615.3,111.9L609.4,109.1L603.2,106.9L596.9,105.3L590.4,104.3L583.8,104.0L577.3,104.3L570.8,105.3L564.4,106.9L558.2,109.1L552.3,111.9L546.7,115.3L541.4,119.2L536.6,123.7L532.1,128.6L528.2,133.9L524.9,139.5L522.1,145.5L519.9,151.7L518.3,158.1L517.3,164.6L517.0,171.2L517.3,177.8L518.3,184.3L519.9,190.7L522.1,196.9L524.9,202.9L528.2,208.5L532.1,213.8L536.6,218.7L541.4,223.1L546.7,227.0L552.3,230.4L558.2,233.2L564.4,235.5L570.8,237.1L577.3,238.0L583.8,238.4L590.4,238.0L596.9,237.1L603.2,235.5L609.4,233.2L615.3,230.4L621.0,227.0L626.2,223.1L631.1,218.7L635.5,213.8L639.4,208.5L642.8,202.9L645.6,196.9L647.8,190.7L649.4,184.3L650.4,177.8L650.7,171.2Z" fill="#e05c5c" fill-opacity=".05" stroke="#e05c5c" stroke-opacity=".45" stroke-dasharray="5 4" stroke-width="1.3"/>
+<path d="M535.5,238.3L535.2,231.7L534.2,225.2L532.6,218.8L530.4,212.6L527.6,206.7L524.3,201.0L520.3,195.7L515.9,190.8L511.1,186.4L505.8,182.5L500.2,179.1L494.3,176.3L488.1,174.0L481.7,172.4L475.2,171.5L468.7,171.1L462.1,171.5L455.7,172.4L449.3,174.0L443.1,176.3L437.2,179.1L431.6,182.5L426.3,186.4L421.4,190.8L417.0,195.7L413.1,201.0L409.8,206.7L406.9,212.6L404.7,218.8L403.1,225.2L402.2,231.7L401.9,238.3L402.2,244.9L403.1,251.4L404.7,257.8L406.9,264.0L409.8,270.0L413.1,275.6L417.0,280.9L421.4,285.8L426.3,290.3L431.6,294.2L437.2,297.6L443.1,300.4L449.3,302.6L455.7,304.2L462.1,305.2L468.7,305.5L475.2,305.2L481.7,304.2L488.1,302.6L494.3,300.4L500.2,297.6L505.8,294.2L511.1,290.3L515.9,285.8L520.3,280.9L524.3,275.6L527.6,270.0L530.4,264.0L532.6,257.8L534.2,251.4L535.2,244.9L535.5,238.3Z" fill="#d9a838" fill-opacity=".05" stroke="#d9a838" stroke-opacity=".45" stroke-dasharray="5 4" stroke-width="1.3"/>
+<path d="M439.3,297.5L439.8,295.3L440.4,293.2L441.1,291.1L441.9,289.1L442.8,287.1L443.8,285.1L444.8,283.2L446.0,281.3L447.3,279.5L448.6,277.8L450.0,276.1L451.5,274.6L453.1,273.0L454.8,271.6L456.5,270.2L458.3,269.0L460.1,267.8L462.0,266.7L464.0,265.7L466.0,264.8L468.0,264.1L470.1,263.4L472.2,262.8L474.3,262.3L476.5,261.9L478.7,261.6L480.8,261.5L483.0,261.4L485.2,261.5L487.4,261.6L489.6,261.9L491.7,262.3L493.9,262.8L496.0,263.4L498.0,264.1L500.1,264.8L502.1,265.7L504.0,266.7L505.9,267.8L507.8,269.0L509.6,270.2L511.3,271.6L512.9,273.0L514.5,274.6L516.0,276.1L517.5,277.8L518.8,279.5L520.0,281.3L518.2,283.4L515.9,285.8L513.6,288.1L511.1,290.3L508.5,292.3L505.8,294.2L503.0,295.9L500.2,297.6L497.3,299.1L494.3,300.4L491.2,301.6L488.1,302.6L484.9,303.5L481.7,304.2L478.5,304.8L475.2,305.2L472.0,305.4L468.7,305.5L465.4,305.4L462.1,305.2L458.9,304.8L455.7,304.2L452.5,303.5L449.3,302.6L446.2,301.6L443.1,300.4L440.1,299.1L439.2,298.6L439.3,297.5Z" fill="#e05c5c" fill-opacity="0.42" stroke="#e05c5c" stroke-opacity=".8" stroke-width="1.6"/>
+<path d="M336.4,382.9L335.0,381.2L333.6,379.5L332.4,377.7L331.2,375.8L330.1,373.9L329.1,372.0L328.3,369.9L327.5,367.9L326.8,365.8L326.2,363.7L325.7,361.5L325.3,359.4L325.1,357.2L324.9,355.0L324.9,352.8L324.9,350.6L325.1,348.4L325.3,346.2L325.7,344.1L326.2,341.9L326.8,339.8L327.5,337.7L328.3,335.7L329.1,333.7L330.1,331.7L331.2,329.8L332.4,327.9L333.6,326.1L335.0,324.4L336.4,322.7L337.9,321.1L339.5,319.6L341.1,318.2L342.9,316.8L344.7,315.6L346.5,314.4L348.4,313.3L350.4,312.3L352.3,311.4L354.4,310.6L356.5,309.9L358.6,309.4L359.6,309.1L360.1,309.7L361.6,311.3L362.9,313.1L364.2,314.9L365.3,316.7L366.4,318.6L367.4,320.6L368.3,322.6L369.1,324.7L369.8,326.7L370.3,328.9L370.8,331.0L371.2,333.2L371.5,335.3L371.6,337.5L371.7,339.7L371.6,341.9L371.5,344.1L371.2,346.3L370.8,348.5L370.3,350.6L369.8,352.7L369.1,354.8L368.3,356.9L367.4,358.9L366.4,360.9L365.3,362.8L364.2,364.6L362.9,366.4L361.6,368.2L360.1,369.8L358.6,371.4L357.0,372.9L355.4,374.4L353.7,375.7L351.9,377.0L350.0,378.2L348.1,379.2L346.2,380.2L344.2,381.1L342.1,381.9L340.1,382.6L338.0,383.2L336.9,383.4L336.4,382.9Z" fill="#e05c5c" fill-opacity="0.14" stroke="none" stroke-opacity=".8" stroke-width="0"/>
+<path d="M408.6,373.9L407.6,375.8L406.4,377.7L405.1,379.5L403.8,381.2L402.4,382.9L400.9,384.5L399.3,386.0L397.6,387.4L395.9,388.8L394.1,390.0L392.3,391.2L390.4,392.3L388.4,393.3L386.4,394.2L384.4,395.0L382.3,395.7L380.2,396.3L378.1,396.7L375.9,397.1L373.7,397.4L371.6,397.5L369.4,397.6L367.2,397.5L365.0,397.4L362.9,397.1L360.7,396.7L359.3,396.4L359.1,395.9L358.8,394.5L358.6,393.2L358.4,391.8L358.3,390.4L358.3,389.1L358.3,387.7L358.4,386.3L358.6,385.0L358.8,383.6L359.1,382.3L359.5,380.9L359.9,379.6L360.4,378.4L361.0,377.1L361.6,375.9L362.2,374.7L363.0,373.5L363.8,372.4L364.6,371.3L365.5,370.3L366.4,369.3L367.4,368.3L368.5,367.4L369.5,366.6L370.7,365.8L371.8,365.1L373.0,364.4L374.2,363.8L375.5,363.2L376.7,362.7L378.0,362.3L379.3,361.9L380.7,361.6L382.0,361.4L383.4,361.2L384.7,361.1L386.1,361.1L387.5,361.1L388.8,361.2L390.2,361.4L391.5,361.6L392.9,361.9L394.2,362.3L395.5,362.7L396.8,363.2L398.0,363.8L399.2,364.4L400.4,365.1L401.6,365.8L402.7,366.6L403.8,367.4L404.8,368.3L405.8,369.3L406.7,370.3L407.6,371.3L408.5,372.4L409.0,373.2L408.6,373.9Z" fill="#e05c5c" fill-opacity="0.14" stroke="none" stroke-opacity=".8" stroke-width="0"/>
+<path d="M390.5,416.2L391.2,414.1L392.0,412.1L392.9,410.1L393.8,408.1L394.9,406.2L396.1,404.3L397.4,402.5L398.7,400.8L400.1,399.1L401.6,397.5L403.2,396.0L404.9,394.6L406.6,393.2L408.4,392.0L410.2,390.8L412.1,389.7L413.9,388.8L413.9,389.1L413.9,390.4L413.8,391.8L413.6,393.2L413.4,394.5L413.1,395.9L412.7,397.2L412.3,398.5L411.8,399.8L411.3,401.0L410.6,402.3L410.0,403.5L409.2,404.6L408.4,405.7L407.6,406.8L406.7,407.9L405.8,408.9L404.8,409.8L403.8,410.7L402.7,411.6L401.6,412.3L400.4,413.1L399.2,413.8L398.0,414.4L396.8,414.9L395.5,415.4L394.2,415.9L392.9,416.2L391.5,416.5L390.4,416.7L390.5,416.2Z" fill="#e05c5c" fill-opacity="0.14" stroke="none" stroke-opacity=".8" stroke-width="0"/>
+<path d="M528.3,208.5L526.5,205.7L524.9,202.9L523.4,199.9L523.2,199.5L524.3,201.0L526.0,203.8L527.6,206.7L529.1,209.6L529.3,210.0L528.3,208.5Z" fill="#e05c5c" fill-opacity="0.14" stroke="none" stroke-opacity=".8" stroke-width="0"/>
+<circle cx="369.4" cy="352.8" r="6" fill="#e05c5c" stroke="#0d1117" stroke-width="1.5"/>
+<circle cx="433.1" cy="429.2" r="6" fill="#d9a838" stroke="#0d1117" stroke-width="1.5"/>
+<circle cx="386.1" cy="389.1" r="6" fill="#e05c5c" stroke="#0d1117" stroke-width="1.5"/>
+<circle cx="539.1" cy="397.1" r="6" fill="#d9a838" stroke="#0d1117" stroke-width="1.5"/>
+<circle cx="483.0" cy="306.2" r="6" fill="#d9a838" stroke="#0d1117" stroke-width="1.5"/>
+<circle cx="327.2" cy="339.7" r="6" fill="#d9a838" stroke="#0d1117" stroke-width="1.5"/>
+<circle cx="614.0" cy="309.2" r="6" fill="#d9a838" stroke="#0d1117" stroke-width="1.5"/>
+<circle cx="247.0" cy="275.3" r="6" fill="#d9a838" stroke="#0d1117" stroke-width="1.5"/>
+<circle cx="583.8" cy="171.2" r="6" fill="#e05c5c" stroke="#0d1117" stroke-width="1.5"/>
+<circle cx="468.7" cy="238.3" r="6" fill="#d9a838" stroke="#0d1117" stroke-width="1.5"/>
+<line x1="483.0" y1="306.2" x2="507.8" y2="423.6" stroke="#3a4654" stroke-width="1.2"/>
+<text x="515.8" y="423.6" fill="#e6edf3" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif" font-size="19" font-weight="600" text-anchor="start">Khalifa City</text>
+<text x="515.8" y="445.6" fill="#e05c5c" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="17" text-anchor="start">gives up 40%</text>
+<line x1="468.7" y1="238.3" x2="443.9" y2="120.9" stroke="#3a4654" stroke-width="1.2"/>
+<text x="435.9" y="120.9" fill="#e6edf3" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif" font-size="19" font-weight="600" text-anchor="end">West Yas</text>
+<text x="435.9" y="142.9" fill="#9aa7b4" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="17" text-anchor="end">gives up 18%</text>
+<text x="46" y="48" fill="#d4a05a" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="16" letter-spacing="1.5">ABU DHABI · 10 LOUNGES</text>
+<text x="46" y="82" fill="#e6edf3" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif" font-size="28" font-weight="600">20.0 km² covered twice</text>
+<text x="854" y="82" fill="#9aa7b4" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif" font-size="18" text-anchor="end">6.2 km apart</text>
+</svg>
+<!--/FIG:overlap--></div>
 </section>
 
-<!--S-->
-<section class="slide" data-steps="4" data-notes="
-<p><strong>This is the slide to slow down on.</strong> Everything technical in the deck earns its place here. Click through it one beat at a time and do the arithmetic out loud.</p>
-<p>'One number in. Four point eight stars. Every branch we have sits between four-point-five and four-point-nine, so scoring it against zero-to-five would flatten every real difference into noise. We normalise against the band the category actually occupies: four-two to four-nine-five. Four-eight lands eighty per cent up that band. Multiply by its weight, thirty per cent. That signal contributes zero-point-two-four.'</p>
-<p>Then: 'That is the whole mechanism. There is no second, cleverer step.'</p>">
+<!--S 5-->
+<section class="slide" data-notes="
+<p>Now all twenty-three shops, on two axes.</p>
+<p>Left to right: how good is the shop. Bottom to top: how good is the ground.</p>
+<p>Ministry Area is here. Far right — so it is a strong shop. Very low — so the ground is bad.</p>
+<p><strong>If I used one single score, this shop would be number five, and I would never look at it again.</strong></p>
+<p class='aside'>Also point out: the red dots are not all on the left. That answers 'are you just closing the small ones?' before they ask it.</p>">
+  <p class="kicker">Strong shop. Weak ground.</p>
+  <div class="fig"><!--FIG:matrix-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+<rect width="900" height="520" fill="#0d1117"/>
+<rect x="546.3" y="26" width="323.7" height="162.8" fill="#3fb98a" opacity=".07"/>
+<rect x="78" y="26" width="195.4" height="432" fill="#e05c5c" opacity=".07"/>
+<line x1="273.4" x2="273.4" y1="26" y2="458" stroke="#3a4654" stroke-dasharray="4 3"/>
+<text x="273.4" y="478" fill="#6b7785" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="14" text-anchor="middle">0.51</text>
+<line x1="546.3" x2="546.3" y1="26" y2="458" stroke="#3a4654" stroke-dasharray="4 3"/>
+<text x="546.3" y="478" fill="#6b7785" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="14" text-anchor="middle">0.65</text>
+<line x1="78" x2="870" y1="263.6" y2="263.6" stroke="#3a4654" stroke-dasharray="4 3"/>
+<text x="66" y="268.6" fill="#6b7785" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="14" text-anchor="end">0.4</text>
+<line x1="78" x2="870" y1="188.8" y2="188.8" stroke="#3a4654" stroke-dasharray="4 3"/>
+<text x="66" y="193.8" fill="#6b7785" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="14" text-anchor="end">0.47</text>
+<line x1="78" x2="870" y1="458" y2="458" stroke="#3a4654"/>
+<line x1="78" x2="78" y1="26" y2="458" stroke="#3a4654"/>
+<text x="450.0" y="506" fill="#9aa7b4" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif" font-size="17" text-anchor="middle">Branch strength →</text>
+<text transform="translate(24,260.0) rotate(-90)" fill="#9aa7b4" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif" font-size="17" text-anchor="middle">Market &amp; defensibility →</text>
+<text x="860" y="48" fill="#3fb98a" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="14" text-anchor="end" opacity=".85">PROTECT</text>
+<text x="88" y="48" fill="#e05c5c" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="14" opacity=".85">SHRINK</text>
+<circle cx="421.6" cy="262.7" r="19.0" fill="#d9a838" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="676.2" cy="251.6" r="17.2" fill="#d9a838" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="793.4" cy="175.0" r="16.1" fill="#3fb98a" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="513.4" cy="294.9" r="14.3" fill="#d9a838" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="386.1" cy="249.7" r="13.9" fill="#d9a838" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="522.7" cy="304.3" r="13.7" fill="#e05c5c" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="679.7" cy="365.5" r="13.5" fill="#d9a838" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="386.9" cy="261.3" r="13.5" fill="#d9a838" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="667.2" cy="398.9" r="13.4" fill="#e05c5c" stroke="#fff" stroke-width="3" opacity="1"/>
+<circle cx="578.1" cy="272.0" r="13.0" fill="#d9a838" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="533.5" cy="149.3" r="12.9" fill="#d9a838" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="388.0" cy="205.9" r="12.7" fill="#d9a838" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="182.3" cy="141.8" r="12.6" fill="#e05c5c" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="411.0" cy="158.8" r="12.2" fill="#d9a838" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="312.4" cy="182.9" r="12.1" fill="#d9a838" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="484.1" cy="416.2" r="11.9" fill="#d9a838" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="610.5" cy="250.2" r="11.9" fill="#d9a838" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="248.4" cy="243.4" r="11.0" fill="#e05c5c" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="551.4" cy="192.3" r="10.4" fill="#d9a838" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="721.4" cy="67.8" r="9.9" fill="#3fb98a" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="272.8" cy="397.1" r="9.5" fill="#e05c5c" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="154.6" cy="185.0" r="9.1" fill="#e05c5c" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<circle cx="544.6" cy="193.3" r="8.2" fill="#d9a838" stroke="#0d1117" stroke-width="1.5" opacity="0.9"/>
+<text x="694.6" y="396.9" fill="#d4a05a" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif" font-size="20" font-weight="600">Ministry Area</text>
+<text x="694.6" y="418.9" fill="#9aa7b4" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="15">5th of 23 · SHRINK</text>
+</svg>
+<!--/FIG:matrix--></div>
+</section>
+
+<!--S 6-->
+<section class="slide center" data-steps="4" data-notes="
+<p>How does the tool get these numbers? Here is the simplest example.</p>
+<p>This shop has four point eight stars.</p>
+<p>All our shops are between four point five and four point nine. So if I score from zero to five, every shop looks the same. The differences disappear.</p>
+<p>Instead I score inside the real range: four point two to four point nine five. Four point eight sits eighty per cent up that range.</p>
+<p>Then I multiply by the weight of this signal — thirty per cent. So this signal adds zero point two four.</p>
+<p><strong>That is all. There is no second step.</strong></p>">
   <p class="kicker">How a score is built · 1 of 2</p>
-  <h2>One signal, start to finish</h2>
-  <div class="calc" style="font-size:23px;line-height:2.3;margin-top:14px">
-    <div class="step" data-step="1">Ministry Area's guest rating &nbsp;<span style="color:var(--text)">4.8★</span>
-      <span class="raw">&nbsp;&nbsp;(real — public Google aggregate)</span></div>
-    <div class="step" data-step="2" style="margin-top:14px">normalise against the band the category
-      occupies, <span style="color:var(--text)">not 0–5</span><br/>
-      <span style="color:var(--text);margin-left:0">(4.80 − 4.20) ÷ (4.95 − 4.20)</span>
+  <h2>One signal</h2>
+  <div class="calc" style="margin-top:26px;line-height:2.2">
+    <div class="step" data-step="1">guest rating &nbsp;<span style="color:var(--text)">4.8★</span></div>
+    <div class="step" data-step="2" style="margin-top:16px">(4.80 − 4.20) ÷ (4.95 − 4.20)
       <span class="op">&nbsp;=&nbsp;</span><span style="color:var(--accent)">0.80</span></div>
-    <div class="step" data-step="3" style="margin-top:14px">apply its weight
-      <span style="color:var(--text)">0.80 × 0.30</span>
-      <span class="op">&nbsp;=&nbsp;</span><span class="res up" style="font-size:26px">+0.24</span></div>
-    <div class="step total" data-step="4" style="margin-top:20px">
-      <span class="lbl">contribution of this one signal to branch strength</span>
-      <span style="float:right;color:var(--accent);font-size:26px;font-weight:600">+0.24</span></div>
+    <div class="step" data-step="3" style="margin-top:16px">0.80 × 0.30
+      <span class="op">&nbsp;=&nbsp;</span><span style="color:var(--up)">+0.24</span></div>
   </div>
-  <p class="big step" data-step="4" style="margin-top:28px">Do that for every signal, add them up.
-  <em>That is the entire model.</em></p>
+  <p class="lede step" data-step="4" style="margin-top:34px">Every signal works like this.
+    <em>Add them up — that is the model.</em></p>
 </section>
 
-<!--S-->
-<section class="slide" data-steps="5" data-notes="
-<p>Same arithmetic, all three signals of the Y axis, and then the label falls out.</p>
-<p>'Demand in this catchment is thirty-nine per cent of the metro peak — that is a real number, built from thirty-seven thousand OpenStreetMap features. There is competitive room: seventeen rivals, not crowded. So far so good. And then the third line: sixty-five per cent of this catchment is already covered by two of our own lounges. Weight minus zero-point-two. That single line takes thirteen points off the score and drops it under the threshold.'</p>
-<p><strong>The punchline to land:</strong> 'The parts sum to the score exactly. Not approximately — a validator in the pipeline refuses to build a score whose breakdown does not add up to it. The explanation is not a story told about the model afterwards. It <em>is</em> the model.'</p>">
+<!--S 7-->
+<section class="slide center" data-steps="5" data-notes="
+<p>Same arithmetic, now for the whole second axis. Three numbers.</p>
+<p>Demand in the area: plus zero point one seven seven.</p>
+<p>Room against competitors: plus zero point two two six.</p>
+<p>And the overlap with our own shops: <strong>minus</strong> zero point one two nine.</p>
+<p>Add them: zero point two seven three.</p>
+<p>The rule says: if the market score is below zero point four, and the overlap is above forty-five per cent, then shrink. Both are true. So: shrink.</p>
+<p><strong>And notice: the three numbers add up to the score exactly. The explanation is not a story about the model. It is the model.</strong></p>">
   <p class="kicker">How a score is built · 2 of 2</p>
-  <h2>One axis, and the label falls out</h2>
-  <div class="calc step" data-step="1" style="margin-top:8px">
-    <div class="row step" data-step="1"><span class="lbl">Catchment demand</span>
-      <span class="raw">39% of metro peak</span><span class="op">0.393 × +0.45</span>
-      <span class="res up">+0.177</span></div>
-    <div class="row step" data-step="2"><span class="lbl">Competitive headroom</span>
-      <span class="raw">17 rivals · 0.87/km²</span><span class="op">0.645 × +0.35</span>
-      <span class="res up">+0.226</span></div>
-    <div class="row step" data-step="3"><span class="lbl">Self-cannibalisation</span>
-      <span class="raw">65% of catchment shared</span><span class="op">0.648 × −0.20</span>
-      <span class="res down">−0.129</span></div>
+  <h2>One axis</h2>
+  <div class="calc" style="margin-top:22px">
+    <div class="row step" data-step="1"><span class="lbl">Demand in the area</span>
+      <span class="op">0.393 × +0.45</span><span class="res up">+0.177</span></div>
+    <div class="row step" data-step="2"><span class="lbl">Room against competitors</span>
+      <span class="op">0.645 × +0.35</span><span class="res up">+0.226</span></div>
+    <div class="row step" data-step="3"><span class="lbl">Overlap with our own shops</span>
+      <span class="op">0.648 × −0.20</span><span class="res down">−0.129</span></div>
     <div class="row total step" data-step="4"><span class="lbl">MARKET SCORE</span>
-      <span></span><span></span><span class="res">0.273</span></div>
+      <span></span><span class="res">0.273</span></div>
   </div>
-  <div class="rule step" data-step="5" style="margin-top:24px">
-    market <strong>0.273</strong> &lt; 0.40 &nbsp;AND&nbsp; self-overlap <strong>65%</strong> ≥ 45%
-    &nbsp;&nbsp;→&nbsp;&nbsp;<span class="t">SHRINK</span></div>
-  <p class="big step" data-step="5" style="margin-top:22px">The parts sum to the score <em>exactly</em>
-  — a validator refuses to build one that doesn't. The breakdown isn't an explanation of the model.
-  It <em>is</em> the model.</p>
+  <div class="rule step" data-step="5" style="margin-top:26px">
+    market <strong>0.273</strong> &lt; 0.40 &nbsp;AND&nbsp; overlap <strong>65%</strong> ≥ 45%
+    &nbsp;→&nbsp;<span class="t">SHRINK</span></div>
 </section>
 
-<!--S-->
-<section class="slide demo" data-notes="
-<p><strong>Switch to the browser now.</strong> Keep this slide up while you talk so you have the path in front of you if you lose your thread.</p>
-<p>Budget roughly: overlap 2 min, the branch panel 3 min, matrix 1 min, growth 2 min, analyst 3 min. If you are running short, cut Growth — the first, second and fifth carry the argument.</p>
-<p>On the analyst, <strong>expand the tool trace</strong>. That is the single most important thing you show all session for an AI role: it proves the answer was looked up, not recalled.</p>">
-  <p class="kicker">Live demo · 2pz.larri.dev</p>
-  <h2>Five things to click</h2>
-  <ul style="margin-top:18px">
-    <li><strong>Self-overlap</strong> — the red wedges are real intersection geometry.
-      Khalifa City ∩ West Yas: <em>20 km² shared</em>, but Khalifa City gives up 40% of its trade area
-      and West Yas only 18%. Overlap is asymmetric — that's what names the branch to consolidate.</li>
-    <li><strong>Ministry Area's panel</strong> — the rule that fired, printed verbatim, and the
-      breakdown you just saw on the last slide, live.</li>
-    <li><strong>The decision matrix</strong> — all 23 on both axes. The SHRINKs are <em>not</em> all
-      bottom-left. That is the honest answer to "are you just closing the small ones?"</li>
-    <li><strong>Whitespace</strong> — 573 hexes. A covered cell is <em>damped, not deleted</em>; a cell
-      below the demand floor is SKIP whatever it scores, because empty desert scores beautifully on
-      "coverage gap".</li>
-    <li><strong>The analyst</strong> — <em>"which branches are most at risk, and why?"</em> — then
-      open the tool trace underneath the answer.</li>
-  </ul>
-</section>
-
-<!--S-->
-<section class="slide" data-notes="
-<p>Requirement D. Two uses, and the interesting part is the third box — what I chose <em>not</em> to build.</p>
-<p>'The dataset is twenty-three branches and a thousand scored cells, fully structured. Every question a portfolio team actually asks is a filter, a sort or a join. Function calling answers those exactly, and shows its working. A vector store would be fuzzier, unauditable, and literally unable to answer <em>rank these by overlap share</em>. Not reaching for RAG was the judgement call, not a gap.'</p>
-<p>If someone asks about hallucination: point at the tool trace, and at the notes being generated from the breakdown with an instruction to never supply a fact.</p>">
-  <p class="kicker">The AI layer</p>
-  <h2>Two uses, and one deliberate omission</h2>
-  <div class="cols3" style="margin-top:14px;flex:1;align-content:start">
-    <div class="card">
-      <h3>Grounded notes</h3>
-      <p>Every branch and zone gets the sentence an analyst would say in a review — generated
-      <strong>offline</strong> from its contribution breakdown and committed.</p>
-      <p>The model is handed the scored record and told to turn arithmetic into an argument,
-      <strong>never to supply a fact</strong>.</p>
-      <p style="color:var(--faint);font-size:15px">101 notes committed → the AI layer works with no
-      API key. Each is hashed against its payload, so a stale note says so.</p>
-    </div>
-    <div class="card">
-      <h3>Conversational analyst</h3>
-      <p>A bounded tool-calling loop over the same JSON the map renders — six tools:
-      <code>list_branches</code>, <code>get_branch</code>, <code>find_overlaps</code>,
-      <code>compare_branches</code>, <code>top_whitespace</code>, <code>network_summary</code>.</p>
-      <p>The prompt forbids answering from memory, and <strong>every tool call is shown with the
-      answer</strong>.</p>
-      <p style="color:var(--faint);font-size:15px">You can check it looked the number up rather than
-      recalled it.</p>
-    </div>
-    <div class="card" style="border-color:var(--accent-dim)">
-      <h3>No RAG — on purpose</h3>
-      <p>23 branches, ~1,000 scored cells, fully structured. Every real question is a filter, a sort
-      or a join.</p>
-      <p>Function calling answers those <strong>exactly and auditably</strong>. Embeddings would be
-      fuzzier, unauditable, and simply <em>unable</em> to answer "rank these by overlap share".</p>
-      <p style="color:var(--faint);font-size:15px">Choosing not to reach for the fashionable tool is
-      the judgement, not the gap.</p>
-    </div>
-  </div>
-</section>
-
-<!--S-->
-<section class="slide" data-notes="
-<p>Get ahead of the obvious objection before they raise it.</p>
-<p>'The chain is real, the geography is real, and most of the signal is real. What is not public is revenue per chair, bookings and lease cost — so I used public proxies and I labelled every single field in the UI with where it came from. A reviewer never has to guess whether a number is a measurement or a simulation.'</p>
-<p>Then the line that matters: <strong>'The value of this is not the data source. It is the processing. Point it at the chain's own booking system and the same pipeline produces real-world answers — the only thing that changes is one CSV.'</strong></p>
-<p>Be ready for: 'did you verify the twenty-three ratings?' Honest answer: they come from a public aggregator, I did not check all twenty-three against Google one by one.</p>">
-  <p class="kicker">Data</p>
-  <h2>What is real, and what is not</h2>
-  <table style="margin-top:10px">
-    <tr><td style="width:118px"><span class="pill p-real">real</span></td>
-        <td><strong>23 branch locations, ratings, review counts</strong><br/>
-        <span style="color:var(--faint);font-size:15px">Bedashing's public listing + public Google rating aggregates; geocoded via OSM Nominatim, two coarse results fixed by hand and flagged</span></td></tr>
-    <tr><td><span class="pill p-real">real</span></td>
-        <td><strong>1,354 competitors</strong> — existence, name, location, category<br/>
-        <span style="color:var(--faint);font-size:15px">OpenStreetMap via Overpass</span></td></tr>
-    <tr><td><span class="pill p-real">real</span></td>
-        <td><strong>37,137 built-form features</strong> behind the demand proxy<br/>
-        <span style="color:var(--faint);font-size:15px">OSM, streamed from a Geofabrik extract — residential, everyday retail, premium venues</span></td></tr>
-    <tr><td><span class="pill p-derived">derived</span></td>
-        <td>catchments, overlap geometry, saturation, coverage gap, demand index</td></tr>
-    <tr><td><span class="pill p-synth">synthetic</span></td>
-        <td><strong>Competitor ratings, review momentum, chair utilisation</strong><br/>
-        <span style="color:var(--faint);font-size:15px">seeded draws from stated priors — reproducible byte for byte, and labelled as simulated everywhere they appear</span></td></tr>
-  </table>
-  <p class="big" style="margin-top:22px">The value here isn't the data source — it's the processing.
-  <em>Point it at the chain's booking system and the same pipeline gives real-world answers.</em></p>
-</section>
-
-<!--S-->
-<section class="slide" data-notes="
-<p><strong>This is the highest-scoring slide in the deck.</strong> The brief's closing note says the hardest part is rarely coding — it is deciding what to simplify, what to trust, what to automate, what to explain, what to ship. This slide is that paragraph, answered.</p>
-<p>Do not read all five. Pick two and go deep — I would pick <strong>union-not-sum</strong> (because it changed real labels) and <strong>no ML</strong> (because it is the one they will test you on).</p>
-<p>'Summing the overlaps is the classic error. Three lounges clustered together all overlap the same wedge; sum it and you count that ground three times, you can exceed a hundred per cent, and you push a perfectly healthy cluster into a false shrink. So it is the union of the intersections, computed as real geometry.'</p>">
-  <p class="kicker">Trade-offs</p>
-  <h2>What I chose, over what, and why</h2>
-  <table style="margin-top:22px;font-size:16.5px">
-    <th style="width:27%">Chose</th><th style="width:24%">Over</th><th>Because</th>
-    <tr><td><strong>Weighted matrix</strong></td><td>machine learning</td>
-        <td>Nobody has labelled which branches <em>should</em> shrink — supervised learning has nothing to fit, and 23 rows would overfit anything. And a lease decision gets challenged in committee: "the gradient boosting said so" is not a defence.</td></tr>
-    <tr><td><strong>Union of overlaps</strong></td><td>sum of overlaps</td>
-        <td>Three clustered lounges all cover the same wedge. Summing counts it three times, can exceed 100%, and pushes a healthy cluster into a false SHRINK. This changed real labels.</td></tr>
-    <tr><td><strong>Built-form demand</strong></td><td>population raster</td>
-        <td>A labour camp and a villa district have similar population density and wildly different spend on a premium blow-dry.</td></tr>
-    <tr><td><strong>Function calling</strong></td><td>RAG / embeddings</td>
-        <td>Structured data, and every question is a filter or a sort. Exact and auditable beats fuzzy and unverifiable.</td></tr>
-    <tr><td><strong>Committed static JSON</strong></td><td>a database + API</td>
-        <td>The dataset changes when a lease changes, not when a page loads. A reviewer clones and runs it with no keys and no infrastructure.</td></tr>
-  </table>
-</section>
-
-<!--S-->
-<section class="slide" data-notes="
-<p>Requirement E's fourth question, answered head-on. Volunteering your own limitations is the single most credible thing you can do in a case presentation — and it pre-empts every gotcha.</p>
-<p>The framing to use: <strong>'Trust the geometry. Question the weights.'</strong> The arithmetic on distances, areas and counts is not in doubt. The numbers that turn geometry into a label are a stated management judgement — which is exactly why they live in one file, and why the UI prints the rule that fired instead of just the label. Disagreeing with a recommendation becomes a conversation about weights, not an argument with a black box.</p>
-<p>If they ask what you would fix first: <strong>drive-time isochrones.</strong> Say it without hedging.</p>">
-  <p class="kicker">Explainability</p>
-  <h2>Trust the geometry. Question the weights.</h2>
-  <div class="cols" style="margin-top:10px;flex:0">
-    <div class="card" style="border-color:rgba(63,185,138,.3)">
-      <h3 style="color:var(--protect)">Trust</h3>
-      <p>Overlap areas, distances, competitor counts, coverage gaps — computed from real
-      coordinates and real OSM features. The arithmetic is not in doubt.</p>
-    </div>
-    <div class="card" style="border-color:rgba(224,92,92,.3)">
-      <h3 style="color:var(--shrink)">Question</h3>
-      <p>The weights are a <strong>stated management judgement</strong>, not an estimate from data.
-      That is why they sit in one editable file — and why the UI prints the rule that fired, so
-      disagreeing becomes a conversation about weights rather than an argument with a black box.</p>
-    </div>
-  </div>
-  <ul style="margin-top:24px">
-    <li><strong>Catchments are radii, not drive times.</strong> An isochrone is the faithful version;
-      a lounge behind a creek is over-credited. <em>First thing I would upgrade.</em></li>
-    <li><strong>Competitor ratings are simulated.</strong> Their locations and count are real — the
-      quality comparison is illustrative.</li>
-    <li><strong>No revenue data at all.</strong> Review volume stands in for scale. Note that two of
-      the six SHRINK branches are top-ten by review volume: <em>the model is not quietly flagging the
-      small ones.</em> One CSV column from the chain fixes this, and it is the highest-value thing
-      they could add.</li>
-  </ul>
-</section>
-
-<!--S-->
-<section class="slide" data-notes="
-<p>The brief says 'You may use AI freely — in fact, we expect that you will', and lists 'how you use AI responsibly and effectively' as a scoring criterion. So say this out loud rather than hoping it does not come up. For an AI Associate role, <em>how you direct a coding agent</em> is a job skill, not an admission.</p>
-<p>The honest version: 'I built this with an AI agent doing most of the typing. What I actually did was decide what to build, decide what to trust, and build the checks that catch it when it is wrong. The test suite is not decoration — it found six real bugs, including one where the H3 rings were open and one where a percentile index floored to zero.'</p>
-<p>Have one concrete override ready: the analyst was answering a question fluently and wrongly, and the fix was in the tool contract, not the prompt. That is appendix slide on the grounding failure.</p>">
-  <p class="kicker">How it was built</p>
-  <h2>AI wrote most of it. The judgement is the deliverable.</h2>
-  <p class="lede" style="margin-bottom:26px">The brief expects AI use. For this role the interesting
-  question isn't <em>whether</em> — it's what you keep control of.</p>
-  <div class="cols3" style="flex:0">
-    <div class="card"><h3>What I decided</h3>
-      <p>The decision-maker. Two axes over one score. Union over sum. Real data where it was free.
-      No RAG. The thresholds, and the posture behind them.</p></div>
-    <div class="card"><h3>What caught the errors</h3>
-      <p><strong>313 Python tests at 98% coverage, 218 web tests</strong>, CI gating every push.
-      They found six real bugs — open H3 rings, a percentile index flooring to zero, a hash-order
-      dependency that broke reproducibility.</p></div>
-    <div class="card"><h3>Where I overrode it</h3>
-      <p>The analyst answered <em>"which branches are most at risk"</em> fluently and wrongly —
-      correct numbers, wrong reason. The fix belonged in the <strong>tool contract</strong>, not the
-      prompt.</p></div>
-  </div>
-  <p class="big" style="margin-top:28px">The dataset rebuilds <em>byte-identically</em> on every
-  commit, and CI fails if it doesn't. That is the difference between a demo and a product.</p>
-</section>
-
-<!--S-->
-<section class="slide" data-notes="
-<p>Close on the business, not the backlog. Say the first one with conviction — 'one CSV column' is the line they will remember.</p>
-<p>If asked to prioritise: revenue first (it is cheap and it changes everything), isochrones second (it changes labels at the margin), the rest is scale.</p>">
-  <p class="kicker">What comes next</p>
-  <h2>Three upgrades, in order</h2>
-  <table style="margin-top:14px">
-    <tr><td style="width:56px;font-family:var(--mono);color:var(--accent);font-size:26px">1</td>
-      <td><strong>Revenue per branch — one CSV column.</strong> Replaces the single weakest proxy in
-      the model and turns "which branches are at risk" into "how much revenue is at risk". Cheapest,
-      highest-value change available.</td></tr>
-    <tr><td style="font-family:var(--mono);color:var(--accent);font-size:26px">2</td>
-      <td><strong>Drive-time isochrones instead of radii.</strong> The honest version of a catchment.
-      In the UAE's grade-separated grid the gap is smaller than in a European city, but it would move
-      labels at the margin — and the margin is where the decisions are.</td></tr>
-    <tr><td style="font-family:var(--mono);color:var(--accent);font-size:26px">3</td>
-      <td><strong>The same pipeline across the portfolio.</strong> Nothing here is salon-specific.
-      Swap the seed list and the competitor tags and it right-sizes any multi-site retail network —
-      which is the interesting version of this problem for a holding company.</td></tr>
-  </table>
-</section>
-
-<!--S-->
-<section class="slide" data-notes="
-<p>End on the finding, not on the tech. Then stop talking and let them ask.</p>
-<p>If there is silence, offer: 'I am happy to go into the geometry, the scoring, the agent design or the deployment — whichever is most useful.' The appendix slides are behind this one.</p>">
-  <p class="kicker">In one sentence</p>
-  <h1 style="font-size:46px;max-width:1060px">A portfolio team can now point at any branch<br/>
-  and see the exact arithmetic that judged it.</h1>
-  <p class="lede" style="margin-top:14px">And the first thing it found was that our biggest
-  competitor in Abu Dhabi is us.</p>
-  <div class="mt">
-    <p style="font-size:19px;color:var(--accent);font-family:var(--mono)">2pz.larri.dev</p>
-    <p class="small" style="margin-top:6px">github.com/clarriu97/2pz · README · docs/walkthrough.md ·
-      docs/decisions.md</p>
-  </div>
-</section>
-
-<!--S-->
-<section class="slide" data-notes="<p>Appendix begins. Only go here if asked.</p>">
-  <p class="kicker">Appendix</p>
-  <h1 style="font-size:48px">If you want to go deeper</h1>
-  <ul style="margin-top:20px;columns:2;column-gap:60px">
-    <li>Architecture and why static files</li>
-    <li>The three geometry traps</li>
-    <li>Where the thresholds came from</li>
-    <li>The grounding failure, in full</li>
-    <li>Reproducibility and CI</li>
-    <li>Production path</li>
-    <li>Numbers reference</li>
-    <li>Questions I expect</li>
-  </ul>
-</section>
-
-<!--S-->
-<section class="slide" data-notes="
-<p>'All the scoring happens offline, once. The product ships committed JSON. That means a reviewer clones the repo, runs npm install, and sees the finished thing — no database, no keys, no build.'</p>
-<p>'The only server-side code in production is one function that proxies OpenAI, so the key never reaches the browser.'</p>">
-  <p class="kicker">Appendix · Architecture</p>
-  <h2>Everything expensive happens once, offline</h2>
-  <pre style="margin-top:14px;font-size:15.5px;line-height:1.7">Python pipeline (offline, once)          committed static files            product
-──────────────────────────────           ──────────────────────            ───────
-sourcing/  real branches, OSM      ─┐
-geo/       catchments, overlap,     ├──►  data/processed/*.json  ──►  React + MapLibre
-           saturation, H3 grid      │     ├─ branches.json            (Cloudflare Pages)
-scoring/   weighted model +         │     ├─ catchments.geojson
-           signed contributions    ─┘     ├─ overlaps.geojson              │
-ai/notes   grounded notes (OpenAI)  ──►   ├─ competitors.geojson           │
-                                          ├─ whitespace.geojson            ▼
-                                          └─ model_card.json        /api/chat function
-                                                                    (tool-calling, key
-                                                                     server-side only)</pre>
-  <p class="small" style="margin-top:18px;font-size:16.5px;color:var(--dim)">Production on AWS would
-  be S3 + CloudFront for the site and Lambda behind API Gateway for the endpoint — a deployment
-  target, not a redesign.</p>
-</section>
-
-<!--S-->
-<section class="slide" data-notes="
-<p>Three places where the obvious implementation is quietly wrong. Each one is a good answer to 'what was hard about this?'</p>">
-  <p class="kicker">Appendix · Geography</p>
-  <h2>Three traps in the geometry</h2>
-  <div class="cols3" style="margin-top:14px;flex:0">
-    <div class="card"><h3>Union, not sum</h3>
-      <p>Three clustered lounges all overlap the same wedge. Summing counts it three times, can
-      exceed 100%, and pushes a healthy cluster into a false SHRINK.</p>
-      <p style="color:var(--faint);font-size:15px">Computed as real intersection geometry in a
-      locally-flat planar frame.</p></div>
-    <div class="card"><h3>Cap saturation at p90</h3>
-      <p>One hyper-dense catchment would otherwise compress every other branch to the bottom of the
-      scale and make the signal useless.</p></div>
-    <div class="card"><h3>Normalise the gap by radius</h3>
-      <p>3 km from a dense-urban lounge is a genuine gap. 3 km from a low-density lounge is already
-      served. Dividing by that lounge's own radius is what makes the signal mean
-      <strong>under-served</strong> rather than <strong>far</strong>.</p></div>
-  </div>
-  <p class="big" style="margin-top:26px">And a demand floor: a cell below 0.12 is SKIP whatever it
-  scores. <em>Empty desert scores beautifully on "coverage gap"</em> — sand at the top of a growth
-  shortlist would be the most embarrassing failure this product could have.</p>
-</section>
-
-<!--S-->
-<section class="slide" data-notes="
-<p>Expect: 'aren't the thresholds just tuned to give you a nice answer?' This is the answer, and it is a strong one because it admits the first attempt was bad.</p>
-<p>'The first set produced twenty holds, two shrinks and one protect. A recommendation almost everyone receives is not a recommendation — it is a rubber stamp. So I stated a posture instead: the top third on both axes is worth defending, the bottom sixth on strength is a candidate for exit. Then I put the thresholds at the tertiles of the portfolio's own distribution. The two-fifteen-six split is the <em>consequence</em> of that posture, not the target.'</p>">
-  <p class="kicker">Appendix · Calibration</p>
-  <h2>Where the thresholds came from</h2>
-  <p class="lede">The first parameterisation produced <strong>20 HOLD · 2 SHRINK · 1 PROTECT</strong>.
-  A recommendation almost everybody receives is not a recommendation.</p>
-  <div class="card" style="margin-top:22px;border-color:var(--accent-dim)">
-    <h3>The stated posture</h3>
-    <p style="font-size:19px;color:var(--text)">The top third on both axes is worth defending.
-    The bottom sixth on strength is a candidate for exit.</p>
-  </div>
-  <p style="margin-top:22px">The thresholds then sit at the <strong>tertiles of the portfolio's own
-  observed distribution</strong>. The 2 / 15 / 6 split is the <em>consequence</em> of that posture,
-  not its target — and disagreeing with the posture is a four-number change in one file, which
-  re-labels the portfolio and updates the panel that explains it.</p>
-</section>
-
-<!--S-->
-<section class="slide" data-notes="
-<p>The best single story in the project for an AI role. It shows you can tell the difference between an answer that is right and an answer that is <em>right for the right reason</em>.</p>
-<p>'Every number it gave was correct. The reason it gave was wrong — it looked at whichever number was low and inferred a story. The model was not at fault; the tool contract was. The tool handed it scores but not the rule that actually fired, so it did what any reasonable reader would do with that data. Once each row carried its firing rule, it answered the same question in one call and quoted the threshold.'</p>">
-  <p class="kicker">Appendix · Grounding</p>
-  <h2>Right numbers, wrong reason</h2>
-  <p class="lede">Asked <em>"which branches are most at risk?"</em>, an early version quoted each
-  branch's <strong>market score</strong>. Every figure was correct — and four of the five branches
-  were actually flagged on weak <strong>strength</strong>, with perfectly healthy market scores.</p>
-  <div class="cols" style="margin-top:26px;flex:0">
-    <div class="card" style="border-color:rgba(224,92,92,.3)">
-      <h3 style="color:var(--shrink)">The wrong diagnosis</h3>
-      <p>"The model hallucinated — tighten the prompt."</p></div>
-    <div class="card" style="border-color:rgba(63,185,138,.3)">
-      <h3 style="color:var(--protect)">The actual fault</h3>
-      <p>The <strong>tool contract</strong>. <code>list_branches</code> returned scores but not the
-      rule that fired, so the model inferred a reason from whichever number looked low — exactly what
-      a careful human would do with that data.</p></div>
-  </div>
-  <p class="big" style="margin-top:26px">Carrying each row's <code>decision_rule</code> into the tool
-  took it from three rounds and a plausible error to <em>one round quoting the firing threshold</em>.
-  <br/><span style="font-size:22px;color:var(--dim)">Grounding is a data-contract problem more often
-  than it is a prompt problem.</span></p>
-</section>
-
-<!--S-->
-<section class="slide" data-notes="
-<p>Only if they ask about engineering rigour. The punchline is the byte-identical rebuild — it means nothing can drift under a demo, and it means the simulated fields are honest rather than convenient.</p>">
-  <p class="kicker">Appendix · Rigour</p>
-  <h2>Nothing moves under the demo</h2>
-  <div class="stat" style="margin:20px 0 26px">
-    <div><span class="n">313</span><span class="l">Python tests</span></div>
-    <div><span class="n">98%</span><span class="l">coverage</span></div>
-    <div><span class="n">218</span><span class="l">web tests</span></div>
-    <div><span class="n">0</span><span class="l">paths to production that skip the gate</span></div>
-  </div>
+<!--S 8-->
+<section class="slide demo center" data-notes="
+<p>Switch to the browser now. Leave this slide behind you so you can see the list if you lose your place.</p>
+<p>Roughly: overlap two minutes, the shop panel three minutes, the chart one minute, growth two minutes, the assistant three minutes.</p>
+<p>If you are short on time, cut number four. One, two and five carry the argument.</p>
+<p><strong>On number five, open the tool trace.</strong> For an AI role this is the most important thing you show all day: it proves the answer was looked up, not remembered.</p>">
+  <p class="kicker">Live · 2pz.larri.dev</p>
+  <h2 style="margin-bottom:34px">Let me show you</h2>
   <ul>
-    <li><strong>Every synthetic field is a pure function of the seed and the record id.</strong>
-      Re-running the pipeline reproduces the dataset byte for byte, and CI fails if it doesn't.</li>
-    <li><strong>No build timestamp anywhere</strong> — it would make the output differ on every run
-      while telling you nothing you could verify. A content fingerprint of the inputs and every
-      weight does the job instead.</li>
-    <li><strong>Push → CI (pipeline · web · dataset) → deploy.</strong> The deploy only fires on a
-      green run, and then reads the deployment back from the Cloudflare API to prove production
-      actually moved — a preview deploy goes green while shipping nothing.</li>
-    <li><strong>The OpenAI key is not in GitHub.</strong> The endpoint reads it at request time from
-      the Pages environment, so it never enters the build, the bundle, or the repo.</li>
+    <li>The red areas <span>— where we compete with ourselves</span></li>
+    <li>One shop, and why <span>— the rule, printed</span></li>
+    <li>All 23 on one chart <span>— strong shops on bad ground</span></li>
+    <li>Where to open next <span>— 573 areas, scored</span></li>
+    <li>Ask the assistant <span>— and open the tool trace</span></li>
   </ul>
 </section>
 
-<!--S-->
-<section class="slide" data-notes="<p>Keep this open during Q&amp;A. If a number is challenged, it is on this slide.</p>">
-  <p class="kicker">Appendix · Reference</p>
-  <h2>The numbers</h2>
-  <div class="cols" style="margin-top:10px;flex:0">
-    <div>
-      <table style="font-size:16.5px">
-        <tr><td>Branches</td><td><strong>23</strong></td></tr>
-        <tr><td>Labels</td><td><strong>2 PROTECT · 15 HOLD · 6 SHRINK</strong></td></tr>
-        <tr><td>Competitors (real, OSM)</td><td><strong>1,354</strong></td></tr>
-        <tr><td>Built-form features</td><td><strong>37,137</strong></td></tr>
-        <tr><td>Scored zones</td><td><strong>573</strong> → 17 GROW · 61 WATCH · 495 SKIP</td></tr>
-        <tr><td>AI notes committed</td><td><strong>101</strong></td></tr>
-      </table>
+<!--S 9-->
+<section class="slide" data-steps="2" data-notes="
+<p>There are two AI parts in this.</p>
+<p>First: every shop has a short written summary. The model only receives the numbers you just saw. It has one instruction — explain the numbers, never invent a fact.</p>
+<p>Second: you can ask questions in normal English. And under every answer, you can open the tool trace and see exactly which data it asked for.</p>
+<p><strong>So you can check that it looked the number up. It did not remember it.</strong></p>
+<p class='aside'>If they ask 'how do you stop it inventing things?' — this slide is the answer. Point at the trace.</p>">
+  <p class="kicker">The AI layer</p>
+  <h2>Two jobs. Both checkable.</h2>
+  <div class="cols step" data-step="1" style="margin-top:30px">
+    <div class="card">
+      <h3>Written summary</h3>
+      <p>The model sees <strong>only the numbers</strong> on the last slide.</p>
+      <p>One instruction: explain them, <strong>never add a fact</strong>.</p>
     </div>
-    <div>
-      <table style="font-size:16.5px">
-        <tr><td>Ministry Area</td><td><strong>strength 0.712</strong> (5th of 23) · market 0.273 · 65% overlap</td></tr>
-        <tr><td>Al Maqta</td><td>61% overlap</td></tr>
-        <tr><td>Largest AD overlap</td><td>Khalifa City ∩ West Yas · <strong>20.0 km²</strong> · 40% vs 18% · 6.2 km apart</td></tr>
-        <tr><td>SHRINK by review volume</td><td>ranks <strong>6, 9</strong>, 13, 18, 21, 22 of 23</td></tr>
-        <tr><td>Catchments</td><td>2.5 / 4 / 6 km by urban context</td></tr>
-        <tr><td>Grid</td><td>H3 res 7 · ~5 km² per cell</td></tr>
-      </table>
+    <div class="card">
+      <h3>Ask a question</h3>
+      <p>Plain English in. Real data out.</p>
+      <p>It is not allowed to answer from memory — it has to call a tool.</p>
+    </div>
+  </div>
+  <pre class="step" data-step="2" style="margin-top:26px;font-size:17px"><span class="k">you</span>   which branches are most at risk, and why?
+<span class="k">tool</span>  list_branches({"recommendation":"SHRINK","sort_by":"strength"})
+      <span class="g">→ 6 rows, each with the rule that fired</span></pre>
+</section>
+
+<!--S 10-->
+<section class="slide center" data-notes="
+<p>A real version of this would use the company's own data: revenue per chair, bookings, rent.</p>
+<p>That data is not public. So I used public data — and I labelled every single field.</p>
+<p>Green is real. Blue is calculated by me from real data. Purple is simulated.</p>
+<p>You never have to guess whether a number on the screen is a measurement or a simulation.</p>
+<p><strong>And this is the important part: the value of this project is not where the data comes from. It is what happens to the data. Connect the real booking system and the same pipeline gives real answers.</strong></p>">
+  <p class="kicker">Data</p>
+  <h2>Every number says where it came from</h2>
+  <table style="margin-top:30px">
+    <tr><td style="width:130px"><span class="tier t-real">real</span></td>
+      <td><strong>23 shops</strong> — location, rating, reviews &nbsp;·&nbsp;
+        <strong>1,354 competitors</strong> &nbsp;·&nbsp; <strong>37,137 buildings</strong></td></tr>
+    <tr><td><span class="tier t-derived">derived</span></td>
+      <td>areas, overlaps, distances, demand — <strong>calculated from the real data above</strong></td></tr>
+    <tr><td><span class="tier t-synth">synthetic</span></td>
+      <td>competitor ratings · review trend · chair use — <strong>simulated, and labelled</strong></td></tr>
+  </table>
+  <p class="lede" style="margin-top:34px">The value is not the data source. <em>It is what happens
+    to the data.</em></p>
+</section>
+
+<!--S 11-->
+<section class="slide center" data-notes="
+<p>The brief says the hardest part of real work is not coding. It is deciding what to simplify and what to trust. So here are four decisions.</p>
+<p><strong>One. No machine learning.</strong> Nobody has ever labelled which shops should have closed. So there is nothing to learn from. And twenty-three rows is far too little data. Also — a rent decision gets challenged in a meeting, and 'the model said so' is not an answer.</p>
+<p><strong>Two. Union, not sum.</strong> If three shops sit close together, they all cover the same piece of ground. If I add the overlaps, I count that ground three times — I can even get more than one hundred per cent. So I take the real shape of the shared area instead. This changed real results.</p>
+<p><strong>Three. Buildings, not population.</strong> A workers' housing area and a rich neighbourhood can have the same number of people, and completely different spending on an expensive haircut. So I count what is built, not who lives there.</p>
+<p><strong>Four. Files, not a database.</strong> This data changes when a rent contract changes, not when a page loads. So you can download the project and run it with no keys and no server.</p>">
+  <p class="kicker">Trade-offs</p>
+  <h2>Four decisions</h2>
+  <table style="margin-top:28px">
+    <th style="width:34%">I chose</th><th style="width:30%">Instead of</th><th>Why</th>
+    <tr><td><strong>A weighted score</strong></td><td>machine learning</td>
+      <td>Nothing to learn from, and it must survive a meeting</td></tr>
+    <tr><td><strong>The real shared shape</strong></td><td>adding overlaps up</td>
+      <td>Adding counts the same ground twice</td></tr>
+    <tr><td><strong>Buildings</strong></td><td>population data</td>
+      <td>Same people, very different spending</td></tr>
+    <tr><td><strong>Files</strong></td><td>a database</td>
+      <td>It changes yearly, not hourly</td></tr>
+  </table>
+</section>
+
+<!--S 12-->
+<section class="slide center" data-notes="
+<p>Two sentences.</p>
+<p><strong>Trust the geometry.</strong> The distances, the areas, the number of competitors — all of that is measured from real coordinates. It is correct.</p>
+<p><strong>Question the weights.</strong> Thirty per cent for rating, forty-five per cent for demand — I chose those numbers. That is a management opinion, not a fact.</p>
+<p>So I put them all in one file. And the tool always prints the rule it used.</p>
+<p><strong>If you disagree with a result, we have a conversation about weights. You are not arguing with a black box.</strong></p>
+<p class='aside'>If they ask what you would fix first, say it with no hesitation: real driving time instead of circles.</p>">
+  <p class="kicker">Where to be careful</p>
+  <h2>Trust the geometry.<br/>Question the weights.</h2>
+  <div class="cols" style="margin-top:40px">
+    <div class="card" style="border-color:rgba(63,185,138,.3)">
+      <h3 style="color:var(--protect)">Measured</h3>
+      <p>Distances, areas, competitor counts. Real coordinates. Correct.</p>
+    </div>
+    <div class="card" style="border-color:rgba(224,92,92,.3)">
+      <h3 style="color:var(--shrink)">Chosen by me</h3>
+      <p>The weights. A management opinion — so they live in <strong>one file</strong>, and the tool
+        always shows the rule it used.</p>
     </div>
   </div>
 </section>
 
-<!--S-->
-<section class="slide" data-notes="
-<p>Rehearse these five out loud tonight. They are the ones that actually get asked.</p>
-<p>The one to be most careful with is the revenue question — do not get defensive. The data supports you: two of the six SHRINK branches are sixth and ninth of twenty-three by review volume. Say that number.</p>">
-  <p class="kicker">Appendix · Q&amp;A</p>
-  <h2>Questions I expect</h2>
-  <table style="font-size:16.5px">
-    <tr><td style="width:38%"><strong>"Aren't you just closing the branches that bill the least?"</strong></td>
-      <td>No — and the data says so. Two of the six SHRINK branches are <strong>6th and 9th of 23</strong> by review volume. They are flagged on 65% and 61% self-overlap, not on performance. That is the whole point of the second axis.</td></tr>
+<!--S 13-->
+<section class="slide center" data-notes="
+<p>I used an AI agent to write most of this code. The brief expects that — it says so directly.</p>
+<p>So the interesting question is not whether I used AI. It is what I kept control of.</p>
+<p>I decided who the user is. I decided the model. I decided what to trust and what to simplify.</p>
+<p>And I wrote the tests — because tests are what catch the agent when it is wrong.</p>
+<p><strong>Three hundred and thirteen tests. Ninety-eight per cent coverage. They found six real bugs.</strong></p>
+<p>One more thing: the data rebuilds exactly the same every time, and the build fails if it does not. So nothing moves under a demo.</p>">
+  <p class="kicker">How it was built</p>
+  <h2>AI wrote the code.<br/>I decided what it should be.</h2>
+  <div class="stat sm" style="margin-top:44px">
+    <div><span class="n">313</span><span class="l">tests</span></div>
+    <div><span class="n">98%</span><span class="l">coverage</span></div>
+    <div><span class="n">6</span><span class="l">real bugs caught</span></div>
+  </div>
+  <p class="lede" style="margin-top:40px">The dataset rebuilds <em>identically</em> every time — and
+    the build fails if it does not.</p>
+</section>
+
+<!--S 14-->
+<section class="slide center" data-notes="
+<p>Three next steps, in order.</p>
+<p><strong>One. Revenue.</strong> One column in one file. Today I use review count as a stand-in for size. Revenue would replace the weakest part of the model, and it would turn 'which shops are at risk' into 'how much money is at risk'. Cheapest change, biggest effect.</p>
+<p><strong>Two. Real driving time</strong> instead of circles. A circle does not know about a bridge or a creek.</p>
+<p><strong>Three. The same pipeline for other companies.</strong> Nothing here is about beauty salons. Change the list of shops and it works for any chain.</p>">
+  <p class="kicker">Next</p>
+  <h2>Three steps</h2>
+  <table style="margin-top:34px">
+    <tr><td style="width:70px" class="mono"><span style="color:var(--accent);font-size:30px">1</span></td>
+      <td><strong>Revenue — one column in one file.</strong><br/>
+        <span style="font-size:19px">Cheapest change, biggest effect.</span></td></tr>
+    <tr><td class="mono"><span style="color:var(--accent);font-size:30px">2</span></td>
+      <td><strong>Real driving time instead of circles.</strong><br/>
+        <span style="font-size:19px">A circle does not know about a bridge.</span></td></tr>
+    <tr><td class="mono"><span style="color:var(--accent);font-size:30px">3</span></td>
+      <td><strong>The same pipeline for other companies.</strong><br/>
+        <span style="font-size:19px">Nothing here is about beauty salons.</span></td></tr>
+  </table>
+</section>
+
+<!--S 15-->
+<section class="slide center" data-notes="
+<p>One sentence to finish.</p>
+<p>A portfolio team can now point at any shop and see the exact numbers that judged it.</p>
+<p>And the first thing the tool found was that our biggest competitor in Abu Dhabi is us.</p>
+<p class='aside'>Then stop talking. If nobody speaks: 'I am happy to go deeper on the geography, the scoring, the AI part or the deployment — whichever is most useful.'</p>">
+  <h1 style="font-size:50px;max-width:1050px">Point at any shop.<br/>See the exact numbers that
+    judged it.</h1>
+  <p class="lede" style="margin-top:22px">And our biggest competitor in Abu Dhabi <em>is us</em>.</p>
+  <div class="mt">
+    <p class="mono" style="font-size:20px;color:var(--accent)">2pz.larri.dev</p>
+    <p class="foot" style="margin-top:8px">github.com/clarriu97/2pz</p>
+  </div>
+</section>
+
+<!--S 16 · appendix-->
+<section class="slide center" data-notes="<p>Everything after this is only if they ask.</p>">
+  <p class="kicker">Appendix</p>
+  <h1 style="font-size:52px">Only if you ask</h1>
+</section>
+
+<!--S 17-->
+<section class="slide center" data-notes="
+<p>All the heavy work happens once, before anyone opens the page.</p>
+<p>The Python part reads the data, builds the areas, finds the overlaps, scores everything, and writes normal files.</p>
+<p>The website just reads those files. So you can download the project and run it with no keys and no database.</p>
+<p>The only server code is one small function that talks to OpenAI, so the API key never reaches the browser.</p>">
+  <p class="kicker">Appendix · Architecture</p>
+  <h2>Everything expensive happens once</h2>
+  <pre class="sm" style="margin-top:26px">Python pipeline (offline, once)          committed files                   product
+──────────────────────────────           ───────────────                   ───────
+sourcing/  real shops, OpenStreetMap ─┐
+geo/       areas, overlaps,           ├──►  data/processed/*.json  ──►  React + MapLibre
+           saturation, grid           │     ├─ branches.json            (Cloudflare Pages)
+scoring/   weights + signed parts    ─┘     ├─ catchments.geojson
+ai/notes   written summaries          ──►   ├─ overlaps.geojson              │
+                                            ├─ whitespace.geojson            ▼
+                                            └─ model_card.json        /api/chat function
+                                                                      (API key stays
+                                                                       on the server)</pre>
+</section>
+
+<!--S 18-->
+<section class="slide center" data-notes="
+<p>Three places where the obvious way to build it is quietly wrong.</p>
+<p><strong>One.</strong> If three shops sit together they all cover the same ground. Adding the overlaps counts it three times.</p>
+<p><strong>Two.</strong> One very crowded area would squash every other shop to the bottom of the scale. So I cut the scale at the ninetieth percentile.</p>
+<p><strong>Three.</strong> Three kilometres from a city shop is a real gap. Three kilometres from a countryside shop is already covered. So I divide by that shop's own radius.</p>
+<p>And the desert problem: empty desert scores beautifully on 'nobody covers this'. So any area below a minimum demand is skipped, whatever it scores.</p>">
+  <p class="kicker">Appendix · Geography</p>
+  <h2>Three traps</h2>
+  <div class="cols3" style="margin-top:30px">
+    <div class="card"><h3>Shared ground</h3>
+      <p>Three shops together cover the <strong>same</strong> ground. Adding counts it three times.</p></div>
+    <div class="card"><h3>One crowded area</h3>
+      <p>would squash everything else to the bottom. So the scale is cut at p90.</p></div>
+    <div class="card"><h3>3 km is not 3 km</h3>
+      <p>A gap in the city is not a gap in the countryside. Divide by that shop's own radius.</p></div>
+  </div>
+  <p class="lede" style="margin-top:34px">And empty desert scores <em>beautifully</em> on "nobody
+    covers this" — so a minimum demand floor skips it.</p>
+</section>
+
+<!--S 19-->
+<section class="slide center" data-notes="
+<p>Expect this question: 'did you choose the limits to get a nice answer?'</p>
+<p>My first version gave twenty hold, two shrink, one protect. A recommendation that almost everybody receives is not a recommendation.</p>
+<p>So I wrote down the management position first: the top third on both axes is worth defending, the bottom sixth is a candidate to exit.</p>
+<p>Then I put the limits at the thirds of the real distribution. The two, fifteen, six result is the <strong>consequence</strong> of that position — not the target.</p>">
+  <p class="kicker">Appendix · Calibration</p>
+  <h2>Where the limits came from</h2>
+  <p class="lede" style="margin-top:24px">My first version gave <strong>20 hold · 2 shrink ·
+    1 protect</strong>. A recommendation almost everybody receives is not a recommendation.</p>
+  <div class="card" style="margin-top:32px;border-color:var(--accent-dim)">
+    <h3>The position I wrote down first</h3>
+    <p style="font-size:23px;color:var(--text)">Top third on both axes is worth defending.
+      Bottom sixth is a candidate to exit.</p>
+  </div>
+  <p class="lede" style="margin-top:28px">The <strong>2 · 15 · 6</strong> split is the
+    <em>consequence</em>, not the target.</p>
+</section>
+
+<!--S 20-->
+<section class="slide center" data-notes="
+<p>This is the best story in the project for an AI role.</p>
+<p>I asked it: which branches are most at risk. Every number in the answer was correct. But the <strong>reason</strong> was wrong — it looked at whichever number was low and made up a story around it.</p>
+<p>The model was not the problem. The tool was. The tool gave it scores, but not the rule that actually fired. So it did what any careful person would do with that data.</p>
+<p>I added the rule to the tool output. Now it answers the same question in one call and quotes the exact limit.</p>
+<p><strong>Grounding is usually a data problem, not a prompt problem.</strong></p>">
+  <p class="kicker">Appendix · Grounding</p>
+  <h2>Right numbers. Wrong reason.</h2>
+  <p class="lede" style="margin-top:24px">It listed the six shops at risk. Every number correct —
+    and the <strong>reason</strong> wrong for four of them.</p>
+  <div class="cols" style="margin-top:34px">
+    <div class="card" style="border-color:rgba(224,92,92,.3)">
+      <h3 style="color:var(--shrink)">Wrong diagnosis</h3>
+      <p>"It hallucinated. Fix the prompt."</p></div>
+    <div class="card" style="border-color:rgba(63,185,138,.3)">
+      <h3 style="color:var(--protect)">Actual fault</h3>
+      <p>The <strong>tool</strong> returned scores but not the rule that fired. So it guessed a
+        reason — exactly what a careful person would do.</p></div>
+  </div>
+</section>
+
+<!--S 21-->
+<section class="slide center" data-notes="
+<p>Only if they ask why I did not use a vector database.</p>
+<p>The data is twenty-three shops and about a thousand scored areas, and it is fully structured — rows and columns.</p>
+<p>Every real question is a filter or a sort. 'Which shops are at risk.' 'Where do we overlap most.' 'Best area in Dubai.'</p>
+<p>Function calling answers those exactly, and shows its work. A vector search would be approximate, impossible to check, and it simply cannot sort by a column.</p>
+<p><strong>Not using the fashionable tool was the decision. It is not a gap.</strong></p>">
+  <p class="kicker">Appendix · Why no vector search</p>
+  <h2>The questions are filters, not searches</h2>
+  <div class="cols" style="margin-top:36px">
+    <div class="card"><h3>What people actually ask</h3>
+      <p>"Which shops are at risk"<br/>"Where do we overlap most"<br/>"Best area in Dubai"</p>
+      <p style="color:var(--faint)">All of these are a filter or a sort.</p></div>
+    <div class="card" style="border-color:var(--accent-dim)"><h3>So the model calls a tool</h3>
+      <p>Exact. Checkable. Shows its work.</p>
+      <p>A vector search would be approximate, impossible to verify, and
+        <strong>cannot sort by a column at all</strong>.</p></div>
+  </div>
+</section>
+
+<!--S 22-->
+<section class="slide center" data-notes="<p>Keep this open during questions. If someone challenges a number, it is here.</p>">
+  <p class="kicker">Appendix · Numbers</p>
+  <h2>Reference</h2>
+  <div class="cols" style="margin-top:24px;gap:44px">
+    <table style="font-size:18px">
+      <tr><td>Shops</td><td><strong>23</strong></td></tr>
+      <tr><td>Result</td><td><strong>2 protect · 15 hold · 6 shrink</strong></td></tr>
+      <tr><td>Competitors (real)</td><td><strong>1,354</strong></td></tr>
+      <tr><td>Buildings used</td><td><strong>37,137</strong></td></tr>
+      <tr><td>Areas scored</td><td><strong>573</strong> → 17 grow · 61 watch</td></tr>
+    </table>
+    <table style="font-size:18px">
+      <tr><td>Ministry Area</td><td><strong>0.712</strong> strength (5th) · 0.273 market · 65% overlap</td></tr>
+      <tr><td>Al Maqta</td><td>61% overlap</td></tr>
+      <tr><td>Biggest overlap</td><td>Khalifa City ∩ West Yas · <strong>20.0 km²</strong> · 40% vs 18%</td></tr>
+      <tr><td>Shrink by size</td><td>ranks <strong>6, 9</strong>, 13, 18, 21, 22 of 23</td></tr>
+      <tr><td>Service areas</td><td>2.5 / 4 / 6 km by density</td></tr>
+    </table>
+  </div>
+</section>
+
+<!--S 23-->
+<section class="slide center" data-notes="
+<p>Practise these five out loud tonight. These are the ones that actually get asked.</p>
+<p>Be most careful with the first one. Do not get defensive — the data is on your side. Two of the six shops to shrink are number six and number nine of twenty-three by size. Say that number.</p>">
+  <p class="kicker">Appendix · Questions</p>
+  <h2>What they will ask</h2>
+  <table style="font-size:18px;margin-top:20px">
+    <tr><td style="width:42%"><strong>"Are you just closing the small shops?"</strong></td>
+      <td>No. Two of the six are number <strong>6 and 9 of 23</strong> by size. They are flagged on
+        65% and 61% overlap, not on performance.</td></tr>
     <tr><td><strong>"Why not machine learning?"</strong></td>
-      <td>Nothing to learn from — no labelled history of which branches should have closed, and 23 rows would overfit anything. And the output has to survive a committee.</td></tr>
-    <tr><td><strong>"How do you know the AI isn't making things up?"</strong></td>
-      <td>Every tool call is shown with the answer. Notes are generated from the contribution breakdown with an instruction never to supply a fact, and are hash-stamped against their payload so a stale one says so.</td></tr>
-    <tr><td><strong>"Some of the data is simulated."</strong></td>
-      <td>Three fields, each labelled in the UI. Locations, ratings, review counts, competitor locations and the demand features are real. Swap the proxies for the chain's own booking data and nothing in the pipeline changes.</td></tr>
-    <tr><td><strong>"How long would this take on real data?"</strong></td>
-      <td>The pipeline is source-agnostic — one CSV of branches and one of competitors. The work is agreeing the weights with the business, which is a workshop, not an engineering problem.</td></tr>
+      <td>Nothing to learn from — nobody labelled which shops should have closed. And 23 rows is too
+        little data.</td></tr>
+    <tr><td><strong>"How do you know the AI is not inventing?"</strong></td>
+      <td>Every answer shows the tools it called. The summaries only receive the numbers, and are
+        told never to add a fact.</td></tr>
+    <tr><td><strong>"Some data is simulated."</strong></td>
+      <td>Three fields, all labelled. Locations, ratings, competitors and buildings are real.</td></tr>
+    <tr><td><strong>"How long with real data?"</strong></td>
+      <td>The pipeline takes one CSV. The work is agreeing the weights with the business.</td></tr>
   </table>
 </section>
 
@@ -708,8 +685,7 @@ ai/notes   grounded notes (OpenAI)  ──►   ├─ competitors.geojson      
    *  aspect. Laying out once at a known size is what keeps a slide identical
    *  on a laptop, a projector and a print-to-PDF. */
   function fit(){
-    const pad = 0;
-    const s = Math.min((innerWidth-pad)/1280, (innerHeight-pad)/720);
+    const s = Math.min(innerWidth/1280, innerHeight/720);
     canvas.style.transform = 'translate(-50%,-50%) scale(' + s + ')';
   }
 
@@ -725,13 +701,12 @@ ai/notes   grounded notes (OpenAI)  ──►   ├─ competitors.geojson      
     document.getElementById('num').textContent = (i+1) + ' / ' + slides.length;
     document.getElementById('notes-body').innerHTML =
       cur.dataset.notes || '<p style="color:#4a5563">No notes for this slide.</p>';
-    location.hash = '#' + (i+1);
   }
 
   function go(d){
     const n = steps(slides[i]);
     if (d > 0 && step < n) { step++; return render(); }
-    if (d < 0 && step > 0) { step--; return render(); }
+    if (d < 0 && step > 1) { step--; return render(); }
     const next = i + d;
     if (next < 0 || next >= slides.length) return;
     i = next;
@@ -754,14 +729,10 @@ ai/notes   grounded notes (OpenAI)  ──►   ├─ competitors.geojson      
     }
   });
 
-  canvas.addEventListener('click', e => {
-    // Click the right two-thirds to advance, the left third to go back.
-    go(e.clientX < innerWidth/3 ? -1 : 1);
-  });
+  // Click the right two-thirds to advance, the left third to go back.
+  canvas.addEventListener('click', e => go(e.clientX < innerWidth/3 ? -1 : 1));
 
   addEventListener('resize', fit);
-  const start = parseInt(location.hash.slice(1), 10);
-  if (start >= 1 && start <= slides.length) i = start - 1;
   fit(); render();
 })();
 </script>
