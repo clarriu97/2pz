@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bedashing Network Intelligence — case presentation</title>
+<style>
+:root{
+  --bg:#0d1117; --surface:#151b23; --surface-2:#1c242e; --surface-3:#252f3b;
+  --border:#2a3441; --border-strong:#3a4654;
+  --text:#e6edf3; --dim:#9aa7b4; --faint:#6b7785;
+  --accent:#d4a05a; --accent-dim:#8a6a3c;
+  --protect:#3fb98a; --hold:#d9a838; --shrink:#e05c5c;
+  --grow:#4a9ede; --watch:#a07cd4; --skip:#5b6672;
+  --up:#3fb98a; --down:#e05c5c;
+  --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;color:var(--text);font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;overflow:hidden}
+
+/* The stage is a fixed 1280x720 canvas scaled to the viewport, so every slide
+   is laid out once and looks identical on a laptop, a projector and a PDF. */
+#stage{position:fixed;inset:0;background:#000}
+/* Centred by translate rather than by flex/grid: the canvas is wider than the
+   viewport before it is scaled, and an overflowing item cannot be centred. */
+#canvas{width:1280px;height:720px;position:absolute;left:50%;top:50%;
+  transform-origin:center center;background:var(--bg);overflow:hidden}
+
+.slide{position:absolute;inset:0;padding:58px 76px;display:none;flex-direction:column}
+.slide.on{display:flex}
+
+h1{font-size:60px;line-height:1.05;margin:0 0 18px;font-weight:600;letter-spacing:-.02em}
+h2{font-size:38px;line-height:1.15;margin:0 0 6px;font-weight:600;letter-spacing:-.015em}
+.kicker{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);
+  font-weight:600;margin:0 0 22px}
+.sub{font-size:20px;color:var(--dim);line-height:1.45;margin:0 0 30px;max-width:1000px}
+p{font-size:20px;line-height:1.5;color:var(--dim);margin:0 0 16px}
+strong{color:var(--text);font-weight:600}
+em{color:var(--accent);font-style:normal}
+.big{font-size:30px;line-height:1.35;color:var(--text)}
+.lede{font-size:26px;line-height:1.4;color:var(--text);max-width:1020px}
+code,.mono{font-family:var(--mono)}
+.small{font-size:15px;color:var(--faint);line-height:1.5}
+.mt{margin-top:auto}
+ul{margin:0;padding:0;list-style:none}
+li{font-size:20px;line-height:1.45;color:var(--dim);margin-bottom:14px;padding-left:26px;position:relative}
+li::before{content:"";position:absolute;left:4px;top:11px;width:7px;height:7px;border-radius:50%;
+  background:var(--accent-dim)}
+li strong{color:var(--text)}
+
+.cols{display:grid;gap:34px;grid-template-columns:1fr 1fr;align-content:start}
+.cols3{display:grid;gap:22px;grid-template-columns:repeat(3,1fr)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:22px 24px}
+.card h3{margin:0 0 10px;font-size:17px;color:var(--accent);font-weight:600;letter-spacing:.02em}
+.card p,.card li{font-size:16.5px;line-height:1.45;margin-bottom:9px}
+.card li{padding-left:20px}.card li::before{top:9px;width:5px;height:5px}
+
+table{width:100%;border-collapse:collapse;font-size:17px}
+th{text-align:left;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
+  font-weight:600;padding:0 14px 10px 0;border-bottom:1px solid var(--border)}
+td{padding:13px 14px 13px 0;border-bottom:1px solid var(--border);color:var(--dim);vertical-align:top;
+  line-height:1.4}
+td strong{color:var(--text)}
+tr:last-child td{border-bottom:none}
+
+.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12.5px;font-weight:700;
+  letter-spacing:.06em;font-family:var(--mono)}
+.p-protect{background:rgba(63,185,138,.16);color:var(--protect)}
+.p-hold{background:rgba(217,168,56,.16);color:var(--hold)}
+.p-shrink{background:rgba(224,92,92,.16);color:var(--shrink)}
+.p-grow{background:rgba(74,158,222,.16);color:var(--grow)}
+.p-real{background:rgba(63,185,138,.14);color:var(--protect)}
+.p-derived{background:rgba(74,158,222,.14);color:var(--grow)}
+.p-synth{background:rgba(160,124,212,.16);color:var(--watch)}
+
+.quote{border-left:3px solid var(--accent);padding:4px 0 4px 24px;font-size:23px;line-height:1.45;
+  color:var(--text)}
+.quote .src{display:block;margin-top:12px;font-size:15px;color:var(--faint)}
+
+.stat{display:flex;gap:44px;margin:26px 0 30px}
+.stat div{display:flex;flex-direction:column}
+.stat .n{font-size:54px;font-weight:600;line-height:1;letter-spacing:-.02em;font-family:var(--mono)}
+.stat .l{font-size:14px;color:var(--faint);margin-top:9px;letter-spacing:.04em}
+
+/* The arithmetic blocks: the visual spine of the whole deck. */
+.calc{font-family:var(--mono);background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:26px 30px;font-size:20px;line-height:2.05;color:var(--dim)}
+.calc .row{display:grid;grid-template-columns:1fr auto auto auto;gap:18px;align-items:baseline}
+.calc .lbl{color:var(--text)}
+.calc .raw{color:var(--faint);font-size:17px}
+.calc .op{color:var(--faint)}
+.calc .res{color:var(--text);text-align:right;min-width:96px}
+.calc .res.up{color:var(--up)}.calc .res.down{color:var(--down)}
+.calc .total{border-top:1px solid var(--border-strong);margin-top:12px;padding-top:12px}
+.calc .total .lbl{color:var(--accent)}
+.calc .total .res{color:var(--accent);font-size:24px;font-weight:600}
+.rule{font-family:var(--mono);font-size:23px;background:rgba(224,92,92,.09);
+  border:1px solid rgba(224,92,92,.32);border-radius:8px;padding:20px 26px;color:var(--text);
+  line-height:1.5}
+.rule .t{color:var(--shrink);font-weight:700}
+
+pre{font-family:var(--mono);font-size:16.5px;line-height:1.65;background:var(--surface);
+  border:1px solid var(--border);border-radius:8px;padding:22px 26px;color:var(--dim);margin:0;
+  overflow:hidden;white-space:pre}
+pre .k{color:var(--accent)}pre .g{color:var(--protect)}pre .r{color:var(--shrink)}
+
+.step{opacity:0;transform:translateY(6px);transition:opacity .28s ease,transform .28s ease}
+.step.show{opacity:1;transform:none}
+
+.demo{background:linear-gradient(135deg,rgba(212,160,90,.13),rgba(212,160,90,.03));
+  border:1px solid var(--accent-dim)}
+
+/* Chrome */
+#bar{position:fixed;left:0;bottom:0;height:2px;background:var(--accent);z-index:20;transition:width .2s}
+#num{position:fixed;right:16px;bottom:12px;font-family:var(--mono);font-size:12px;color:#4a5563;z-index:20}
+#notes{position:fixed;left:0;right:0;bottom:0;max-height:42vh;overflow:auto;background:#080b0f;
+  border-top:1px solid var(--border-strong);padding:18px 26px 26px;display:none;z-index:30}
+#notes.on{display:block}
+#notes h4{margin:0 0 10px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+#notes p{font-size:15.5px;line-height:1.55;color:var(--dim);margin:0 0 10px;max-width:1100px}
+#notes strong{color:var(--text)}
+#help{position:fixed;left:16px;bottom:10px;font-size:11.5px;color:#39424e;z-index:20;font-family:var(--mono)}
+
+/* Print lays every slide out as its own page, so Cmd+P gives a clean PDF. */
+@media print{
+  @page{size:1280px 720px;margin:0}
+  html,body{overflow:visible;background:#fff;height:auto}
+  #stage{position:static;display:block;background:none}
+  #canvas{transform:none!important;position:static;width:1280px;height:auto;overflow:visible}
+  .slide{display:flex!important;position:relative;inset:auto;width:1280px;height:720px;
+    background:var(--bg);break-after:page;page-break-after:always}
+  .slide .step{opacity:1!important;transform:none!important}
+  #bar,#num,#notes,#help{display:none!important}
+}
+</style>
+</head>
+<body>
+<div id="stage"><div id="canvas"></div></div>
+<div id="bar"></div><div id="num"></div>
+<div id="help">← → navigate · N notes · F fullscreen</div>
+<div id="notes"><h4>Speaker notes</h4><div id="notes-body"></div></div>
+
+<template id="slides">
+
+<!--S-->
+<section class="slide" data-notes="
+<p><strong>Open by naming the decision, not the technology.</strong> Do not say React, Python or OpenAI in the first two minutes. The brief says this is not primarily a coding test.</p>
+<p>'Bedashing has 23 lounges across the UAE. Somebody has to decide, each year, which ones to protect, which to leave alone, which to let go, and where the next one should be. I built the tool that makes that call defensible. It is live — you can open it while I talk.'</p>">
+  <p class="kicker">AI Associate · Take-home case study</p>
+  <h1>Which branches do we<br/>protect, hold, or shrink?</h1>
+  <p class="lede">An AI-enabled geospatial decision-support tool for Bedashing Beauty Lounge —
+  23 lounges, one portfolio, and a lease decision that has to survive a committee.</p>
+  <div class="mt">
+    <p class="small" style="font-size:18px;color:var(--accent);font-family:var(--mono)">2pz.larri.dev</p>
+    <p class="small" style="margin-top:8px">Carlos Larriu · source: github.com/clarriu97/2pz</p>
+  </div>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="
+<p>This is Requirement A of the brief, and it is worth being unusually specific. The brief says 'leadership'. I picked <strong>one person</strong>, because a tool built for 'leadership' is built for nobody.</p>
+<p>If they push back: 'The title is my assumption — what matters is the shape of the role. It is whoever owns the P&amp;L of the estate. If at Bedashing that is the COO or the CEO, nothing in the tool changes.'</p>">
+  <p class="kicker">Who this is for</p>
+  <h2>One decision-maker, three decisions</h2>
+  <p class="sub">The <strong>Head of Retail Portfolio</strong> — the one role that signs a lease,
+  funds a refit, or lets a site go. Not "leadership" in general.</p>
+  <table style="margin-top:6px">
+    <tr><td style="width:52%"><strong>Which lounges are earning their footprint?</strong></td>
+        <td><span class="pill p-protect">PROTECT</span> <span class="pill p-hold">HOLD</span>
+            <span class="pill p-shrink">SHRINK</span></td></tr>
+    <tr><td><strong>Where are we paying rent twice for the same customer?</strong></td>
+        <td>self-overlap between our own catchments</td></tr>
+    <tr><td><strong>Where is there demand we do not reach?</strong></td>
+        <td><span class="pill p-grow">GROW</span> · WATCH · SKIP per zone</td></tr>
+  </table>
+  <p class="small mt" style="font-size:17px;color:var(--dim)">Everything that follows exists to make
+  one of those three calls, and to make it survive the question <em>"why?"</em></p>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="
+<p><strong>Lead with the answer.</strong> Consulting habit: the finding goes on slide three, not slide twenty.</p>
+<p>Say the number, then pause. 'Ministry Area is the fifth strongest branch out of twenty-three. And the tool says shrink it.' Let that land before you explain — the contradiction is what makes them lean in.</p>
+<p>Then: 'Not because it is underperforming. Because two of our own lounges already cover sixty-five per cent of its trade area. We are paying rent twice for the same customer.'</p>">
+  <p class="kicker">The finding</p>
+  <h2>Our biggest competitor in Abu Dhabi is us</h2>
+  <div class="stat">
+    <div><span class="n" style="color:var(--protect)">2</span><span class="l">PROTECT</span></div>
+    <div><span class="n" style="color:var(--hold)">15</span><span class="l">HOLD</span></div>
+    <div><span class="n" style="color:var(--shrink)">6</span><span class="l">SHRINK</span></div>
+    <div><span class="n" style="color:var(--grow)">17</span><span class="l">GROW zones of 573</span></div>
+  </div>
+  <div class="quote"><strong>Ministry Area shares 65% of its trade area with two of our own
+  lounges. Al Maqta shares 61%.</strong> Both are <em>above the portfolio median</em> on branch
+  strength — Ministry Area is the fifth strongest of 23. Both are flagged SHRINK purely because our
+  own network already covers their ground.
+  <span class="src">That is a consolidation decision, not a performance problem.</span></div>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="
+<p>This slide justifies the entire model in one picture. A single 'branch health score' would rank Ministry Area fifth and you would never look at it again.</p>
+<p>'The question is not <em>how good is this branch</em>. It is <em>how good is this branch</em> and <em>is this ground worth holding</em>. Those are different questions and they need different axes — a good branch on contested ground is the most expensive mistake in a retail estate, because it looks healthy right up until you realise you own its competitor.'</p>">
+  <p class="kicker">Why two axes</p>
+  <h2>A single score would have hidden the finding</h2>
+  <div class="cols" style="margin-top:12px;flex:0">
+    <div class="card">
+      <h3>X · Branch strength</h3>
+      <p>How well does this lounge perform <strong>as a business</strong>?<br/>
+      Rating, scale, momentum, position against local rivals.</p>
+      <p style="color:var(--faint);font-size:15px">Ministry Area: <strong>0.71</strong> — 5th of 23.</p>
+    </div>
+    <div class="card">
+      <h3>Y · Market attractiveness &amp; defensibility</h3>
+      <p>Is <strong>the ground</strong> worth holding?<br/>
+      Demand in the catchment, room against competitors, and how much of it we already cover ourselves.</p>
+      <p style="color:var(--faint);font-size:15px">Ministry Area: <strong>0.27</strong> — bottom of the portfolio.</p>
+    </div>
+  </div>
+  <p class="big" style="margin-top:26px">Strong branch. Contested ground. <em>Only a two-axis model
+  can say both at once</em> — and only that distinction turns "close it" into "consolidate it".</p>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="
+<p>Do not read the weights aloud. Point at them and say the two things that matter:</p>
+<p><strong>One:</strong> every score is a weighted sum. That is a deliberate choice against machine learning, and it is the next slide.</p>
+<p><strong>Two:</strong> all of these numbers live in one file, config.py. Disagreeing with the model is a four-number change, not a rewrite. That is what makes it a tool a portfolio team can own rather than a black box they have to trust.</p>">
+  <p class="kicker">The model</p>
+  <h2>Two axes, seven signals, three rules</h2>
+  <div class="cols" style="gap:26px;flex:0">
+    <div class="calc" style="font-size:18px;line-height:1.95">
+      <div style="color:var(--accent);font-size:14px;letter-spacing:.1em;margin-bottom:10px">X · BRANCH STRENGTH</div>
+      <div class="row"><span class="lbl">Guest rating</span><span></span><span></span><span class="res up">+0.30</span></div>
+      <div class="row"><span class="lbl">Review volume (log)</span><span></span><span></span><span class="res up">+0.25</span></div>
+      <div class="row"><span class="lbl">Position vs local rivals</span><span></span><span></span><span class="res up">+0.25</span></div>
+      <div class="row"><span class="lbl">Recent momentum</span><span></span><span></span><span class="res up">+0.20</span></div>
+    </div>
+    <div class="calc" style="font-size:18px;line-height:1.95">
+      <div style="color:var(--accent);font-size:14px;letter-spacing:.1em;margin-bottom:10px">Y · MARKET &amp; DEFENSIBILITY</div>
+      <div class="row"><span class="lbl">Catchment demand</span><span></span><span></span><span class="res up">+0.45</span></div>
+      <div class="row"><span class="lbl">Competitive headroom</span><span></span><span></span><span class="res up">+0.35</span></div>
+      <div class="row"><span class="lbl">Self-cannibalisation</span><span></span><span></span><span class="res down">−0.20</span></div>
+    </div>
+  </div>
+  <pre style="margin-top:24px;font-size:18px"><span class="g">PROTECT</span>   strength ≥ 0.65 <span class="k">AND</span> market ≥ 0.47
+<span class="r">SHRINK</span>    strength &lt; 0.51 <span class="k">OR</span> (market &lt; 0.40 <span class="k">AND</span> self-overlap ≥ 45%)
+HOLD      everything else</pre>
+  <p class="small" style="margin-top:16px;font-size:16px">Every number on this slide lives in one
+  file, <code>pipeline/config.py</code>. Changing the portfolio's risk appetite is a four-number edit.</p>
+</section>
+
+<!--S-->
+<section class="slide" data-steps="4" data-notes="
+<p><strong>This is the slide to slow down on.</strong> Everything technical in the deck earns its place here. Click through it one beat at a time and do the arithmetic out loud.</p>
+<p>'One number in. Four point eight stars. Every branch we have sits between four-point-five and four-point-nine, so scoring it against zero-to-five would flatten every real difference into noise. We normalise against the band the category actually occupies: four-two to four-nine-five. Four-eight lands eighty per cent up that band. Multiply by its weight, thirty per cent. That signal contributes zero-point-two-four.'</p>
+<p>Then: 'That is the whole mechanism. There is no second, cleverer step.'</p>">
+  <p class="kicker">How a score is built · 1 of 2</p>
+  <h2>One signal, start to finish</h2>
+  <div class="calc" style="font-size:23px;line-height:2.3;margin-top:14px">
+    <div class="step" data-step="1">Ministry Area's guest rating &nbsp;<span style="color:var(--text)">4.8★</span>
+      <span class="raw">&nbsp;&nbsp;(real — public Google aggregate)</span></div>
+    <div class="step" data-step="2" style="margin-top:14px">normalise against the band the category
+      occupies, <span style="color:var(--text)">not 0–5</span><br/>
+      <span style="color:var(--text);margin-left:0">(4.80 − 4.20) ÷ (4.95 − 4.20)</span>
+      <span class="op">&nbsp;=&nbsp;</span><span style="color:var(--accent)">0.80</span></div>
+    <div class="step" data-step="3" style="margin-top:14px">apply its weight
+      <span style="color:var(--text)">0.80 × 0.30</span>
+      <span class="op">&nbsp;=&nbsp;</span><span class="res up" style="font-size:26px">+0.24</span></div>
+    <div class="step total" data-step="4" style="margin-top:20px">
+      <span class="lbl">contribution of this one signal to branch strength</span>
+      <span style="float:right;color:var(--accent);font-size:26px;font-weight:600">+0.24</span></div>
+  </div>
+  <p class="big step" data-step="4" style="margin-top:28px">Do that for every signal, add them up.
+  <em>That is the entire model.</em></p>
+</section>
+
+<!--S-->
+<section class="slide" data-steps="5" data-notes="
+<p>Same arithmetic, all three signals of the Y axis, and then the label falls out.</p>
+<p>'Demand in this catchment is thirty-nine per cent of the metro peak — that is a real number, built from thirty-seven thousand OpenStreetMap features. There is competitive room: seventeen rivals, not crowded. So far so good. And then the third line: sixty-five per cent of this catchment is already covered by two of our own lounges. Weight minus zero-point-two. That single line takes thirteen points off the score and drops it under the threshold.'</p>
+<p><strong>The punchline to land:</strong> 'The parts sum to the score exactly. Not approximately — a validator in the pipeline refuses to build a score whose breakdown does not add up to it. The explanation is not a story told about the model afterwards. It <em>is</em> the model.'</p>">
+  <p class="kicker">How a score is built · 2 of 2</p>
+  <h2>One axis, and the label falls out</h2>
+  <div class="calc step" data-step="1" style="margin-top:8px">
+    <div class="row step" data-step="1"><span class="lbl">Catchment demand</span>
+      <span class="raw">39% of metro peak</span><span class="op">0.393 × +0.45</span>
+      <span class="res up">+0.177</span></div>
+    <div class="row step" data-step="2"><span class="lbl">Competitive headroom</span>
+      <span class="raw">17 rivals · 0.87/km²</span><span class="op">0.645 × +0.35</span>
+      <span class="res up">+0.226</span></div>
+    <div class="row step" data-step="3"><span class="lbl">Self-cannibalisation</span>
+      <span class="raw">65% of catchment shared</span><span class="op">0.648 × −0.20</span>
+      <span class="res down">−0.129</span></div>
+    <div class="row total step" data-step="4"><span class="lbl">MARKET SCORE</span>
+      <span></span><span></span><span class="res">0.273</span></div>
+  </div>
+  <div class="rule step" data-step="5" style="margin-top:24px">
+    market <strong>0.273</strong> &lt; 0.40 &nbsp;AND&nbsp; self-overlap <strong>65%</strong> ≥ 45%
+    &nbsp;&nbsp;→&nbsp;&nbsp;<span class="t">SHRINK</span></div>
+  <p class="big step" data-step="5" style="margin-top:22px">The parts sum to the score <em>exactly</em>
+  — a validator refuses to build one that doesn't. The breakdown isn't an explanation of the model.
+  It <em>is</em> the model.</p>
+</section>
+
+<!--S-->
+<section class="slide demo" data-notes="
+<p><strong>Switch to the browser now.</strong> Keep this slide up while you talk so you have the path in front of you if you lose your thread.</p>
+<p>Budget roughly: overlap 2 min, the branch panel 3 min, matrix 1 min, growth 2 min, analyst 3 min. If you are running short, cut Growth — the first, second and fifth carry the argument.</p>
+<p>On the analyst, <strong>expand the tool trace</strong>. That is the single most important thing you show all session for an AI role: it proves the answer was looked up, not recalled.</p>">
+  <p class="kicker">Live demo · 2pz.larri.dev</p>
+  <h2>Five things to click</h2>
+  <ul style="margin-top:18px">
+    <li><strong>Self-overlap</strong> — the red wedges are real intersection geometry.
+      Khalifa City ∩ West Yas: <em>20 km² shared</em>, but Khalifa City gives up 40% of its trade area
+      and West Yas only 18%. Overlap is asymmetric — that's what names the branch to consolidate.</li>
+    <li><strong>Ministry Area's panel</strong> — the rule that fired, printed verbatim, and the
+      breakdown you just saw on the last slide, live.</li>
+    <li><strong>The decision matrix</strong> — all 23 on both axes. The SHRINKs are <em>not</em> all
+      bottom-left. That is the honest answer to "are you just closing the small ones?"</li>
+    <li><strong>Whitespace</strong> — 573 hexes. A covered cell is <em>damped, not deleted</em>; a cell
+      below the demand floor is SKIP whatever it scores, because empty desert scores beautifully on
+      "coverage gap".</li>
+    <li><strong>The analyst</strong> — <em>"which branches are most at risk, and why?"</em> — then
+      open the tool trace underneath the answer.</li>
+  </ul>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="
+<p>Requirement D. Two uses, and the interesting part is the third box — what I chose <em>not</em> to build.</p>
+<p>'The dataset is twenty-three branches and a thousand scored cells, fully structured. Every question a portfolio team actually asks is a filter, a sort or a join. Function calling answers those exactly, and shows its working. A vector store would be fuzzier, unauditable, and literally unable to answer <em>rank these by overlap share</em>. Not reaching for RAG was the judgement call, not a gap.'</p>
+<p>If someone asks about hallucination: point at the tool trace, and at the notes being generated from the breakdown with an instruction to never supply a fact.</p>">
+  <p class="kicker">The AI layer</p>
+  <h2>Two uses, and one deliberate omission</h2>
+  <div class="cols3" style="margin-top:14px;flex:1;align-content:start">
+    <div class="card">
+      <h3>Grounded notes</h3>
+      <p>Every branch and zone gets the sentence an analyst would say in a review — generated
+      <strong>offline</strong> from its contribution breakdown and committed.</p>
+      <p>The model is handed the scored record and told to turn arithmetic into an argument,
+      <strong>never to supply a fact</strong>.</p>
+      <p style="color:var(--faint);font-size:15px">101 notes committed → the AI layer works with no
+      API key. Each is hashed against its payload, so a stale note says so.</p>
+    </div>
+    <div class="card">
+      <h3>Conversational analyst</h3>
+      <p>A bounded tool-calling loop over the same JSON the map renders — six tools:
+      <code>list_branches</code>, <code>get_branch</code>, <code>find_overlaps</code>,
+      <code>compare_branches</code>, <code>top_whitespace</code>, <code>network_summary</code>.</p>
+      <p>The prompt forbids answering from memory, and <strong>every tool call is shown with the
+      answer</strong>.</p>
+      <p style="color:var(--faint);font-size:15px">You can check it looked the number up rather than
+      recalled it.</p>
+    </div>
+    <div class="card" style="border-color:var(--accent-dim)">
+      <h3>No RAG — on purpose</h3>
+      <p>23 branches, ~1,000 scored cells, fully structured. Every real question is a filter, a sort
+      or a join.</p>
+      <p>Function calling answers those <strong>exactly and auditably</strong>. Embeddings would be
+      fuzzier, unauditable, and simply <em>unable</em> to answer "rank these by overlap share".</p>
+      <p style="color:var(--faint);font-size:15px">Choosing not to reach for the fashionable tool is
+      the judgement, not the gap.</p>
+    </div>
+  </div>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="
+<p>Get ahead of the obvious objection before they raise it.</p>
+<p>'The chain is real, the geography is real, and most of the signal is real. What is not public is revenue per chair, bookings and lease cost — so I used public proxies and I labelled every single field in the UI with where it came from. A reviewer never has to guess whether a number is a measurement or a simulation.'</p>
+<p>Then the line that matters: <strong>'The value of this is not the data source. It is the processing. Point it at the chain's own booking system and the same pipeline produces real-world answers — the only thing that changes is one CSV.'</strong></p>
+<p>Be ready for: 'did you verify the twenty-three ratings?' Honest answer: they come from a public aggregator, I did not check all twenty-three against Google one by one.</p>">
+  <p class="kicker">Data</p>
+  <h2>What is real, and what is not</h2>
+  <table style="margin-top:10px">
+    <tr><td style="width:118px"><span class="pill p-real">real</span></td>
+        <td><strong>23 branch locations, ratings, review counts</strong><br/>
+        <span style="color:var(--faint);font-size:15px">Bedashing's public listing + public Google rating aggregates; geocoded via OSM Nominatim, two coarse results fixed by hand and flagged</span></td></tr>
+    <tr><td><span class="pill p-real">real</span></td>
+        <td><strong>1,354 competitors</strong> — existence, name, location, category<br/>
+        <span style="color:var(--faint);font-size:15px">OpenStreetMap via Overpass</span></td></tr>
+    <tr><td><span class="pill p-real">real</span></td>
+        <td><strong>37,137 built-form features</strong> behind the demand proxy<br/>
+        <span style="color:var(--faint);font-size:15px">OSM, streamed from a Geofabrik extract — residential, everyday retail, premium venues</span></td></tr>
+    <tr><td><span class="pill p-derived">derived</span></td>
+        <td>catchments, overlap geometry, saturation, coverage gap, demand index</td></tr>
+    <tr><td><span class="pill p-synth">synthetic</span></td>
+        <td><strong>Competitor ratings, review momentum, chair utilisation</strong><br/>
+        <span style="color:var(--faint);font-size:15px">seeded draws from stated priors — reproducible byte for byte, and labelled as simulated everywhere they appear</span></td></tr>
+  </table>
+  <p class="big" style="margin-top:22px">The value here isn't the data source — it's the processing.
+  <em>Point it at the chain's booking system and the same pipeline gives real-world answers.</em></p>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="
+<p><strong>This is the highest-scoring slide in the deck.</strong> The brief's closing note says the hardest part is rarely coding — it is deciding what to simplify, what to trust, what to automate, what to explain, what to ship. This slide is that paragraph, answered.</p>
+<p>Do not read all five. Pick two and go deep — I would pick <strong>union-not-sum</strong> (because it changed real labels) and <strong>no ML</strong> (because it is the one they will test you on).</p>
+<p>'Summing the overlaps is the classic error. Three lounges clustered together all overlap the same wedge; sum it and you count that ground three times, you can exceed a hundred per cent, and you push a perfectly healthy cluster into a false shrink. So it is the union of the intersections, computed as real geometry.'</p>">
+  <p class="kicker">Trade-offs</p>
+  <h2>What I chose, over what, and why</h2>
+  <table style="margin-top:22px;font-size:16.5px">
+    <th style="width:27%">Chose</th><th style="width:24%">Over</th><th>Because</th>
+    <tr><td><strong>Weighted matrix</strong></td><td>machine learning</td>
+        <td>Nobody has labelled which branches <em>should</em> shrink — supervised learning has nothing to fit, and 23 rows would overfit anything. And a lease decision gets challenged in committee: "the gradient boosting said so" is not a defence.</td></tr>
+    <tr><td><strong>Union of overlaps</strong></td><td>sum of overlaps</td>
+        <td>Three clustered lounges all cover the same wedge. Summing counts it three times, can exceed 100%, and pushes a healthy cluster into a false SHRINK. This changed real labels.</td></tr>
+    <tr><td><strong>Built-form demand</strong></td><td>population raster</td>
+        <td>A labour camp and a villa district have similar population density and wildly different spend on a premium blow-dry.</td></tr>
+    <tr><td><strong>Function calling</strong></td><td>RAG / embeddings</td>
+        <td>Structured data, and every question is a filter or a sort. Exact and auditable beats fuzzy and unverifiable.</td></tr>
+    <tr><td><strong>Committed static JSON</strong></td><td>a database + API</td>
+        <td>The dataset changes when a lease changes, not when a page loads. A reviewer clones and runs it with no keys and no infrastructure.</td></tr>
+  </table>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="
+<p>Requirement E's fourth question, answered head-on. Volunteering your own limitations is the single most credible thing you can do in a case presentation — and it pre-empts every gotcha.</p>
+<p>The framing to use: <strong>'Trust the geometry. Question the weights.'</strong> The arithmetic on distances, areas and counts is not in doubt. The numbers that turn geometry into a label are a stated management judgement — which is exactly why they live in one file, and why the UI prints the rule that fired instead of just the label. Disagreeing with a recommendation becomes a conversation about weights, not an argument with a black box.</p>
+<p>If they ask what you would fix first: <strong>drive-time isochrones.</strong> Say it without hedging.</p>">
+  <p class="kicker">Explainability</p>
+  <h2>Trust the geometry. Question the weights.</h2>
+  <div class="cols" style="margin-top:10px;flex:0">
+    <div class="card" style="border-color:rgba(63,185,138,.3)">
+      <h3 style="color:var(--protect)">Trust</h3>
+      <p>Overlap areas, distances, competitor counts, coverage gaps — computed from real
+      coordinates and real OSM features. The arithmetic is not in doubt.</p>
+    </div>
+    <div class="card" style="border-color:rgba(224,92,92,.3)">
+      <h3 style="color:var(--shrink)">Question</h3>
+      <p>The weights are a <strong>stated management judgement</strong>, not an estimate from data.
+      That is why they sit in one editable file — and why the UI prints the rule that fired, so
+      disagreeing becomes a conversation about weights rather than an argument with a black box.</p>
+    </div>
+  </div>
+  <ul style="margin-top:24px">
+    <li><strong>Catchments are radii, not drive times.</strong> An isochrone is the faithful version;
+      a lounge behind a creek is over-credited. <em>First thing I would upgrade.</em></li>
+    <li><strong>Competitor ratings are simulated.</strong> Their locations and count are real — the
+      quality comparison is illustrative.</li>
+    <li><strong>No revenue data at all.</strong> Review volume stands in for scale. Note that two of
+      the six SHRINK branches are top-ten by review volume: <em>the model is not quietly flagging the
+      small ones.</em> One CSV column from the chain fixes this, and it is the highest-value thing
+      they could add.</li>
+  </ul>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="
+<p>The brief says 'You may use AI freely — in fact, we expect that you will', and lists 'how you use AI responsibly and effectively' as a scoring criterion. So say this out loud rather than hoping it does not come up. For an AI Associate role, <em>how you direct a coding agent</em> is a job skill, not an admission.</p>
+<p>The honest version: 'I built this with an AI agent doing most of the typing. What I actually did was decide what to build, decide what to trust, and build the checks that catch it when it is wrong. The test suite is not decoration — it found six real bugs, including one where the H3 rings were open and one where a percentile index floored to zero.'</p>
+<p>Have one concrete override ready: the analyst was answering a question fluently and wrongly, and the fix was in the tool contract, not the prompt. That is appendix slide on the grounding failure.</p>">
+  <p class="kicker">How it was built</p>
+  <h2>AI wrote most of it. The judgement is the deliverable.</h2>
+  <p class="lede" style="margin-bottom:26px">The brief expects AI use. For this role the interesting
+  question isn't <em>whether</em> — it's what you keep control of.</p>
+  <div class="cols3" style="flex:0">
+    <div class="card"><h3>What I decided</h3>
+      <p>The decision-maker. Two axes over one score. Union over sum. Real data where it was free.
+      No RAG. The thresholds, and the posture behind them.</p></div>
+    <div class="card"><h3>What caught the errors</h3>
+      <p><strong>313 Python tests at 98% coverage, 218 web tests</strong>, CI gating every push.
+      They found six real bugs — open H3 rings, a percentile index flooring to zero, a hash-order
+      dependency that broke reproducibility.</p></div>
+    <div class="card"><h3>Where I overrode it</h3>
+      <p>The analyst answered <em>"which branches are most at risk"</em> fluently and wrongly —
+      correct numbers, wrong reason. The fix belonged in the <strong>tool contract</strong>, not the
+      prompt.</p></div>
+  </div>
+  <p class="big" style="margin-top:28px">The dataset rebuilds <em>byte-identically</em> on every
+  commit, and CI fails if it doesn't. That is the difference between a demo and a product.</p>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="
+<p>Close on the business, not the backlog. Say the first one with conviction — 'one CSV column' is the line they will remember.</p>
+<p>If asked to prioritise: revenue first (it is cheap and it changes everything), isochrones second (it changes labels at the margin), the rest is scale.</p>">
+  <p class="kicker">What comes next</p>
+  <h2>Three upgrades, in order</h2>
+  <table style="margin-top:14px">
+    <tr><td style="width:56px;font-family:var(--mono);color:var(--accent);font-size:26px">1</td>
+      <td><strong>Revenue per branch — one CSV column.</strong> Replaces the single weakest proxy in
+      the model and turns "which branches are at risk" into "how much revenue is at risk". Cheapest,
+      highest-value change available.</td></tr>
+    <tr><td style="font-family:var(--mono);color:var(--accent);font-size:26px">2</td>
+      <td><strong>Drive-time isochrones instead of radii.</strong> The honest version of a catchment.
+      In the UAE's grade-separated grid the gap is smaller than in a European city, but it would move
+      labels at the margin — and the margin is where the decisions are.</td></tr>
+    <tr><td style="font-family:var(--mono);color:var(--accent);font-size:26px">3</td>
+      <td><strong>The same pipeline across the portfolio.</strong> Nothing here is salon-specific.
+      Swap the seed list and the competitor tags and it right-sizes any multi-site retail network —
+      which is the interesting version of this problem for a holding company.</td></tr>
+  </table>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="
+<p>End on the finding, not on the tech. Then stop talking and let them ask.</p>
+<p>If there is silence, offer: 'I am happy to go into the geometry, the scoring, the agent design or the deployment — whichever is most useful.' The appendix slides are behind this one.</p>">
+  <p class="kicker">In one sentence</p>
+  <h1 style="font-size:46px;max-width:1060px">A portfolio team can now point at any branch<br/>
+  and see the exact arithmetic that judged it.</h1>
+  <p class="lede" style="margin-top:14px">And the first thing it found was that our biggest
+  competitor in Abu Dhabi is us.</p>
+  <div class="mt">
+    <p style="font-size:19px;color:var(--accent);font-family:var(--mono)">2pz.larri.dev</p>
+    <p class="small" style="margin-top:6px">github.com/clarriu97/2pz · README · docs/walkthrough.md ·
+      docs/decisions.md</p>
+  </div>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="<p>Appendix begins. Only go here if asked.</p>">
+  <p class="kicker">Appendix</p>
+  <h1 style="font-size:48px">If you want to go deeper</h1>
+  <ul style="margin-top:20px;columns:2;column-gap:60px">
+    <li>Architecture and why static files</li>
+    <li>The three geometry traps</li>
+    <li>Where the thresholds came from</li>
+    <li>The grounding failure, in full</li>
+    <li>Reproducibility and CI</li>
+    <li>Production path</li>
+    <li>Numbers reference</li>
+    <li>Questions I expect</li>
+  </ul>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="
+<p>'All the scoring happens offline, once. The product ships committed JSON. That means a reviewer clones the repo, runs npm install, and sees the finished thing — no database, no keys, no build.'</p>
+<p>'The only server-side code in production is one function that proxies OpenAI, so the key never reaches the browser.'</p>">
+  <p class="kicker">Appendix · Architecture</p>
+  <h2>Everything expensive happens once, offline</h2>
+  <pre style="margin-top:14px;font-size:15.5px;line-height:1.7">Python pipeline (offline, once)          committed static files            product
+──────────────────────────────           ──────────────────────            ───────
+sourcing/  real branches, OSM      ─┐
+geo/       catchments, overlap,     ├──►  data/processed/*.json  ──►  React + MapLibre
+           saturation, H3 grid      │     ├─ branches.json            (Cloudflare Pages)
+scoring/   weighted model +         │     ├─ catchments.geojson
+           signed contributions    ─┘     ├─ overlaps.geojson              │
+ai/notes   grounded notes (OpenAI)  ──►   ├─ competitors.geojson           │
+                                          ├─ whitespace.geojson            ▼
+                                          └─ model_card.json        /api/chat function
+                                                                    (tool-calling, key
+                                                                     server-side only)</pre>
+  <p class="small" style="margin-top:18px;font-size:16.5px;color:var(--dim)">Production on AWS would
+  be S3 + CloudFront for the site and Lambda behind API Gateway for the endpoint — a deployment
+  target, not a redesign.</p>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="
+<p>Three places where the obvious implementation is quietly wrong. Each one is a good answer to 'what was hard about this?'</p>">
+  <p class="kicker">Appendix · Geography</p>
+  <h2>Three traps in the geometry</h2>
+  <div class="cols3" style="margin-top:14px;flex:0">
+    <div class="card"><h3>Union, not sum</h3>
+      <p>Three clustered lounges all overlap the same wedge. Summing counts it three times, can
+      exceed 100%, and pushes a healthy cluster into a false SHRINK.</p>
+      <p style="color:var(--faint);font-size:15px">Computed as real intersection geometry in a
+      locally-flat planar frame.</p></div>
+    <div class="card"><h3>Cap saturation at p90</h3>
+      <p>One hyper-dense catchment would otherwise compress every other branch to the bottom of the
+      scale and make the signal useless.</p></div>
+    <div class="card"><h3>Normalise the gap by radius</h3>
+      <p>3 km from a dense-urban lounge is a genuine gap. 3 km from a low-density lounge is already
+      served. Dividing by that lounge's own radius is what makes the signal mean
+      <strong>under-served</strong> rather than <strong>far</strong>.</p></div>
+  </div>
+  <p class="big" style="margin-top:26px">And a demand floor: a cell below 0.12 is SKIP whatever it
+  scores. <em>Empty desert scores beautifully on "coverage gap"</em> — sand at the top of a growth
+  shortlist would be the most embarrassing failure this product could have.</p>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="
+<p>Expect: 'aren't the thresholds just tuned to give you a nice answer?' This is the answer, and it is a strong one because it admits the first attempt was bad.</p>
+<p>'The first set produced twenty holds, two shrinks and one protect. A recommendation almost everyone receives is not a recommendation — it is a rubber stamp. So I stated a posture instead: the top third on both axes is worth defending, the bottom sixth on strength is a candidate for exit. Then I put the thresholds at the tertiles of the portfolio's own distribution. The two-fifteen-six split is the <em>consequence</em> of that posture, not the target.'</p>">
+  <p class="kicker">Appendix · Calibration</p>
+  <h2>Where the thresholds came from</h2>
+  <p class="lede">The first parameterisation produced <strong>20 HOLD · 2 SHRINK · 1 PROTECT</strong>.
+  A recommendation almost everybody receives is not a recommendation.</p>
+  <div class="card" style="margin-top:22px;border-color:var(--accent-dim)">
+    <h3>The stated posture</h3>
+    <p style="font-size:19px;color:var(--text)">The top third on both axes is worth defending.
+    The bottom sixth on strength is a candidate for exit.</p>
+  </div>
+  <p style="margin-top:22px">The thresholds then sit at the <strong>tertiles of the portfolio's own
+  observed distribution</strong>. The 2 / 15 / 6 split is the <em>consequence</em> of that posture,
+  not its target — and disagreeing with the posture is a four-number change in one file, which
+  re-labels the portfolio and updates the panel that explains it.</p>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="
+<p>The best single story in the project for an AI role. It shows you can tell the difference between an answer that is right and an answer that is <em>right for the right reason</em>.</p>
+<p>'Every number it gave was correct. The reason it gave was wrong — it looked at whichever number was low and inferred a story. The model was not at fault; the tool contract was. The tool handed it scores but not the rule that actually fired, so it did what any reasonable reader would do with that data. Once each row carried its firing rule, it answered the same question in one call and quoted the threshold.'</p>">
+  <p class="kicker">Appendix · Grounding</p>
+  <h2>Right numbers, wrong reason</h2>
+  <p class="lede">Asked <em>"which branches are most at risk?"</em>, an early version quoted each
+  branch's <strong>market score</strong>. Every figure was correct — and four of the five branches
+  were actually flagged on weak <strong>strength</strong>, with perfectly healthy market scores.</p>
+  <div class="cols" style="margin-top:26px;flex:0">
+    <div class="card" style="border-color:rgba(224,92,92,.3)">
+      <h3 style="color:var(--shrink)">The wrong diagnosis</h3>
+      <p>"The model hallucinated — tighten the prompt."</p></div>
+    <div class="card" style="border-color:rgba(63,185,138,.3)">
+      <h3 style="color:var(--protect)">The actual fault</h3>
+      <p>The <strong>tool contract</strong>. <code>list_branches</code> returned scores but not the
+      rule that fired, so the model inferred a reason from whichever number looked low — exactly what
+      a careful human would do with that data.</p></div>
+  </div>
+  <p class="big" style="margin-top:26px">Carrying each row's <code>decision_rule</code> into the tool
+  took it from three rounds and a plausible error to <em>one round quoting the firing threshold</em>.
+  <br/><span style="font-size:22px;color:var(--dim)">Grounding is a data-contract problem more often
+  than it is a prompt problem.</span></p>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="
+<p>Only if they ask about engineering rigour. The punchline is the byte-identical rebuild — it means nothing can drift under a demo, and it means the simulated fields are honest rather than convenient.</p>">
+  <p class="kicker">Appendix · Rigour</p>
+  <h2>Nothing moves under the demo</h2>
+  <div class="stat" style="margin:20px 0 26px">
+    <div><span class="n">313</span><span class="l">Python tests</span></div>
+    <div><span class="n">98%</span><span class="l">coverage</span></div>
+    <div><span class="n">218</span><span class="l">web tests</span></div>
+    <div><span class="n">0</span><span class="l">paths to production that skip the gate</span></div>
+  </div>
+  <ul>
+    <li><strong>Every synthetic field is a pure function of the seed and the record id.</strong>
+      Re-running the pipeline reproduces the dataset byte for byte, and CI fails if it doesn't.</li>
+    <li><strong>No build timestamp anywhere</strong> — it would make the output differ on every run
+      while telling you nothing you could verify. A content fingerprint of the inputs and every
+      weight does the job instead.</li>
+    <li><strong>Push → CI (pipeline · web · dataset) → deploy.</strong> The deploy only fires on a
+      green run, and then reads the deployment back from the Cloudflare API to prove production
+      actually moved — a preview deploy goes green while shipping nothing.</li>
+    <li><strong>The OpenAI key is not in GitHub.</strong> The endpoint reads it at request time from
+      the Pages environment, so it never enters the build, the bundle, or the repo.</li>
+  </ul>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="<p>Keep this open during Q&amp;A. If a number is challenged, it is on this slide.</p>">
+  <p class="kicker">Appendix · Reference</p>
+  <h2>The numbers</h2>
+  <div class="cols" style="margin-top:10px;flex:0">
+    <div>
+      <table style="font-size:16.5px">
+        <tr><td>Branches</td><td><strong>23</strong></td></tr>
+        <tr><td>Labels</td><td><strong>2 PROTECT · 15 HOLD · 6 SHRINK</strong></td></tr>
+        <tr><td>Competitors (real, OSM)</td><td><strong>1,354</strong></td></tr>
+        <tr><td>Built-form features</td><td><strong>37,137</strong></td></tr>
+        <tr><td>Scored zones</td><td><strong>573</strong> → 17 GROW · 61 WATCH · 495 SKIP</td></tr>
+        <tr><td>AI notes committed</td><td><strong>101</strong></td></tr>
+      </table>
+    </div>
+    <div>
+      <table style="font-size:16.5px">
+        <tr><td>Ministry Area</td><td><strong>strength 0.712</strong> (5th of 23) · market 0.273 · 65% overlap</td></tr>
+        <tr><td>Al Maqta</td><td>61% overlap</td></tr>
+        <tr><td>Largest AD overlap</td><td>Khalifa City ∩ West Yas · <strong>20.0 km²</strong> · 40% vs 18% · 6.2 km apart</td></tr>
+        <tr><td>SHRINK by review volume</td><td>ranks <strong>6, 9</strong>, 13, 18, 21, 22 of 23</td></tr>
+        <tr><td>Catchments</td><td>2.5 / 4 / 6 km by urban context</td></tr>
+        <tr><td>Grid</td><td>H3 res 7 · ~5 km² per cell</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!--S-->
+<section class="slide" data-notes="
+<p>Rehearse these five out loud tonight. They are the ones that actually get asked.</p>
+<p>The one to be most careful with is the revenue question — do not get defensive. The data supports you: two of the six SHRINK branches are sixth and ninth of twenty-three by review volume. Say that number.</p>">
+  <p class="kicker">Appendix · Q&amp;A</p>
+  <h2>Questions I expect</h2>
+  <table style="font-size:16.5px">
+    <tr><td style="width:38%"><strong>"Aren't you just closing the branches that bill the least?"</strong></td>
+      <td>No — and the data says so. Two of the six SHRINK branches are <strong>6th and 9th of 23</strong> by review volume. They are flagged on 65% and 61% self-overlap, not on performance. That is the whole point of the second axis.</td></tr>
+    <tr><td><strong>"Why not machine learning?"</strong></td>
+      <td>Nothing to learn from — no labelled history of which branches should have closed, and 23 rows would overfit anything. And the output has to survive a committee.</td></tr>
+    <tr><td><strong>"How do you know the AI isn't making things up?"</strong></td>
+      <td>Every tool call is shown with the answer. Notes are generated from the contribution breakdown with an instruction never to supply a fact, and are hash-stamped against their payload so a stale one says so.</td></tr>
+    <tr><td><strong>"Some of the data is simulated."</strong></td>
+      <td>Three fields, each labelled in the UI. Locations, ratings, review counts, competitor locations and the demand features are real. Swap the proxies for the chain's own booking data and nothing in the pipeline changes.</td></tr>
+    <tr><td><strong>"How long would this take on real data?"</strong></td>
+      <td>The pipeline is source-agnostic — one CSV of branches and one of competitors. The work is agreeing the weights with the business, which is a workshop, not an engineering problem.</td></tr>
+  </table>
+</section>
+
+</template>
+
+<script>
+(function(){
+  const tpl = document.getElementById('slides');
+  const slides = [...tpl.content.querySelectorAll('section.slide')];
+  const canvas = document.getElementById('canvas');
+  slides.forEach(s => canvas.appendChild(s));
+
+  let i = 0, step = 0;
+
+  /** Scale the fixed 1280x720 canvas to whatever the window is, preserving
+   *  aspect. Laying out once at a known size is what keeps a slide identical
+   *  on a laptop, a projector and a print-to-PDF. */
+  function fit(){
+    const pad = 0;
+    const s = Math.min((innerWidth-pad)/1280, (innerHeight-pad)/720);
+    canvas.style.transform = 'translate(-50%,-50%) scale(' + s + ')';
+  }
+
+  function steps(el){ return +(el.dataset.steps || 0); }
+
+  function render(){
+    slides.forEach((s,n) => s.classList.toggle('on', n===i));
+    const cur = slides[i];
+    cur.querySelectorAll('.step').forEach(el => {
+      el.classList.toggle('show', (+el.dataset.step) <= step);
+    });
+    document.getElementById('bar').style.width = ((i+1)/slides.length*100) + '%';
+    document.getElementById('num').textContent = (i+1) + ' / ' + slides.length;
+    document.getElementById('notes-body').innerHTML =
+      cur.dataset.notes || '<p style="color:#4a5563">No notes for this slide.</p>';
+    location.hash = '#' + (i+1);
+  }
+
+  function go(d){
+    const n = steps(slides[i]);
+    if (d > 0 && step < n) { step++; return render(); }
+    if (d < 0 && step > 0) { step--; return render(); }
+    const next = i + d;
+    if (next < 0 || next >= slides.length) return;
+    i = next;
+    // A stepped slide arrives with its first beat already up -- landing on an
+    // empty slide reads as a rendering bug from the back of the room.
+    step = (d < 0) ? steps(slides[i]) : Math.min(1, steps(slides[i]));
+    render();
+  }
+
+  addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); i = Math.min(i+1, slides.length-1); step = steps(slides[i]); render(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); i = Math.max(i-1, 0); step = Math.min(1, steps(slides[i])); render(); }
+    else if (e.key === 'Home') { i = 0; step = 0; render(); }
+    else if (e.key === 'End') { i = slides.length-1; step = steps(slides[i]); render(); }
+    else if (e.key === 'n' || e.key === 'N') { document.getElementById('notes').classList.toggle('on'); }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen();
+    }
+  });
+
+  canvas.addEventListener('click', e => {
+    // Click the right two-thirds to advance, the left third to go back.
+    go(e.clientX < innerWidth/3 ? -1 : 1);
+  });
+
+  addEventListener('resize', fit);
+  const start = parseInt(location.hash.slice(1), 10);
+  if (start >= 1 && start <= slides.length) i = start - 1;
+  fit(); render();
+})();
+</script>
+</body>
+</html>
