@@ -12,11 +12,14 @@ from __future__ import annotations
 
 import json
 import math
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "processed"
-OUT = Path(__file__).resolve().parent / "img"
+HERE = Path(__file__).resolve().parent
+OUT = HERE / "img"
+COASTLINE = HERE / "coastline.geojson"
 
 # The app's own tokens, so the deck and the product read as one thing.
 C = {
@@ -28,6 +31,7 @@ C = {
     "dim": "#9aa7b4",
     "faint": "#6b7785",
     "accent": "#d4a05a",
+    "coast": "#31404f",
     "PROTECT": "#3fb98a",
     "HOLD": "#d9a838",
     "SHRINK": "#e05c5c",
@@ -36,6 +40,74 @@ C = {
 # and a standalone .svg is parsed strictly.
 MONO = "ui-monospace,'SF Mono',Menlo,monospace"
 SANS = "-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif"
+
+
+def extract_coastline(pbf: Path, bbox: tuple[float, float, float, float]) -> None:
+    """Rebuild `coastline.geojson` from the Geofabrik extract. Run rarely.
+
+    Floating circles on a black background do not read as a place. The
+    coastline is the cheapest thing that turns them into Abu Dhabi -- and it is
+    also the only basemap that survives the constraints this deck has: it must
+    open with no network, so map tiles are out.
+
+    The extract itself is gitignored (241 MB), so the simplified output is
+    committed instead -- the same trade the pipeline makes for
+    `zone_activity_counts.json`.
+
+        uv run python docs/deck/build_figures.py --coastline
+    """
+    import osmium
+    from shapely.geometry import LineString, box
+
+    w, s_, e, n = bbox
+    ways: dict[int, list[int]] = {}
+    needed: set[int] = set()
+    for obj in osmium.FileProcessor(pbf).with_filter(osmium.filter.KeyFilter("natural")):
+        if obj.type_str() != "w" or obj.tags.get("natural") != "coastline":
+            continue
+        refs = [node.ref for node in obj.nodes]
+        if len(refs) > 1:
+            ways[obj.id] = refs
+            needed.update(refs)
+    print(f"    pass 1: {len(ways)} coastline ways, {len(needed)} nodes to resolve")
+
+    # Ways carry no coordinates, so a second pass resolves just these nodes --
+    # the same two-pass shape as pipeline/sourcing/extract.py, and for the same
+    # reason: indexing all ~30M nodes would not fit in memory.
+    loc: dict[int, tuple[float, float]] = {}
+    node_only = osmium.filter.EntityFilter(osmium.osm.NODE)
+    for obj in osmium.FileProcessor(pbf).with_filter(node_only):
+        if obj.id in needed:
+            loc[obj.id] = (obj.location.lon, obj.location.lat)
+
+    clip = box(w, s_, e, n)
+    feats = []
+    for refs in ways.values():
+        pts = [loc[r] for r in refs if r in loc]
+        if len(pts) < 2:
+            continue
+        line = LineString(pts)
+        if not line.intersects(clip):
+            continue
+        piece = line.intersection(clip)
+        for geom in getattr(piece, "geoms", [piece]):
+            # ~150 m tolerance and a ~1 km floor: at 60 km across a figure, finer
+            # detail is invisible and a scatter of specks reads as noise.
+            simp = geom.simplify(0.0014, preserve_topology=False)
+            if geom.geom_type != "LineString" or len(simp.coords) < 2 or simp.length < 0.009:
+                continue
+            feats.append(
+                {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [[round(x, 4), round(y, 4)] for x, y in simp.coords],
+                    },
+                }
+            )
+    COASTLINE.write_text(json.dumps({"type": "FeatureCollection", "features": feats}))
+    print(f"    wrote {COASTLINE} ({len(feats)} lines, {COASTLINE.stat().st_size / 1024:.0f} KB)")
 
 
 def load(name: str):
@@ -228,6 +300,23 @@ def overlap_svg() -> str:
     p = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">']
     p.append(f'<rect width="{W}" height="{H}" fill="{C["bg"]}"/>')
 
+    # The coast, underneath everything. Without it the catchments are circles
+    # floating in the dark; with it they are Abu Dhabi.
+    if COASTLINE.exists():
+        p.append(
+            f'<clipPath id="plot"><rect x="0" y="{TOP - 26}" width="{W}" '
+            f'height="{H - TOP + 26}"/></clipPath>'
+        )
+        p.append('<g clip-path="url(#plot)">')
+        for f in json.loads(COASTLINE.read_text())["features"]:
+            coords = f["geometry"]["coordinates"]
+            d = "".join(
+                ("M" if i == 0 else "L") + f"{P(*c)[0]:.1f},{P(*c)[1]:.1f}"
+                for i, c in enumerate(coords)
+            )
+            p.append(f'<path d="{d}" fill="none" stroke="{C["coast"]}" stroke-width="1.1"/>')
+        p.append("</g>")
+
     for f in cats:
         rec = f["properties"]["recommendation"]
         p.append(
@@ -321,6 +410,13 @@ def inject(deck: Path, figures: dict[str, str]) -> None:
 
 
 def main() -> None:
+    if "--coastline" in sys.argv:
+        from pipeline.sourcing.extract import EXTRACT_PATH
+
+        # Padded well past the catchments so the coast runs off the figure
+        # rather than stopping in mid-air at the edge.
+        extract_coastline(EXTRACT_PATH, (54.18, 24.17, 54.96, 24.74))
+
     OUT.mkdir(parents=True, exist_ok=True)
     figures = {"matrix": matrix_svg(), "overlap": overlap_svg()}
     for name, svg in figures.items():
