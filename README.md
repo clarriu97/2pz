@@ -52,6 +52,32 @@ uv sync && uv run python -m pipeline.run
 
 ---
 
+## Tests and coverage
+
+Every push runs three CI jobs — **pipeline**, **web**, **dataset** — and any failure blocks the
+deploy. Coverage is not just reported: `--cov-fail-under=95` is set in `pyproject.toml`, so a
+coverage regression **fails the build** rather than quietly lowering a number.
+
+| Suite | Tests | Coverage | Gate |
+|---|---|---|---|
+| `pipeline` (pytest) | **313** | **97.82%** lines, branch coverage on | ruff format · ruff check · `--cov-fail-under=95` |
+| `web` (vitest) | **218** | v8 coverage on the app | prettier · oxlint · `tsc --noEmit` |
+| `dataset` | rebuild | — | fails unless the rebuilt dataset is **byte-identical** to the committed one |
+
+Every CI run publishes a per-module coverage table to its GitHub Actions summary page and uploads
+`coverage.xml` as an artifact — click the badge at the top to see the numbers for the latest commit.
+
+```bash
+uv run pytest                 # pipeline tests + coverage, fails under 95%
+cd web && npm run check       # format, lint, typecheck, tests + coverage
+```
+
+The suite is not decoration. It caught six real defects during the build, including open H3 rings,
+a percentile index flooring to zero, and a set-ordering dependency that broke byte-reproducibility
+under a different `PYTHONHASHSEED`.
+
+---
+
 ## The decision model
 
 A two-axis matrix, **not** machine learning. A portfolio committee has to defend a lease decision to
