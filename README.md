@@ -4,312 +4,164 @@
 
 **AI-enabled geospatial decision support for retail network right-sizing.**
 
-A decision-support tool for the **Head of Retail Portfolio** at [Bedashing Beauty
-Lounge](https://bedashingbeauty.com), a premium UAE salon and wellness chain with 23 lounges. It
-answers three questions a portfolio review actually has to settle:
+Live: **[2pz.larri.dev](https://2pz.larri.dev)** · Five-minute guided demo: **[docs/walkthrough.md](docs/walkthrough.md)**
 
-1. **Which lounges are earning their footprint?** → `PROTECT` / `HOLD` / `SHRINK` per branch.
-2. **Where are we paying rent twice for the same customer?** → self-overlap between our own catchments.
-3. **Where is there demand we do not reach?** → `GROW` / `WATCH` / `SKIP` per candidate zone.
+---
 
-Every recommendation carries the **signed contribution of each signal that produced it**, summing
-exactly to the score. A conversational analyst answers questions by calling tools over the same
-data the map renders.
+## What it decides, and for whom
+
+For the **Head of Retail Portfolio** at [Bedashing Beauty Lounge](https://bedashingbeauty.com), a
+premium UAE salon chain with 23 lounges — the one role that signs a lease, funds a refit, or lets a
+site go. Three questions a portfolio review has to settle:
+
+| Question | Output |
+|---|---|
+| Which lounges are earning their footprint? | `PROTECT` · `HOLD` · `SHRINK` per branch |
+| Where are we paying rent twice for the same customer? | self-overlap between our own catchments |
+| Where is there demand we do not reach? | `GROW` · `WATCH` · `SKIP` per candidate zone |
+
+**It currently says: 2 PROTECT · 15 HOLD · 6 SHRINK, and 17 of 573 scored cells are `GROW`.**
+
+The finding that matters: **Ministry Area shares 65% of its catchment with two of our own lounges,
+Al Maqta 61%.** Both are individually strong branches — Ministry Area scores 0.71 on strength, fifth
+best of 23 — and both are flagged `SHRINK` purely because our own network already covers their
+ground. That is a consolidation decision, not a performance problem, and a single-score ranking
+would have buried it.
 
 ---
 
 ## Run it
 
-**Live: [2pz.larri.dev](https://2pz.larri.dev)** — the conversational analyst is live there;
-everything else works offline too. A ten-minute guided tour of what to look at and what it
-concludes is in **[docs/walkthrough.md](docs/walkthrough.md)**.
-
-The product is static. All scoring happens offline in a Python pipeline whose output is committed,
-so **no API key is needed to see the whole thing**:
+The product is static: all scoring happens offline in a Python pipeline whose output is committed,
+so **no API key is needed to see the whole thing**.
 
 ```bash
 cd web && npm install && npm run dev
 ```
 
-Open the printed URL. That is the complete product except the live chat.
+That is the complete product except the live chat, which proxies OpenAI. The 101 pre-generated
+analyst notes are committed, so the AI layer is visible without a key. To run the chat too:
+`cp .dev.vars.example .dev.vars`, add `OPENAI_API_KEY`, then `npm run build && npm run dev:pages`.
 
-### The live analyst (optional)
-
-Only the conversational analyst needs a key, because it proxies OpenAI. The pre-generated analyst
-notes on every branch and zone are committed and visible without one.
-
-```bash
-cd web
-cp .dev.vars.example .dev.vars    # then put your OPENAI_API_KEY in it
-npm run build
-npm run dev:pages                 # serves the app AND functions/api/chat.js, on :8788
-```
-
-### Re-running the data pipeline (optional)
+Rebuilding the dataset is optional — every remote response is cached under `data/raw/` and
+committed, so this is fully offline and reproduces the committed output byte for byte:
 
 ```bash
-uv sync
-uv run python -m pipeline.run              # rebuild from committed caches — no network, no keys
-uv run python -m pipeline.run --offline    # same, but a cache miss is an error (what CI runs)
-uv run python -m pipeline.run --refresh    # re-fetch Nominatim + Overpass (slow; public rate limits)
-uv run python -m pipeline.run --notes      # also regenerate the AI notes (needs OPENAI_API_KEY)
+uv sync && uv run python -m pipeline.run
 ```
-
-Every remote response is cached under `data/raw/` and committed, so the default invocation is fully
-offline and reproduces the committed dataset byte for byte. CI asserts exactly that.
-
----
-
-## Deployment
-
-`main` deploys itself. A push runs CI; if **every** job passes, `deploy.yml` fires on the
-`workflow_run` event and publishes to Cloudflare Pages. `workflow_run.conclusion` is `success` only
-when all three CI jobs succeed, so a failing test or a drifted dataset stops the release — there is
-no path to production that skips the gate.
-
-```
-push to main ──► CI (pipeline · web · dataset) ──► deploy ──► 2pz.larri.dev
-                        any failure ──► no deploy
-```
-
-Two details that were bugs before they were features:
-
-- **`--branch=main` on the deploy command.** Without it wrangler infers the branch from git, and the
-  workflow checks out a detached sha, so it inferred nothing and published a *preview* deployment.
-  The run went green, a URL was printed, and the live site never moved. Two "successful" deploys
-  had shipped nothing.
-- **The job asserts that production actually moved.** It reads the project's canonical deployment
-  back from the Cloudflare API and fails unless it is this commit with a successful deploy stage.
-  A deploy that succeeds without becoming production is indistinguishable from success at a glance,
-  which is exactly why it is checked rather than assumed. It deliberately does *not* curl the live
-  URL: Cloudflare's bot protection answers 403 to datacenter IP ranges, so that check failed from a
-  GitHub runner against a perfectly healthy site.
-
-**Secrets.** `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are repository secrets, used only at
-deploy time. `OPENAI_API_KEY` is **not** a GitHub secret — the analyst endpoint reads it at request
-time from the Cloudflare Pages environment, so it never enters the build, the bundle or this
-repository.
-
----
-
-## What you are looking at
-
-Five toggleable map layers, one per functional block, plus a side panel with four tabs and the
-analyst docked under them.
-
-| Layer | What it shows |
-|---|---|
-| **Branch network** | 23 lounges. Circle size = review volume (our scale proxy), colour = recommendation. |
-| **Catchments** | Service area per lounge, 2.5–6 km by urban context. |
-| **Self-overlap** | The actual intersection polygons where our own catchments compete. |
-| **Competition** | 1,354 real salons, spas and hairdressers from OpenStreetMap. |
-| **Whitespace grid** | 573 H3 cells across Dubai, Abu Dhabi and Sharjah, scored for growth. |
-
-| Tab | What it answers |
-|---|---|
-| **Why** | The full contribution breakdown for whatever is selected, plus its AI note and its caveats. |
-| **Compare** | A sortable table of all 23 branches on every scored signal. |
-| **Growth** | The whitespace shortlist, ranked. |
-| **How** | Business framing, provenance of every field, the model's weights, and where not to trust it. |
-
-The conversational analyst is not a tab either. A launcher floats over the map at all times, and
-opening it adds a third column between the map and the panel: the map gives up width, the breakdown
-you were reading stays exactly where it was. Whatever is selected is offered as context — removable in
-one click, because it is a convenience for "why this one?", not a filter on the conversation — and
-every answer shows the tool calls that produced it.
-
-A five-step tour runs on the first visit — the map and its layers, the four tabs, the analyst —
-dimming the page around whatever it is describing. It is remembered in `localStorage`, so it appears
-once per browser, and **Replay the tour** in the How tab brings it back.
-
-**Start here:** open **How** and read the framing, then turn on *Self-overlap*, click the largest
-red wedge in Abu Dhabi, and follow it into the two branches it belongs to. That path shows the
-geographic reasoning, the decision logic and the explainability in about ninety seconds.
-
-### What it currently concludes
-
-The portfolio splits **2 PROTECT · 15 HOLD · 6 SHRINK**, and
-**17 of 573** scored cells come out `GROW`.
-
-The headline finding is a real fact about the real network, not an artefact of the model:
-**Ministry Area shares 65% of its catchment with two of our own lounges, and Al Maqta 61%.** Both
-are individually *strong* branches — Ministry Area scores 0.71 on strength, well above the
-portfolio median — and both are flagged `SHRINK` purely because our own network already covers
-their ground. That is a consolidation decision, not a performance problem, and it is exactly the
-distinction the two-axis matrix exists to make. A single-score ranking would have buried it.
-
----
-
-## Data: what is real and what is not
-
-The chain is real, the geography is real, and most of the signal is real. A live deployment would
-read revenue per chair, booking density, staff utilisation and lease cost from the chain's own
-systems. None of that is public. So each field is tagged with its provenance and the UI renders the
-tag next to the number — a reviewer never has to guess whether they are looking at a fact.
-
-| Tier | Fields | Source |
-|---|---|---|
-| **real** | branch names, areas, addresses, **Google rating and review count** | Bedashing's public location listing, cross-referenced with public Google Maps rating aggregates (`data/raw/branches_seed.csv`, committed) |
-| **real** | branch coordinates | OpenStreetMap Nominatim geocoding; two coarse results overridden by hand and flagged (`data/raw/branch_coords_override.json`) |
-| **real** | competitor existence, name, location, category | OpenStreetMap via Overpass (`shop=beauty\|hairdresser\|massage`, `leisure=spa`, `amenity=spa`) |
-| **real** | zone built-form counts | OpenStreetMap: **37,137 features** — residential buildings, everyday retail and services, premium venues — streamed from a Geofabrik extract |
-| **derived** | catchments, overlap areas, saturation, coverage gaps, demand index | computed by `pipeline/geo/` from the real inputs above |
-| **synthetic** | **competitor ratings**, branch review **momentum**, **chair utilisation** | seeded draws from stated priors — see the caveats below |
-
-Synthetic fields are pure functions of `config.RANDOM_SEED` and the record id, so the dataset is
-reproducible and nothing shifts under a demo.
 
 ---
 
 ## The decision model
 
-A two-axis matrix, not machine learning. **Deliberately.** A portfolio committee has to defend a
-lease decision to a CFO, and "the gradient boosting said so" is not a defence. Because every score
-is a weighted sum of normalised signals, the explanation is not a post-hoc approximation of the
-model — it *is* the model.
+A two-axis matrix, **not** machine learning. A portfolio committee has to defend a lease decision to
+a CFO, and "the gradient boosting said so" is not a defence. Because every score is a weighted sum
+of normalised signals, the explanation is not an approximation of the model — it *is* the model, and
+a Pydantic validator refuses to build a score whose contributions do not sum to it.
 
-### Existing branches
+```
+X — branch strength                      Y — market attractiveness & defensibility
+  rating (4.20–4.95 band)     +0.30        catchment demand (built form)   +0.45
+  log review volume           +0.25        competitive headroom            +0.35
+  momentum  (simulated)       +0.20        self-cannibalisation            −0.20
+  position vs local rivals    +0.25
 
-**X — branch strength**: how well this lounge performs as a business.
+PROTECT   strength ≥ 0.65 AND market ≥ 0.47
+SHRINK    strength < 0.51 OR (market < 0.40 AND self-overlap ≥ 45%)
+HOLD      everything else
 
-| Signal | Weight | What it is |
-|---|---|---|
-| `rating_norm` | +0.30 | Google rating, normalised against the 4.20–4.95 band the category actually occupies (normalising against 0–5 would flatten every real difference to noise) |
-| `review_volume_norm` | +0.25 | log review count — a proxy for footfall, which we do not have |
-| `momentum` | +0.20 | recent-review trend vs the branch's own history *(simulated)* |
-| `competitive_position` | +0.25 | our rating minus the local rival mean *(rival ratings simulated)* |
+zones     0.45·demand + 0.35·coverage gap − 0.20·saturation
+          GROW ≥ 0.62 · WATCH ≥ 0.45 · SKIP below, or below a 0.12 demand floor
+```
 
-**Y — market attractiveness & defensibility**: is the ground worth holding?
+Ratings are normalised against **4.20–4.95**, the band the category actually occupies, because all
+23 branches sit between 4.5 and 4.9 and a 0–5 scale would flatten every real difference to noise.
 
-| Signal | Weight | What it is |
-|---|---|---|
-| `demand_norm` | +0.45 | built-form demand proxy for the catchment |
-| `headroom_norm` | +0.35 | 1 − competitive saturation |
-| `cannibalisation_penalty` | **−0.20** | share of our catchment also covered by our own lounges |
-
-**Label mapping** — the rule that fired is printed verbatim in the UI for every branch:
-
-- `PROTECT` — strength ≥ 0.65 **and** market ≥ 0.47.
-- `SHRINK` — strength < 0.51, **or** (market < 0.40 **and** self-overlap ≥ 45%). The second clause
-  is the "we are competing with ourselves" exit: a branch can be individually strong and still be
-  the wrong branch to keep.
-- `HOLD` — everything else.
-
-Those four numbers are set by a **stated posture**, not picked to look tidy: they sit at the
-tertiles of the portfolio's own observed distribution on each axis — *the top third on both axes is
-worth defending; the bottom sixth on strength is a candidate for exit.* The earlier values produced
+The thresholds come from a **stated posture**, not from a tidy-looking result: they sit at the
+tertiles of the portfolio's own observed distribution — *the top third on both axes is worth
+defending; the bottom sixth on strength is a candidate for exit.* Earlier values produced
 20 HOLD / 2 SHRINK / 1 PROTECT, and a recommendation almost everyone receives is not a
-recommendation. Disagreeing with the posture is a four-number change in one file.
+recommendation. **Every number above lives in [`pipeline/config.py`](pipeline/config.py)**; nothing
+is hard-coded elsewhere, and the **How** tab renders whatever is in there.
 
-### Whitespace zones
+---
 
-`opportunity = 0.45·demand + 0.35·coverage_gap − 0.20·saturation`, then:
+## Data: what is real and what is not
 
-- a zone already inside one of our catchments is **damped to 35%**, not deleted — the map still
-  shows why it was passed over;
-- a zone below a demand floor of 0.12 is `SKIP` regardless of score, because empty desert scores
-  beautifully on "coverage gap" and must never surface as an opportunity;
-- `GROW` ≥ 0.62, `WATCH` ≥ 0.45, else `SKIP`.
+A live deployment would read revenue per chair, booking density and lease cost from the chain's own
+systems. None of that is public, so every signal here is a public proxy — each tagged with its
+provenance and rendered next to the number in the UI, so a reviewer never has to guess.
 
-**Every number above lives in one file: [`pipeline/config.py`](pipeline/config.py).** Nothing is
-hard-coded anywhere else, and `data/processed/model_card.json` stamps the exact parameterisation
-that produced the committed dataset, which is what the **How** tab renders. Re-tuning the
-portfolio's risk appetite is a one-file change.
+| Tier | Fields | Source |
+|---|---|---|
+| **real** | branch names, addresses, **rating and review count** | Bedashing's public listing + public Google rating aggregates |
+| **real** | branch coordinates | OSM Nominatim; two coarse results overridden by hand and flagged |
+| **real** | 1,354 competitors: existence, name, location, category | OSM via Overpass |
+| **real** | 37,137 built-form features behind the demand proxy | OSM, streamed from a Geofabrik extract |
+| **derived** | catchments, overlap areas, saturation, coverage gap, demand index | `pipeline/geo/` |
+| **synthetic** | competitor **ratings**, review **momentum**, chair **utilisation** | seeded draws from stated priors |
+
+Every synthetic field is a pure function of `RANDOM_SEED` and the record id, so the dataset is
+reproducible and nothing shifts under a demo. CI rebuilds it on every commit and fails if it is not
+byte-identical to what is committed.
 
 ---
 
 ## Geographic reasoning
 
-- **Catchments** are haversine radii that **vary by urban context** — 2.5 km dense urban, 4 km
-  suburban, 6 km low density. A salon visit is a planned, discretionary trip and UAE customers
-  drive, so the catchment is wider than a European high-street equivalent; dense mixed-use
-  districts get a tighter radius because the local pool is larger and rivals are closer.
-- **Self-overlap** is the pairwise intersection of our own catchments, computed in a locally-flat
-  planar frame. The per-branch cannibalisation index takes the **union** of sibling intersections,
-  not their sum — summing is the classic error, and would push any cluster of three to a false
-  `SHRINK`.
-- **Saturation** is competitors per catchment km², normalised against the portfolio's own
-  distribution and capped at the 90th percentile, so one hyper-dense catchment does not compress
-  every other branch to the bottom of the scale.
-- **Coverage gap** is distance to our nearest lounge normalised **by that lounge's own radius**, so
-  3 km from a dense-urban branch is a genuine gap while 3 km from a low-density branch is already
-  served. That normalisation is what makes the signal mean "under-served" rather than "far".
-- **Whitespace grid** is H3 resolution 7 (~5 km² per cell, ~one neighbourhood) across the three
-  metros where we have enough presence for the comparison to mean anything.
+- **Catchments** are radii that vary by urban context — 2.5 km dense urban, 4 km suburban, 6 km low
+  density. A salon visit is a planned trip and UAE customers drive, so the radius is wider than a
+  European high-street equivalent and tighter where the local pool is already large.
+- **Self-overlap** is the real pairwise intersection geometry. The per-branch index takes the
+  **union** of sibling intersections, not their sum — summing is the classic error and would push
+  any cluster of three into a false `SHRINK`.
+- **Saturation** is rivals per catchment km², capped at p90 so one hyper-dense catchment cannot
+  compress every other branch to the floor. **Coverage gap** is distance to our nearest lounge
+  normalised **by that lounge's own radius**, so it means "under-served" rather than "far".
+- **Whitespace** is an H3 res-7 grid (~5 km²/cell) over Dubai, Abu Dhabi and Sharjah. A covered cell
+  is **damped to 35%, not deleted**, so the map explains its own gaps.
 
 ---
 
 ## The AI layer
 
-Two uses, both chosen because they do work a weighted sum cannot.
+**Grounded notes — pre-generated, always visible.** Each scored record's *contribution breakdown* is
+fed to the model, which returns the sentence an analyst would say in a review: it is given only the
+breakdown and instructed to turn arithmetic into an argument, never to supply a fact. 101 notes are
+committed, so the AI layer works with no key, and each is stamped with a hash of the payload it came
+from — a note whose numbers have since moved renders **stale** rather than passing as current.
 
-**1. Grounded analyst notes — pre-generated, always visible.**
-`pipeline/ai/notes.py` feeds each branch's and zone's *contribution breakdown* to the model and gets
-back the sentence an analyst would say in a review meeting. The model is given only the scored
-record — the signals, weights and signed contributions — and is instructed to translate arithmetic
-into an argument, never to supply a fact.
-
-**101 notes are committed**: one per branch, and one per actionable zone (`GROW` and `WATCH` — a
-note on each of 495 foregone `SKIP` cells would be a thousand pointless API calls). Because they
-are committed, the AI layer is visible with **no key at all**, and nothing shifts under a live
-demo. Attaching them is unconditional and free; `--notes` controls regeneration only.
-
-Every figure in them traces back to the record they were generated from — *"65% of its catchment
-with two nearby lounges"*, *"only 38 reviews"*, *"66% of metro peak"* — and where a branch carries
-a low-confidence caveat the note says so rather than presenting the number flat. No invented
-revenue, rent or staffing.
-
-Each note is stamped with a hash of the payload it came from, so a note whose payload has since
-changed is rendered **stale** rather than passed off as current. That is not decorative: raising
-the precision of the printed decision rule from two decimals to three changed every payload, and
-the next build reported *"101 committed notes attached, 101 STALE"* before they were regenerated.
-
-**2. Conversational analyst — live, tool-calling.**
-`web/functions/api/chat.js` runs a bounded tool-calling loop over the same static JSON:
-`network_summary`, `list_branches`, `get_branch`, `compare_branches`, `find_overlaps`,
-`top_whitespace`. The system prompt forbids answering portfolio questions from memory, and **the
-trace of every tool call is returned with the answer and shown in the UI**, so you can check the
-analyst looked the numbers up rather than recalled them.
+**Conversational analyst — live, tool-calling.** [`web/functions/api/chat.js`](web/functions/api/chat.js)
+runs a bounded loop over the same static JSON: `network_summary`, `list_branches`, `get_branch`,
+`compare_branches`, `find_overlaps`, `top_whitespace`. The prompt forbids answering from memory, and
+**the trace of every tool call is returned with the answer and shown in the UI** — you can check it
+looked the numbers up rather than recalled them.
 
 Grounding is not only about the numbers being real. An early version answered *"which branches are
-most at risk?"* by quoting each branch's market score — every figure correct, but the stated
-*reason* wrong, because four of the five were labelled on weak **strength** while their market
-scores were perfectly healthy. The fix was to carry each row's `decision_rule` into
-`list_branches`, so the model reports the rule that actually fired instead of inferring a reason
-from whichever number looks low. It now answers the same question in one tool call and quotes the
-firing threshold for each branch.
+most at risk?"* with each branch's market score — every figure correct, the stated *reason* wrong,
+because four of the five were flagged on weak **strength**. The fix belonged in the tool contract,
+not the prompt: `list_branches` now carries each row's firing `decision_rule`.
 
-### No RAG, no embeddings — on purpose
-
-The dataset is 23 branches and ~1k scored cells, fully structured. Every question a portfolio team
-asks is a filter, a sort or a join: *"which branches are most at risk"*, *"where do we overlap
-most"*, *"best whitespace in Dubai"*. Function calling answers those exactly and auditably. A vector
-store would be fuzzier, unauditable, and simply **unable** to answer *"rank these by overlap
-share"* at all. Choosing not to reach for embeddings is the judgement call, not a gap.
+**No RAG, on purpose.** 23 branches and ~1k scored cells, fully structured. Every question a
+portfolio team asks is a filter, a sort or a join. Function calling answers those exactly and
+auditably; a vector store would be fuzzier, unauditable, and simply *unable* to answer "rank these by
+overlap share".
 
 ---
 
-## Where to trust this, and where to be careful
+## Where to be careful
 
-**Trust the geometry.** Overlap areas, distances, competitor counts and coverage gaps are computed
-from real coordinates and real OSM features. The arithmetic is not in doubt.
-
-**Question the weights.** The numbers that turn geometry into a label are a stated management
-judgement, not an estimate from data. That is why they sit in one editable file and why the UI
-prints the rule that fired — disagreeing with a label becomes a conversation about weights.
-
-The five limitations that matter, in order:
+**Trust the geometry** — overlap areas, distances and competitor counts come from real coordinates.
+**Question the weights** — they are a stated judgement, which is why they sit in one file and why the
+UI prints the rule that fired.
 
 | | |
 |---|---|
-| **Catchments are radii, not drive times** | A 10-minute isochrone is the faithful version. The UAE's grade-separated grid narrows the gap, but a lounge behind a creek is over-credited. First upgrade I would make. |
-| **Competitor ratings are simulated** | OSM has real rival *locations* but no ratings, so "we rate +0.2★ above the local mean" rests on a drawn distribution. The rival **count** is real. |
-| **Demand is a built-form proxy** | Residential, retail and premium-venue density from OSM — not census or income. Chosen over a population raster deliberately: a labour camp and a villa district have similar population and wildly different spend on a premium blow-dry. |
-| **Momentum and chair utilisation are simulated** | They show where an operational feed attaches, not what to decide today. Both flagged `synthetic` in the UI. |
-| **No revenue data at all** | Review volume is the scale proxy. This is the single highest-value addition the chain could make, and it is one CSV column. |
-
-Sparse-review branches carry an explicit low-confidence flag rather than being silently scored, and
-a hex is a ~5 km² search area — it says which neighbourhood to look in, not where to sign.
+| **Catchments are radii, not drive times** | An isochrone is the faithful version. The UAE's grade-separated grid narrows the gap, but a lounge behind a creek is over-credited. First upgrade I would make. |
+| **Competitor ratings are simulated** | OSM has real rival *locations* but no ratings. The rival **count** is real; the quality comparison is illustrative. |
+| **Demand is a built-form proxy** | Residential, retail and premium-venue density — not census. Deliberate: a labour camp and a villa district have similar population density and wildly different spend on a premium blow-dry. |
+| **Momentum and utilisation are simulated** | They mark where an operational feed attaches, not what to decide today. Flagged `synthetic` in the UI. |
+| **No revenue data at all** | Review volume is the scale proxy. Two of the six `SHRINK` branches are top-ten by volume, so the model is not quietly flagging the small ones — but this is the highest-value addition the chain could make, and it is one CSV column. |
 
 ---
 
@@ -330,27 +182,26 @@ ai/notes   grounded notes (OpenAI)  ──►   ├─ competitors.geojson      
                                                                      server-side only)
 ```
 
-**Why static files.** The dataset is small and changes when a lease changes, not when a page loads.
-Committing the pipeline's output means a reviewer clones the repo and sees the finished product with
-no database, no keys and no build step beyond `npm install`. It is also the fallback mode the brief
-asks for, built in by default rather than bolted on.
+**Why static.** The dataset changes when a lease changes, not when a page loads. A reviewer clones
+the repo and sees the finished product with no database, no keys and no build step beyond
+`npm install`.
 
-**Why Cloudflare Pages + Functions.** The static app deploys in seconds, and one Pages Function
-keeps the OpenAI key off the browser. Zero ops for a case study. Production on AWS would be
-S3 + CloudFront for the site, Lambda behind API Gateway for the endpoint, and R2/D1 or
-S3 + DynamoDB once the dataset outgrew a JSON file. That is a deployment target, not a redesign.
+**Deployment.** A push to `main` runs CI (pipeline · web · dataset); `deploy.yml` fires only on
+`workflow_run.conclusion == success`, so a failing test or a drifted dataset stops the release. The
+job then reads the canonical deployment back from the Cloudflare API and fails unless production
+actually moved — a preview deploy goes green while shipping nothing, which is indistinguishable from
+success at a glance. `OPENAI_API_KEY` is **not** a GitHub secret: the endpoint reads it at request
+time from the Pages environment, so it never enters the build, the bundle or this repo.
 
 ---
 
-## Declared simplifications
+## Deeper reading
 
-Each of these was a choice, and each is defended above or in [`docs/decisions.md`](docs/decisions.md).
+- **[docs/walkthrough.md](docs/walkthrough.md)** — the demo, in five minutes of reading.
+- **[docs/decisions.md](docs/decisions.md)** — 13 decisions, each with the alternative it beat and
+  why: radius vs isochrone, union vs sum, function calling vs RAG, thresholds from a posture.
+- **[pipeline/config.py](pipeline/config.py)** — every weight and threshold in the product.
 
-- Radius catchments instead of drive-time isochrones.
-- Public proxies instead of private revenue / footfall / utilisation data.
-- Competitor ratings, review momentum and chair utilisation simulated from seeded priors.
-- Built-form demand proxy instead of a population raster.
-- Function calling over structured JSON instead of RAG.
-- Static committed JSON instead of a database.
-- Cloudflare Pages + Functions instead of AWS.
-- No auth, no multi-tenancy, no real-time refresh — out of scope for the decision this supports.
+**Declared simplifications:** radius catchments over isochrones · public proxies over private
+revenue data · three simulated fields · built-form demand over a population raster · function calling
+over RAG · committed JSON over a database · Cloudflare over AWS · no auth or real-time refresh.
