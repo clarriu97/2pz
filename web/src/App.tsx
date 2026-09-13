@@ -5,16 +5,15 @@ import { MapView } from "./components/MapView";
 import { LayerToggles, Legend } from "./components/MapControls";
 import { DetailPanel } from "./components/DetailPanel";
 import { Ranking, TopZones } from "./components/Ranking";
-import { ChatPanel } from "./components/ChatPanel";
+import { Analyst } from "./components/Analyst";
 import { HowItWorks } from "./components/HowItWorks";
 
-type Tab = "detail" | "compare" | "growth" | "chat" | "about";
+type Tab = "detail" | "compare" | "growth" | "about";
 
 const TABS: Array<{ key: Tab; label: string }> = [
   { key: "detail", label: "Why" },
   { key: "compare", label: "Compare" },
   { key: "growth", label: "Growth" },
-  { key: "chat", label: "Analyst" },
   { key: "about", label: "How" },
 ];
 
@@ -23,6 +22,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [selection, setSelection] = useState<Selection>(null);
   const [tab, setTab] = useState<Tab>("detail");
+  const [analystOpen, setAnalystOpen] = useState(false);
   const [layers, setLayers] = useState<LayerState>({
     branches: true,
     catchments: true,
@@ -45,6 +45,14 @@ export default function App() {
     // Reveal the layer the selection lives on, otherwise clicking a zone in
     // the growth shortlist highlights something invisible.
     if (s?.kind === "zone") setLayers((l) => (l.whitespace ? l : { ...l, whitespace: true }));
+  }
+
+  /** Following a branch id out of an answer means "show me that one", which is
+   *  the breakdown — not the list the reader happened to leave open. The
+   *  analyst stays open: it is a column, so it costs the answer nothing. */
+  function selectFromAnalyst(s: Selection) {
+    select(s);
+    if (s) setTab("detail");
   }
 
   const headline = useMemo(() => {
@@ -85,7 +93,7 @@ export default function App() {
         </div>
       </header>
 
-      <div className="app-body">
+      <div className={`app-body${analystOpen ? " app-body-analyst" : ""}`}>
         <div className="map-wrap">
           <MapView data={data} layers={layers} selection={selection} onSelect={select} />
           <div className="map-overlay">
@@ -93,6 +101,18 @@ export default function App() {
             <Legend layers={layers} data={data} />
           </div>
         </div>
+
+        {/* A column of its own rather than a tab or an overlay: the analyst is
+            the part of this product a reader is least likely to go looking
+            for, and its answers are about the breakdown on the right, which
+            has to stay readable while they read the answer. */}
+        <Analyst
+          data={data}
+          onSelect={selectFromAnalyst}
+          selection={selection}
+          open={analystOpen}
+          onOpenChange={setAnalystOpen}
+        />
 
         <div className="panel">
           <div className="tabs" role="tablist">
@@ -109,20 +129,14 @@ export default function App() {
             ))}
           </div>
 
-          {tab === "chat" ? (
-            // The chat manages its own scrolling, so it takes the whole pane
-            // rather than sitting inside the shared scroll container.
-            <ChatPanel data={data} onSelect={select} selection={selection} />
-          ) : (
-            <div className="panel-body">
-              {tab === "detail" && (
-                <DetailPanel selection={selection} data={data} onSelect={select} />
-              )}
-              {tab === "compare" && <Ranking data={data} selection={selection} onSelect={select} />}
-              {tab === "growth" && <TopZones data={data} onSelect={select} />}
-              {tab === "about" && <HowItWorks data={data} />}
-            </div>
-          )}
+          <div className="panel-body">
+            {tab === "detail" && (
+              <DetailPanel selection={selection} data={data} onSelect={select} />
+            )}
+            {tab === "compare" && <Ranking data={data} selection={selection} onSelect={select} />}
+            {tab === "growth" && <TopZones data={data} onSelect={select} />}
+            {tab === "about" && <HowItWorks data={data} />}
+          </div>
         </div>
       </div>
     </div>

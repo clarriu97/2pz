@@ -45,7 +45,7 @@ notes on every branch and zone are committed and visible without one.
 cd web
 cp .dev.vars.example .dev.vars    # then put your OPENAI_API_KEY in it
 npm run build
-npx wrangler pages dev dist       # serves the app AND functions/api/chat.js
+npm run dev:pages                 # serves the app AND functions/api/chat.js, on :8788
 ```
 
 ### Re-running the data pipeline (optional)
@@ -72,7 +72,7 @@ jobs:
 | Job | What it runs | Gate |
 |---|---|---|
 | **pipeline** | `ruff format --check` · `ruff check` · `pytest` | **313 tests**, coverage must stay **≥ 95%** (`--cov-fail-under` in [`pyproject.toml`](pyproject.toml)) |
-| **web** | `prettier --check` · `oxlint` · `tsc` · `vitest run --coverage` · `vite build` | **179 tests**, coverage must stay **≥ 85%** lines / **80%** branches (thresholds in [`web/vite.config.ts`](web/vite.config.ts)) |
+| **web** | `prettier --check` · `oxlint` · `tsc` · `vitest run --coverage` · `vite build` | **193 tests**, coverage must stay **≥ 85%** lines / **80%** branches (thresholds in [`web/vite.config.ts`](web/vite.config.ts)) |
 | **dataset** | `pipeline.run --offline` then `git diff` | the committed dataset must be reproducible **byte for byte** with no network |
 
 Current coverage — **97.82%** lines on the pipeline, **97.83%** statements on the web app. Both
@@ -168,7 +168,8 @@ a confidently wrong answer from the analyst.
 
 ## What you are looking at
 
-Five toggleable map layers, one per functional block, plus a side panel with five tabs.
+Five toggleable map layers, one per functional block, plus a side panel with four tabs and the
+analyst docked under them.
 
 | Layer | What it shows |
 |---|---|
@@ -183,8 +184,13 @@ Five toggleable map layers, one per functional block, plus a side panel with fiv
 | **Why** | The full contribution breakdown for whatever is selected, plus its AI note and its caveats. |
 | **Compare** | A sortable table of all 23 branches on every scored signal. |
 | **Growth** | The whitespace shortlist, ranked. |
-| **Analyst** | Natural-language Q&A with a visible tool trace. |
 | **How** | Business framing, provenance of every field, the model's weights, and where not to trust it. |
+
+The conversational analyst is not a tab either. A launcher floats over the map at all times, and
+opening it adds a third column between the map and the panel: the map gives up width, the breakdown
+you were reading stays exactly where it was. Whatever is selected is offered as context — removable in
+one click, because it is a convenience for "why this one?", not a filter on the conversation — and
+every answer shows the tool calls that produced it.
 
 **Start here:** open **How** and read the framing, then turn on *Self-overlap*, click the largest
 red wedge in Abu Dhabi, and follow it into the two branches it belongs to. That path shows the

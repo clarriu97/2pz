@@ -131,7 +131,8 @@ describe("App selection", () => {
     render(<App />);
     await waitFor(() => expect(screen.getByTestId("map")).toBeInTheDocument());
     await userEvent.click(screen.getByText("simulate branch click"));
-    expect(screen.getByText("Bedashing Beta")).toBeInTheDocument();
+    // Named in the detail heading and again on the analyst dock's context chip.
+    expect(screen.getAllByText("Bedashing Beta").length).toBeGreaterThan(0);
     // The label appears on the detail pill and in the map legend.
     expect(screen.getAllByText("SHRINK").length).toBeGreaterThan(0);
     expect(screen.getByText("Why — branch strength")).toBeInTheDocument();
@@ -173,11 +174,11 @@ describe("App selection", () => {
 });
 
 describe("App tabs", () => {
-  it("offers all five panels", async () => {
+  it("offers all four panels", async () => {
     stubData();
     render(<App />);
     await waitFor(() => expect(screen.getByTestId("map")).toBeInTheDocument());
-    for (const name of ["Why", "Compare", "Growth", "Analyst", "How"]) {
+    for (const name of ["Why", "Compare", "Growth", "How"]) {
       expect(screen.getByRole("tab", { name })).toBeInTheDocument();
     }
   });
@@ -198,11 +199,54 @@ describe("App tabs", () => {
     expect(screen.getByText("Who this is for")).toBeInTheDocument();
   });
 
-  it("opens the analyst", async () => {
+  it("keeps the analyst reachable from every tab rather than behind one", async () => {
+    // It was a tab called "Analyst", which read like one more report and was
+    // the least likely thing to be clicked. Now its launcher is on screen
+    // whatever the panel is showing.
     stubData();
     render(<App />);
     await waitFor(() => expect(screen.getByTestId("map")).toBeInTheDocument());
-    await userEvent.click(screen.getByRole("tab", { name: "Analyst" }));
-    expect(screen.getByPlaceholderText(/Ask about the network/)).toBeInTheDocument();
+    expect(screen.queryByRole("tab", { name: "Analyst" })).not.toBeInTheDocument();
+
+    expect(screen.getByRole("button", { name: /^Ask / })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("tab", { name: "Compare" }));
+    expect(screen.getByRole("button", { name: /^Ask / })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("tab", { name: "How" }));
+    expect(screen.getByRole("button", { name: /^Ask / })).toBeInTheDocument();
+  });
+
+  it("keeps the panel readable while the analyst is open", async () => {
+    // The whole reason the analyst is a column and not an overlay: reading an
+    // answer and reading the numbers it is about happen at the same time.
+    stubData();
+    render(<App />);
+    await waitFor(() => expect(screen.getByTestId("map")).toBeInTheDocument());
+
+    await userEvent.click(screen.getByRole("button", { name: /^Ask / }));
+    expect(screen.getByPlaceholderText(/^Ask about/)).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole("tab", { name: "Growth" }));
+    expect(screen.getByText("Growth shortlist")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/^Ask about/)).toBeInTheDocument();
+  });
+
+  it("keeps the analyst open when a selection lands, next to the breakdown", async () => {
+    stubData();
+    render(<App />);
+    await waitFor(() => expect(screen.getByTestId("map")).toBeInTheDocument());
+
+    await userEvent.click(screen.getByRole("button", { name: /^Ask / }));
+    await userEvent.click(screen.getByText("simulate branch click"));
+    expect(screen.getByText("Why — branch strength")).toBeInTheDocument();
+    expect(screen.getByText(/is selected/)).toHaveTextContent("Bedashing Beta");
+  });
+
+  it("hands the analyst the branch the reader selected", async () => {
+    stubData();
+    render(<App />);
+    await waitFor(() => expect(screen.getByTestId("map")).toBeInTheDocument());
+    await userEvent.click(screen.getByRole("button", { name: "Ask the analyst" }));
+    await userEvent.click(screen.getByText("simulate branch click"));
+    expect(screen.getByText(/is selected/)).toHaveTextContent("Bedashing Beta");
   });
 });
