@@ -21,7 +21,8 @@ data the map renders.
 ## Run it
 
 **Live: [2pz.larri.dev](https://2pz.larri.dev)** — the conversational analyst is live there;
-everything else works offline too.
+everything else works offline too. A ten-minute guided tour of what to look at and what it
+concludes is in **[docs/walkthrough.md](docs/walkthrough.md)**.
 
 The product is static. All scoring happens offline in a Python pipeline whose output is committed,
 so **no API key is needed to see the whole thing**:
