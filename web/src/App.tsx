@@ -5,6 +5,7 @@ import { MapView } from "./components/MapView";
 import { LayerToggles, Legend } from "./components/MapControls";
 import { DetailPanel } from "./components/DetailPanel";
 import { Ranking, TopZones } from "./components/Ranking";
+import { Matrix } from "./components/Matrix";
 import { Analyst } from "./components/Analyst";
 import { HowItWorks } from "./components/HowItWorks";
 import { Tour, hasSeenTour } from "./components/Tour";
@@ -140,7 +141,12 @@ export default function App() {
             {tab === "detail" && (
               <DetailPanel selection={selection} data={data} onSelect={select} />
             )}
-            {tab === "compare" && <Ranking data={data} selection={selection} onSelect={select} />}
+            {tab === "compare" && (
+              <>
+                <Matrix data={data} selection={selection} onSelect={select} />
+                <Ranking data={data} selection={selection} onSelect={select} />
+              </>
+            )}
             {tab === "growth" && <TopZones data={data} onSelect={select} />}
             {tab === "about" && <HowItWorks data={data} onReplayTour={() => setTourOpen(true)} />}
           </div>

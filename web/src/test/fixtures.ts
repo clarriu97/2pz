@@ -189,7 +189,13 @@ export function modelCard(over: Partial<ModelCard> = {}): ModelCard {
         headroom_norm: 0.35,
         cannibalisation_penalty: -0.2,
       },
-      thresholds: { strength_high: 0.58, strength_low: 0.42 },
+      thresholds: {
+        strength_high: 0.65,
+        strength_low: 0.51,
+        market_high: 0.47,
+        market_low: 0.4,
+        cannibalisation_shrink_trigger: 0.45,
+      },
     },
     zone_model: {
       opportunity_weights: {
@@ -231,7 +237,17 @@ function polygonFeature(properties: Record<string, unknown>) {
 
 export function dataset(over: Partial<Dataset> = {}): Dataset {
   const branches: Branch[] = [
-    branch({ branch_id: "BD01", area: "Mirdif", recommendation: "HOLD" }),
+    branch({
+      branch_id: "BD01",
+      area: "Mirdif",
+      recommendation: "HOLD",
+      // Scores mirror the live dataset's spread so ordering assertions in the
+      // matrix and the ranking table mean the same thing here as in production.
+      strength: axis({
+        axis: "strength",
+        contributions: [contribution({ signal: "rating_norm", contribution: 0.63 })],
+      }),
+    }),
     branch({
       branch_id: "BD02",
       name: "Bedashing Beta",
@@ -242,7 +258,11 @@ export function dataset(over: Partial<Dataset> = {}): Dataset {
       review_count: 150,
       strength: axis({
         axis: "strength",
-        contributions: [contribution({ contribution: 0.1 })],
+        contributions: [contribution({ signal: "rating_norm", contribution: 0.45 })],
+      }),
+      market: axis({
+        axis: "market",
+        contributions: [contribution({ signal: "demand_norm", contribution: 0.36 })],
       }),
       cannibalisation: {
         overlapped_share: 0.56,
@@ -267,6 +287,14 @@ export function dataset(over: Partial<Dataset> = {}): Dataset {
       recommendation: "PROTECT",
       rating: 4.8,
       review_count: 829,
+      strength: axis({
+        axis: "strength",
+        contributions: [contribution({ signal: "rating_norm", contribution: 0.78 })],
+      }),
+      market: axis({
+        axis: "market",
+        contributions: [contribution({ signal: "demand_norm", contribution: 0.52 })],
+      }),
       cannibalisation: { overlapped_share: 0, sibling_count: 0, siblings: [] },
       analyst_note: null,
     }),

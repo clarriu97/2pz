@@ -1059,3 +1059,84 @@ a {
 .link-button:hover {
   color: var(--text);
 }
+
+/* ---------------------------------------------------------------- matrix */
+.matrix {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 4px 0 2px;
+  overflow: visible;
+}
+
+/* The two quadrants that carry a decision, tinted just enough to read as
+   regions without competing with the points that sit on them. */
+.matrix-zone-protect {
+  fill: var(--protect);
+  opacity: 0.07;
+}
+.matrix-zone-shrink {
+  fill: var(--shrink);
+  opacity: 0.07;
+}
+
+.matrix-threshold {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+}
+
+.matrix-axis {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+
+.matrix-axis-label {
+  fill: var(--text-faint);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.matrix-tick {
+  fill: var(--text-faint);
+  font: 10px var(--mono);
+}
+
+.matrix-point {
+  stroke: var(--bg);
+  stroke-width: 1.5;
+  opacity: 0.9;
+  cursor: pointer;
+  transition:
+    opacity 0.12s,
+    stroke-width 0.12s;
+}
+
+.matrix-point:hover,
+.matrix-point.is-active {
+  opacity: 1;
+  stroke: #ffffff;
+  stroke-width: 2.5;
+}
+
+.matrix-point:focus-visible {
+  outline: none;
+  stroke: #ffffff;
+  stroke-width: 2.5;
+}
+
+.matrix-point-label {
+  fill: var(--text);
+  font-size: 11px;
+  font-weight: 600;
+  paint-order: stroke;
+  stroke: var(--bg);
+  stroke-width: 3px;
+  pointer-events: none;
+}
+
+/* Fixed height so hovering from point to point does not reflow the chart. */
+.matrix-readout {
+  min-height: 34px;
+  margin-top: 6px;
+}
